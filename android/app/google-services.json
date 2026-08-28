@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "708870083387",
+    "project_id": "outlet-manager-b348e",
+    "storage_bucket": "outlet-manager-b348e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708870083387:android:eb36dc202cc0678a85dd1e",
+        "android_client_info": {
+          "package_name": "com.mikaappliances.outlet_manager_rw"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMf-6u3oHnU22xcxHldG9wRPuqekf9tZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708870083387:android:7474994ac681c02385dd1e",
+        "android_client_info": {
+          "package_name": "com.mikappliance.outletManager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMf-6u3oHnU22xcxHldG9wRPuqekf9tZc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

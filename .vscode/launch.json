@@ -1,0 +1,41 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug – Kenya",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=APP_ENV=dev",
+        "--dart-define=APP_REGION=ke"
+      ]
+    },
+    {
+      "name": "Debug – Rwanda",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=APP_ENV=dev",
+        "--dart-define=APP_REGION=rw"
+      ]
+    },
+    {
+      "name": "Staging – Kenya",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=APP_ENV=staging",
+        "--dart-define=APP_REGION=ke"
+      ]
+    },
+    {
+      "name": "Staging – Rwanda",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=APP_ENV=staging",
+        "--dart-define=APP_REGION=rw"
+      ]
+    }
+  ]
+}

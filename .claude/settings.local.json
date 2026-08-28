@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter analyze *)",
+      "Bash(flutter devices *)",
+      "Bash(kill %1)",
+      "Bash(pkill -f \"flutter run\")",
+      "Bash(flutter run *)",
+      "Bash(adb -s emulator-5554 shell screencap -p /sdcard/screen.png)",
+      "Bash(adb -s emulator-5554 pull /sdcard/screen.png /private/tmp/claude-501/-Users-stephen-Mobile-outlet-manager/78187400-b80a-4b00-927f-56a3281adcd0/scratchpad/screenshots/01_initial.png)",
+      "Read(//opt/flutter/bin/**)",
+      "Bash(find / -maxdepth 6 -iname \"adb\" -type f)",
+      "Bash(find / -maxdepth 8 -iname \"adb\" -type f)",
+      "Read(//Users/stephen/**)",
+      "Bash(env)",
+      "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 shell input tap 540 1080)",
+      "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 shell screencap -p /sdcard/screen.png)",
+      "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 pull /sdcard/screen.png /private/tmp/claude-501/-Users-stephen-Mobile-outlet-manager/78187400-b80a-4b00-927f-56a3281adcd0/scratchpad/screenshots/02_after_allow.png)",
+      "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 pull /sdcard/screen.png /private/tmp/claude-501/-Users-stephen-Mobile-outlet-manager/78187400-b80a-4b00-927f-56a3281adcd0/scratchpad/screenshots/04_route_v2.png)"
+    ]
+  }
+}
