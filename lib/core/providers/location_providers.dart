@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../database/isar_database.dart';
+import '../location/background_location_service.dart';
 import '../location/geofence_manager.dart';
 import '../location/location_service.dart';
 import 'notification_providers.dart';
@@ -8,6 +9,16 @@ import 'notification_providers.dart';
 /// Provides the LocationService instance
 final locationServiceProvider = Provider<LocationService>((ref) {
   return LocationService();
+});
+
+/// Provides the native background location tracking engine (Android — see
+/// `android/app/src/main/kotlin/.../location/`). Started on clock-in, stopped
+/// on clock-out; see `ClockInNotifier`/`ClockOutNotifier` in
+/// `daily_route_providers.dart`.
+final backgroundLocationServiceProvider = Provider<BackgroundLocationService>((
+  ref,
+) {
+  return BackgroundLocationService();
 });
 
 /// Provides the GeofenceManager instance

@@ -42,9 +42,7 @@ class StockTakeSyncHandler {
       await _syncService.markSyncing(operation);
 
       final sessionServerId = data['session_server_id'] as int?;
-      final itemLocalId = data['item_local_id'] as String;
-      var itemServerId = data['item_server_id'] as int?;
-      final customerProductId = data['customer_product_id'] as int;
+      final itemCode = data['item_code'] as String;
       final serialsData = data['serials'] as List<dynamic>;
 
       if (sessionServerId == null) {
@@ -55,24 +53,9 @@ class StockTakeSyncHandler {
         return false;
       }
 
-      // Ensure item has server ID
-      if (itemServerId == null) {
-        // Try to create item on server
-        final itemResponse = await _remoteDataSource.addItem(
-          sessionId: sessionServerId,
-          customerProductId: customerProductId,
-        );
-        itemServerId = itemResponse['id'] as int;
-
-        // Update local item with server ID
-        final item = await _localDataSource.getItemByLocalId(itemLocalId);
-        if (item != null) {
-          item.serverId = itemServerId;
-          await _localDataSource.updateItem(item);
-        }
-      }
-
-      // Upload serials
+      // Batch-uploading by item_code materializes the item on the server
+      // first if it isn't there yet, so there's no separate "add item"
+      // call needed here.
       final serialsToUpload = serialsData
           .map(
             (s) => {
@@ -87,7 +70,7 @@ class StockTakeSyncHandler {
 
       final response = await _remoteDataSource.uploadSerialsBatch(
         sessionId: sessionServerId,
-        itemId: itemServerId,
+        itemCode: itemCode,
         serials: serialsToUpload,
       );
 

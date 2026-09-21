@@ -10,7 +10,7 @@ import '../repositories/outlet_visit_repository.dart';
 /// Updates local state immediately (optimistic) and queues sync.
 ///
 /// **Preconditions:**
-/// - Visit must be in pending status
+/// - Visit must be pending or previously skipped (see [OutletVisit.canClockIn])
 /// - No other visit can be in progress
 /// - Agent must be within geofence (50m) OR have approved override
 /// - GPS accuracy must be ≤ 200m

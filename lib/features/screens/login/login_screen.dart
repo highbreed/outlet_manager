@@ -52,8 +52,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     // Show error if auth failed
     ref.listen<AuthState>(authControllerProvider, (previous, next) {
+      if (next is Authenticated) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).clearSnackBars();
+        }
+        return;
+      }
       if (next is AuthError) {
         if (mounted) {
+          ScaffoldMessenger.of(context).clearSnackBars();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(next.message),

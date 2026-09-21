@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/network/api_client.dart';
+import '../../../core/providers/location_providers.dart';
 import '../../auth/auth.dart';
 import '../data/datasources/daily_route_local_datasource.dart';
 import '../data/datasources/daily_route_remote_datasource.dart';
@@ -278,7 +279,46 @@ class DayStatusPoll extends _$DayStatusPoll {
 
     final remoteDataSource = ref.watch(dailyRouteRemoteDataSourceProvider);
     final response = await remoteDataSource.getDayStatus();
-    return response.toDomain();
+    final info = response.toDomain();
+
+    // Fire-and-forget: `startTracking()`/`stopTracking()` only ever fire
+    // from the explicit clock-in/out actions elsewhere, so a fresh install,
+    // a logout/login, or the native engine simply never having been seeded
+    // on this device would otherwise leave a genuinely active visit
+    // untracked until the agent happened to clock out and back in. This is
+    // the source of truth this whole provider already exists to poll, so
+    // reconciling native tracking against it here — every 30s, self-healing
+    // if ever missed — closes that gap without needing a separate hook.
+    _reconcileBackgroundTracking(info);
+
+    return info;
+  }
+
+  Future<void> _reconcileBackgroundTracking(DayStatusInfo info) async {
+    final backgroundService = ref.read(backgroundLocationServiceProvider);
+    final activeVisit = info.route?.activeVisit;
+    final status = await backgroundService.getTrackingStatus();
+
+    if (activeVisit == null) {
+      // No visit active per the backend — if native still thinks it's
+      // tracking one (e.g. it was force-closed from another device), stop.
+      if (status.isTracking) {
+        await backgroundService.stopTracking();
+      }
+      return;
+    }
+
+    if (status.isTracking && status.visitId == activeVisit.localId) {
+      return; // Already correctly tracking this visit.
+    }
+
+    await backgroundService.startTracking(
+      visitId: activeVisit.localId,
+      outletName: activeVisit.outletName,
+      outletLatitude: activeVisit.outletLatitude,
+      outletLongitude: activeVisit.outletLongitude,
+      geofenceRadiusMeters: activeVisit.geofenceRadiusMeters,
+    );
   }
 }
 
@@ -418,6 +458,18 @@ class ClockInNotifier extends _$ClockInNotifier {
       // Invalidate today's route to refresh visit list
       ref.invalidate(todaysRouteProvider);
       ref.invalidate(dayStatusPollProvider);
+      // Fire-and-forget: best-effort by design (see
+      // BackgroundLocationService), must not block clock-in on tracking
+      // startup succeeding.
+      ref
+          .read(backgroundLocationServiceProvider)
+          .startTracking(
+            visitId: visit.localId,
+            outletName: visit.outletName,
+            outletLatitude: visit.outletLatitude,
+            outletLongitude: visit.outletLongitude,
+            geofenceRadiusMeters: visit.geofenceRadiusMeters,
+          );
       return AsyncData(visit);
     });
   }
@@ -454,6 +506,8 @@ class ClockOutNotifier extends _$ClockOutNotifier {
         ref.invalidate(todaysRouteProvider);
         ref.invalidate(dayStatusPollProvider);
         ref.invalidate(routeToCloseProvider);
+        // Fire-and-forget: see ClockInNotifier.clockIn for why.
+        ref.read(backgroundLocationServiceProvider).stopTracking();
         return AsyncData(visit);
       },
     );
@@ -603,10 +657,20 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
       (failure) {
         state = AsyncError(failure, StackTrace.current);
       },
-      (_) {
+      (visit) {
         state = const AsyncData(null);
         ref.invalidate(todaysRouteProvider);
         ref.invalidate(dayStatusPollProvider);
+        // Fire-and-forget: see ClockInNotifier.clockIn for why.
+        ref
+            .read(backgroundLocationServiceProvider)
+            .startTracking(
+              visitId: visit.localId,
+              outletName: visit.outletName,
+              outletLatitude: visit.outletLatitude,
+              outletLongitude: visit.outletLongitude,
+              geofenceRadiusMeters: visit.geofenceRadiusMeters,
+            );
       },
     );
   }

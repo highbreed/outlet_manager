@@ -63,12 +63,22 @@ class ErrorMappingInterceptor extends Interceptor {
   ErrorEnvelope? _parseErrorEnvelope(dynamic body) {
     if (body is! Map<String, dynamic>) return null;
     final error = body['error'];
-    if (error is! Map<String, dynamic>) return null;
-    try {
-      return ErrorEnvelope.fromJson(error);
-    } catch (_) {
-      return null;
+    if (error is Map<String, dynamic>) {
+      try {
+        return ErrorEnvelope.fromJson(error);
+      } catch (_) {
+        return null;
+      }
     }
+    // Some endpoints (e.g. FastAPI's default validation/HTTPException
+    // handler) return {"detail": "..."} instead of the {"error": {...}}
+    // envelope above. Treat that message as the envelope message so it
+    // still reaches the UI instead of falling back to a generic default.
+    final detail = body['detail'];
+    if (detail is String && detail.isNotEmpty) {
+      return ErrorEnvelope(code: 'unknown', message: detail);
+    }
+    return null;
   }
 
   AuthFailure _mapAuthFailure(ErrorEnvelope? envelope, String? requestId) {
@@ -78,7 +88,10 @@ class ErrorMappingInterceptor extends Interceptor {
           reason: envelope?.message,
           requestId: requestId,
         ),
-      _ => AuthFailure.invalidCredentials(requestId: requestId),
+      _ => AuthFailure.invalidCredentials(
+          message: envelope?.message ?? 'Invalid email or password',
+          requestId: requestId,
+        ),
     };
   }
 

@@ -1027,28 +1027,32 @@ final shouldFilterBrandsBySessionProvider =
 // ignore: unused_element
 typedef ShouldFilterBrandsBySessionRef = AutoDisposeFutureProviderRef<bool>;
 String _$findProductByBarcodeHash() =>
-    r'bed479ede5f1d4388b861f430c15c359e2cf239d';
+    r'8998fcd5985b52bac59902505019373eeecfd49e';
 
-/// Provider for finding a product by barcode
-/// First checks local cache, then fetches from backend
+/// Provider for finding a product by barcode against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend,
+/// which is the sole source of truth for what's in scope for this session.
 ///
 /// Copied from [findProductByBarcode].
 @ProviderFor(findProductByBarcode)
 const findProductByBarcodeProvider = FindProductByBarcodeFamily();
 
-/// Provider for finding a product by barcode
-/// First checks local cache, then fetches from backend
+/// Provider for finding a product by barcode against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend,
+/// which is the sole source of truth for what's in scope for this session.
 ///
 /// Copied from [findProductByBarcode].
 class FindProductByBarcodeFamily extends Family<AsyncValue<CustomerProduct?>> {
-  /// Provider for finding a product by barcode
-  /// First checks local cache, then fetches from backend
+  /// Provider for finding a product by barcode against the live,
+  /// session-scoped catalogue. Not cached locally - always hits the backend,
+  /// which is the sole source of truth for what's in scope for this session.
   ///
   /// Copied from [findProductByBarcode].
   const FindProductByBarcodeFamily();
 
-  /// Provider for finding a product by barcode
-  /// First checks local cache, then fetches from backend
+  /// Provider for finding a product by barcode against the live,
+  /// session-scoped catalogue. Not cached locally - always hits the backend,
+  /// which is the sole source of truth for what's in scope for this session.
   ///
   /// Copied from [findProductByBarcode].
   FindProductByBarcodeProvider call(String barcode) {
@@ -1077,14 +1081,16 @@ class FindProductByBarcodeFamily extends Family<AsyncValue<CustomerProduct?>> {
   String? get name => r'findProductByBarcodeProvider';
 }
 
-/// Provider for finding a product by barcode
-/// First checks local cache, then fetches from backend
+/// Provider for finding a product by barcode against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend,
+/// which is the sole source of truth for what's in scope for this session.
 ///
 /// Copied from [findProductByBarcode].
 class FindProductByBarcodeProvider
     extends AutoDisposeFutureProvider<CustomerProduct?> {
-  /// Provider for finding a product by barcode
-  /// First checks local cache, then fetches from backend
+  /// Provider for finding a product by barcode against the live,
+  /// session-scoped catalogue. Not cached locally - always hits the backend,
+  /// which is the sole source of truth for what's in scope for this session.
   ///
   /// Copied from [findProductByBarcode].
   FindProductByBarcodeProvider(String barcode)
@@ -1169,29 +1175,29 @@ class _FindProductByBarcodeProviderElement
 }
 
 String _$searchCatalogueProductsHash() =>
-    r'a24309b5ef379c68f4d3dfa48482d9e62947582d';
+    r'8831ab50126220f3db5f92673d24e7838ab08e2c';
 
-/// Provider for searching products by search term
-/// First checks local cache, then fetches from backend
+/// Provider for searching products by search term against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend.
 ///
 /// Copied from [searchCatalogueProducts].
 @ProviderFor(searchCatalogueProducts)
 const searchCatalogueProductsProvider = SearchCatalogueProductsFamily();
 
-/// Provider for searching products by search term
-/// First checks local cache, then fetches from backend
+/// Provider for searching products by search term against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend.
 ///
 /// Copied from [searchCatalogueProducts].
 class SearchCatalogueProductsFamily
     extends Family<AsyncValue<List<CustomerProduct>>> {
-  /// Provider for searching products by search term
-  /// First checks local cache, then fetches from backend
+  /// Provider for searching products by search term against the live,
+  /// session-scoped catalogue. Not cached locally - always hits the backend.
   ///
   /// Copied from [searchCatalogueProducts].
   const SearchCatalogueProductsFamily();
 
-  /// Provider for searching products by search term
-  /// First checks local cache, then fetches from backend
+  /// Provider for searching products by search term against the live,
+  /// session-scoped catalogue. Not cached locally - always hits the backend.
   ///
   /// Copied from [searchCatalogueProducts].
   SearchCatalogueProductsProvider call(String searchTerm) {
@@ -1220,14 +1226,14 @@ class SearchCatalogueProductsFamily
   String? get name => r'searchCatalogueProductsProvider';
 }
 
-/// Provider for searching products by search term
-/// First checks local cache, then fetches from backend
+/// Provider for searching products by search term against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend.
 ///
 /// Copied from [searchCatalogueProducts].
 class SearchCatalogueProductsProvider
     extends AutoDisposeFutureProvider<List<CustomerProduct>> {
-  /// Provider for searching products by search term
-  /// First checks local cache, then fetches from backend
+  /// Provider for searching products by search term against the live,
+  /// session-scoped catalogue. Not cached locally - always hits the backend.
   ///
   /// Copied from [searchCatalogueProducts].
   SearchCatalogueProductsProvider(String searchTerm)
@@ -1342,7 +1348,7 @@ final paginatedCatalogueControllerProvider =
 typedef _$PaginatedCatalogueController =
     AutoDisposeNotifier<PaginatedCatalogueState>;
 String _$stockTakeSessionControllerHash() =>
-    r'1b1278f4a62a298a40af35f27965c68566dd67bb';
+    r'ec8562902dcdf41f38103b76b935b9b16cf455e8';
 
 /// Main controller for stock take session management
 ///

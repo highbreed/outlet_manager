@@ -9,33 +9,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 import 'package:workmanager/workmanager.dart';
 
-import '../../../core/config/app_config.dart';
-import '../../../core/storage/token_storage.dart';
-
-/// Resolves the same `apiBaseUrl` `AppConfig.initialize()` computes in the
-/// main isolate — reimplemented here because WorkManager runs
-/// `backgroundCallbackDispatcher` in a **separate isolate** that never ran
-/// `main()`, so `AppConfig`'s static fields are uninitialized
-/// (`LateInitializationError`) if referenced directly. Safe to reimplement
-/// purely from `String.fromEnvironment` reads: both `APP_ENV` and
-/// `APP_REGION` are compile-time `--dart-define` constants baked into the
-/// binary, not runtime state, so they resolve identically in any isolate.
-String _resolveApiBaseUrl() {
-  final envRaw = const String.fromEnvironment('APP_ENV', defaultValue: 'dev');
-  final env = switch (envRaw.toLowerCase()) {
-    'prod' || 'production' => Environment.prod,
-    'staging' || 'stage' => Environment.staging,
-    _ => Environment.dev,
-  };
-  final region = Regions.resolve(
-    const String.fromEnvironment('APP_REGION', defaultValue: 'ke'),
-  );
-  return switch (env) {
-    Environment.dev => 'http://192.168.1.18:8002/api/v1',
-    Environment.staging => 'https://${region.stagingHost}/api/v1',
-    Environment.prod => 'https://${region.host}/api/v1',
-  };
-}
+import '../../../core/network/isolate_auth_context.dart';
 
 /// Background task name for location ping.
 const String locationPingTaskName = 'locationPingTask';
@@ -119,26 +93,32 @@ Future<bool> _executeLocationPing() async {
       return true;
     }
 
+    // Base URL — this isolate never ran main(), so AppConfig's static
+    // fields are uninitialized; resolved independently instead. See
+    // isolate_auth_context.dart.
+    final region = resolveIsolateRegion();
+    final apiBaseUrl = resolveIsolateApiBaseUrl(region);
+
     // Auth token — this isolate never ran main()/AuthController, so it's
-    // read directly from secure storage rather than any in-memory state.
-    // A missing token means the agent is logged out; nothing to ping with.
-    final accessToken = await TokenStorage().getAccessToken();
+    // read directly from secure storage rather than any in-memory state,
+    // refreshing it first if it's close to expiry (this isolate has no
+    // AuthInterceptor to do that automatically). A missing token, or a
+    // refresh token that's been rejected, means there's nothing to ping
+    // with — not a task failure to retry.
+    final accessToken = await resolveIsolateAccessToken(apiBaseUrl);
     if (accessToken == null) {
-      return true; // Not logged in — not a task failure to retry.
+      return true;
     }
 
-    // App version — read via platform channel same as _resolveApiBaseUrl()
-    // works around AppConfig being uninitialized in this isolate; unlike the
-    // base URL this isn't a compile-time constant, so it can't be
-    // reimplemented from String.fromEnvironment and must be queried directly.
+    // App version — read via platform channel for the same reason the base
+    // URL is resolved independently above: unlike the base URL this isn't a
+    // compile-time constant, so it must be queried directly.
     final packageInfo = await PackageInfo.fromPlatform();
 
-    // Create Dio instance for this isolate — AppConfig's static fields are
-    // never initialized here (this isolate never ran main()), so the base
-    // URL is resolved independently; see _resolveApiBaseUrl().
+    // Create Dio instance for this isolate.
     final dio = Dio(
       BaseOptions(
-        baseUrl: _resolveApiBaseUrl(),
+        baseUrl: apiBaseUrl,
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
         headers: {

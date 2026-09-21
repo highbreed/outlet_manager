@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../products/domain/entities/product.dart';
@@ -40,7 +39,10 @@ class SaleCartState {
   });
 
   bool get canSubmit =>
-      items.isNotEmpty && customerName.trim().isNotEmpty && !isSubmitting;
+      items.isNotEmpty &&
+      customerName.trim().isNotEmpty &&
+      customerPhone.trim().isNotEmpty &&
+      !isSubmitting;
 
   /// Sum of estimated line totals (VAT-inclusive). Items whose price
   /// couldn't be resolved contribute 0 — see [allPricesResolved].
@@ -77,33 +79,34 @@ class SaleCartState {
 /// Controller for building and submitting the register-sale cart.
 ///
 /// Product resolution (barcode scan + search) reuses the stock_take
-/// feature's outlet product catalogue (`stockTakeRepositoryProvider`) —
-/// this app already caches that catalogue offline per outlet, so there's
-/// no need for a second product data path here.
+/// feature's outlet product catalogue (`GET /product-catalogue`, via
+/// `stockTakeRepositoryProvider.getCustomerProducts`) rather than a second
+/// product data path - outlet-scoped by numeric customer id, not cached,
+/// and independent of any stock take session.
 @riverpod
 class SaleCartController extends _$SaleCartController {
   @override
   SaleCartState build() => const SaleCartState();
 
-  /// Warms the outlet catalogue cache so barcode/search lookups work
-  /// offline. Safe to call repeatedly (repository caches internally).
-  Future<void> warmCatalogue(int outletId) async {
-    final repository = await ref.read(stockTakeRepositoryProvider.future);
-    await repository.getCustomerProducts(outletId);
-  }
-
-  Future<void> addByBarcode(String barcode) async {
+  /// Resolves a scanned barcode against the outlet's live catalogue
+  /// (`GET /product-catalogue?customer_id=`) - not cached, and independent
+  /// of any stock-take session.
+  Future<void> addByBarcode(String barcode, int customerId) async {
     state = state.copyWith(isResolvingBarcode: true, clearError: true);
 
     final repository = await ref.read(stockTakeRepositoryProvider.future);
-    final result = await repository.findProductByBarcode(barcode);
+    final result = await repository.getCustomerProducts(
+      customerId,
+      search: barcode,
+    );
 
     result.fold(
       (failure) => state = state.copyWith(
         isResolvingBarcode: false,
         error: failure.displayMessage,
       ),
-      (product) {
+      (products) {
+        final product = _matchBarcodeOrCode(products, barcode);
         if (product == null) {
           state = state.copyWith(
             isResolvingBarcode: false,
@@ -115,6 +118,25 @@ class SaleCartController extends _$SaleCartController {
         state = state.copyWith(isResolvingBarcode: false);
       },
     );
+  }
+
+  /// Prefers an exact barcode match, then an exact item-code match, since
+  /// the backend's `search` is a fuzzy text match across multiple fields.
+  CustomerProduct? _matchBarcodeOrCode(
+    List<CustomerProduct> products,
+    String code,
+  ) {
+    for (final product in products) {
+      if (product.barcode?.toLowerCase() == code.toLowerCase()) {
+        return product;
+      }
+    }
+    for (final product in products) {
+      if (product.itemCode.toLowerCase() == code.toLowerCase()) {
+        return product;
+      }
+    }
+    return products.isNotEmpty ? products.first : null;
   }
 
   void addProduct(CustomerProduct product) {
@@ -153,9 +175,9 @@ class SaleCartController extends _$SaleCartController {
     unawaited(_lookupEstimatedPrice(barcode: barcode, itemCode: product.itemCode));
   }
 
-  /// Best-effort price lookup from the separate `/products` catalogue (the
-  /// outlet catalogue used above has no price field). Runs in the
-  /// background and patches the matching cart line if/when it resolves —
+  /// Best-effort price lookup from the separate `/products` catalogue -
+  /// the outlet catalogue used above has no price field. Runs in the
+  /// background and patches the matching cart line if/when it resolves -
   /// never blocks adding a product to the cart, and silently gives up on
   /// failure (the item just shows "price confirmed at submission").
   Future<void> _lookupEstimatedPrice({

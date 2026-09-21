@@ -42,6 +42,17 @@ class InitializationResult {
 class AppInitializationService {
   final Map<String, bool> _serviceStatus = {};
 
+  // OutletManagerApp (the app's root widget) shows nothing but a bare
+  // spinner until appInitializationProvider resolves — every phase below
+  // is documented as "non-critical, continue initialization" on failure,
+  // but before this timeout that was only true for a *thrown* exception.
+  // A phase whose Future simply never completes (confirmed in production:
+  // FcmService.initialize()'s _fcm.getToken() call, a network request to
+  // Google's FCM servers with no timeout of its own) left the entire app
+  // stuck on the loading screen forever, with nothing to observe in logs
+  // since nothing ever actually failed.
+  static const _phaseTimeout = Duration(seconds: 15);
+
   /// Initialize all core services in dependency order (with Ref from provider)
   /// Returns result with success status and service health info
   Future<InitializationResult> initializeWithRef(Ref ref) async {
@@ -90,7 +101,7 @@ class AppInitializationService {
     try {
       developer.log('🔔 Initializing notification service...');
       final notificationService = NotificationService();
-      await notificationService.initialize();
+      await notificationService.initialize().timeout(_phaseTimeout);
       _serviceStatus['notifications'] = true;
       developer.log('✓ Notification service initialized');
     } catch (e) {
@@ -108,7 +119,9 @@ class AppInitializationService {
       final permissionService = PermissionService(database);
 
       // Check critical permissions status (don't request, just check)
-      final hasCritical = await permissionService.hasAllCriticalPermissions();
+      final hasCritical = await permissionService
+          .hasAllCriticalPermissions()
+          .timeout(_phaseTimeout);
       _serviceStatus['permissions'] = true;
       developer.log(
         '✓ Permission service initialized (critical: $hasCritical)',
@@ -127,7 +140,9 @@ class AppInitializationService {
       final locationService = LocationService();
 
       // Check if service is available (don't start tracking yet)
-      final isAvailable = await locationService.isLocationServiceEnabled();
+      final isAvailable = await locationService
+          .isLocationServiceEnabled()
+          .timeout(_phaseTimeout);
       _serviceStatus['location'] = isAvailable;
       developer.log('✓ Location service initialized (available: $isAvailable)');
     } catch (e) {
@@ -141,7 +156,7 @@ class AppInitializationService {
   Future<void> _initializeSyncService() async {
     try {
       developer.log('🔄 Initializing sync service...');
-      final isar = await IsarDatabase.getInstance();
+      final isar = await IsarDatabase.getInstance().timeout(_phaseTimeout);
       // Create sync service (implicitly validates database connection)
       // ignore: unused_local_variable
       final syncService = SyncService(isar);
@@ -159,7 +174,7 @@ class AppInitializationService {
   Future<void> _initializeFcmService(Ref ref) async {
     try {
       developer.log('🔔 Initializing FCM service...');
-      await ref.read(initializedFcmServiceProvider.future);
+      await ref.read(initializedFcmServiceProvider.future).timeout(_phaseTimeout);
       _serviceStatus['fcm'] = true;
       developer.log('✓ FCM service initialized');
     } catch (e) {

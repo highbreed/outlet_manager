@@ -11,4 +11,5 @@ export 'get_session_items.dart';
 export 'pause_session.dart';
 export 'resume_session.dart';
 export 'start_stock_take_session.dart';
+export 'sync_item_serials.dart';
 export 'validate_serial_number.dart';

@@ -146,9 +146,17 @@ abstract class StockTakeRepository {
   );
 
   // Customer Products (Catalogue)
+  /// Uses the /product-catalogue endpoint, scoped to [customerId] only -
+  /// unlike [getActiveSessionCatalogue]/[findProductByBarcode]/
+  /// [searchProducts], this doesn't require an active stock take session,
+  /// so it's the right choice for callers (e.g. Daily Sales) that need an
+  /// outlet's catalogue independent of any stock count in progress.
   Future<Either<Failure, List<CustomerProduct>>> getCustomerProducts(
     int customerId, {
     int? brandId,
+    String? search,
+    int page = 1,
+    int size = 100,
   });
 
   /// Get products catalogue for the active stock take session
@@ -168,12 +176,14 @@ abstract class StockTakeRepository {
     int size = 200,
   });
 
-  /// Search for a product by barcode - first checks local cache, then fetches from backend
+  /// Search for a product by barcode against the live, session-scoped
+  /// catalogue. Not cached locally - always hits the backend.
   Future<Either<Failure, CustomerProduct?>> findProductByBarcode(
     String barcode,
   );
 
-  /// Search for products - first checks local cache, then fetches from backend
+  /// Search for products against the live, session-scoped catalogue.
+  /// Not cached locally - always hits the backend.
   Future<Either<Failure, List<CustomerProduct>>> searchProducts(
     String searchTerm,
   );
@@ -240,9 +250,14 @@ abstract class StockTakeRepository {
   );
 
   // Item Management
+  /// Adds [product] to the session. The full product (not just its id) is
+  /// required because products are no longer cached locally - the caller
+  /// already has it in memory from a live search/barcode lookup, and it's
+  /// used to populate the item's denormalized fields without a network
+  /// round trip, preserving offline-add support.
   Future<Either<Failure, StockTakeItem>> addProduct({
     required String sessionLocalId,
-    required int customerProductId,
+    required CustomerProduct product,
   });
 
   Future<Either<Failure, List<StockTakeItem>>> getSessionItems(
@@ -280,6 +295,13 @@ abstract class StockTakeRepository {
     String serialLocalId,
     String reason,
   );
+
+  /// Pushes an item's pending (unsynced) serials to the server immediately,
+  /// rather than waiting for session completion - e.g. when the user taps
+  /// "Done" on the serial-scan screen. If the session or item hasn't synced
+  /// to the server yet, this is a no-op: the normal completion/background
+  /// sync flow will pick these serials up once it has.
+  Future<Either<Failure, void>> syncItemSerials(String itemLocalId);
 
   // Validation
   Future<Either<Failure, ValidationResult>> validateSerial(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
 
 import '../../../core/core.dart';
 import 'widgets/widgets.dart';
@@ -21,6 +22,17 @@ class _LocationPermissionScreenState
   bool _isLoading = false;
   String? _errorMessage;
   bool _isServiceDisabled = false;
+
+  // Showing ANY system dialog in _completePostPermissionSetup (the location
+  // permission prompt itself, the battery-optimization settings screen, the
+  // activity-recognition prompt) sends this app to background and back,
+  // which fires didChangeAppLifecycleState(resumed) below — re-entering
+  // _checkInitialStatus mid-sequence. Without this guard, two concurrent
+  // calls can both reach Permission.activityRecognition.request(), and
+  // permission_handler's native side only allows one request in flight —
+  // confirmed on-device via the exact
+  // "A request for permissions is already running" PlatformException.
+  bool _isCompletingSetup = false;
 
   @override
   void initState() {
@@ -63,13 +75,7 @@ class _LocationPermissionScreenState
       final permission = await controller.checkPermission();
 
       if (permission == LocationPermissionStatus.granted) {
-        // Start tracking immediately
-        await controller.startTracking();
-
-        // Permission already granted, navigate to home
-        if (mounted) {
-          context.go('/');
-        }
+        await _completePostPermissionSetup();
       }
     } catch (e) {
       setState(() {
@@ -91,12 +97,7 @@ class _LocationPermissionScreenState
       final status = await controller.requestPermission();
 
       if (status == LocationPermissionStatus.granted) {
-        // Start tracking immediately
-        await controller.startTracking();
-
-        if (mounted) {
-          context.go('/');
-        }
+        await _completePostPermissionSetup();
       } else if (status == LocationPermissionStatus.deniedForever) {
         setState(() {
           _errorMessage =
@@ -122,6 +123,58 @@ class _LocationPermissionScreenState
           _isLoading = false;
         });
       }
+    }
+  }
+
+  /// Runs everything that happens once location permission is confirmed
+  /// granted — starting tracking and requesting the two follow-on system
+  /// permissions — exactly once at a time. See [_isCompletingSetup]'s doc
+  /// comment for why the guard is needed: each step below can itself
+  /// trigger a resume that re-enters this same method via
+  /// [didChangeAppLifecycleState].
+  Future<void> _completePostPermissionSetup() async {
+    if (_isCompletingSetup) return;
+    _isCompletingSetup = true;
+    try {
+      final controller = ref.read(locationTrackingControllerProvider.notifier);
+      await controller.startTracking();
+      await _requestBatteryOptimizationExemptionIfNeeded();
+      await _requestActivityRecognitionPermissionIfNeeded();
+
+      if (mounted) {
+        context.go('/');
+      }
+    } finally {
+      _isCompletingSetup = false;
+    }
+  }
+
+  /// Requests the battery-optimization exemption, right after location
+  /// permission is granted — the same screen has already explained why
+  /// background tracking matters (BackgroundLocationDisclosure above), so
+  /// this isn't an unprompted system dialog. Confirmed by device testing:
+  /// without this exemption, broadcast delivery (BOOT_COMPLETED included)
+  /// can be blocked outright regardless of anything else the app does
+  /// correctly — see BackgroundLocationService.requestBatteryOptimizationExemption.
+  Future<void> _requestBatteryOptimizationExemptionIfNeeded() async {
+    final service = ref.read(backgroundLocationServiceProvider);
+    final alreadyExempt = await service.isIgnoringBatteryOptimizations();
+    if (!alreadyExempt) {
+      await service.requestBatteryOptimizationExemption();
+    }
+  }
+
+  /// Best-effort, same reasoning as the battery-optimization exemption
+  /// above: this screen has already explained why background tracking
+  /// matters, so this isn't an unprompted system dialog. A denial is a safe
+  /// no-op — it just means LocationTrackingService never widens its ping
+  /// interval for a stationary agent (see
+  /// LocationTrackingService.startMotionUpdates); tracking itself is
+  /// unaffected either way.
+  Future<void> _requestActivityRecognitionPermissionIfNeeded() async {
+    final status = await ph.Permission.activityRecognition.status;
+    if (!status.isGranted) {
+      await ph.Permission.activityRecognition.request();
     }
   }
 

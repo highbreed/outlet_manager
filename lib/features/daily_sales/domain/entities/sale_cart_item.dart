@@ -6,11 +6,10 @@ part 'sale_cart_item.freezed.dart';
 /// scan or catalogue search before the sale is submitted.
 ///
 /// This is UI-only state — it is never persisted, and only becomes a real
-/// [DailySaleItem] once `POST /daily-sales` succeeds. The outlet catalogue
-/// used to resolve barcodes/models has no price field, so [estimatedUnitPrice]
-/// is a best-effort lookup from the separate product catalogue (VAT-inclusive,
-/// same convention as elsewhere in the app) — the real price is only known
-/// once the server confirms the sale.
+/// [DailySaleItem] once `POST /daily-sales` succeeds. [estimatedUnitPrice]
+/// comes straight from the `GET /products` result used to resolve the
+/// barcode/search match (VAT-inclusive, same convention as elsewhere in the
+/// app) — the real price is only known once the server confirms the sale.
 @freezed
 class SaleCartItem with _$SaleCartItem {
   const factory SaleCartItem({

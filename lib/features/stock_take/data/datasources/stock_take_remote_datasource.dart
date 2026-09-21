@@ -380,16 +380,20 @@ class StockTakeRemoteDataSource {
   // Items
   // ============================================================================
 
-  /// Add item to session on server
+  /// Add item to session on server, identified by SAP item code - the same
+  /// value for a product at every outlet, unlike `customer_product_id`
+  /// (a row id in the outlet-specific catalogue table). The backend
+  /// resolves it against the session's own customer_id, so the client
+  /// never has to track which outlet's catalogue row applies.
   /// POST /stock-counts/{session_id}/items
   Future<Map<String, dynamic>> addItem({
     required int sessionId,
-    required int customerProductId,
+    required String itemCode,
   }) async {
     try {
       final response = await _dio.post(
         '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}',
-        data: {'customer_product_id': customerProductId},
+        data: {'item_code': itemCode},
       );
 
       return response.data;
@@ -484,11 +488,15 @@ class StockTakeRemoteDataSource {
   // Serial Numbers
   // ============================================================================
 
-  /// Add single serial to item
-  /// POST /stock-counts/{session_id}/items/{item_id}/serials
+  /// Add single serial to item, identified by SAP item code in the URL.
+  /// If [itemCode] hasn't been added to this session yet, the backend
+  /// materializes it first (same as [addItem]) before attaching the serial
+  /// - a scan-first UX can call this directly without a separate add-item
+  /// round trip.
+  /// POST /stock-counts/{session_id}/items/{item_code}/serials
   Future<Map<String, dynamic>> addSerial({
     required int sessionId,
-    required int itemId,
+    required String itemCode,
     required String serialNumber,
     required String deviceScanId,
     required DateTime deviceScannedAt,
@@ -496,7 +504,7 @@ class StockTakeRemoteDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemId${ApiEndpoints.stockCountSerials}',
+        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemCode${ApiEndpoints.stockCountSerials}',
         data: {
           'serial_number': serialNumber,
           'device_scan_id': deviceScanId,
@@ -511,16 +519,18 @@ class StockTakeRemoteDataSource {
     }
   }
 
-  /// Upload serials batch to server
-  /// POST /stock-counts/{session_id}/items/{item_id}/serials/batch
+  /// Upload serials batch to server, identified by SAP item code in the
+  /// URL - auto-materializes the item into the session if it isn't there
+  /// yet, same as [addSerial].
+  /// POST /stock-counts/{session_id}/items/{item_code}/serials/batch
   Future<Map<String, dynamic>> uploadSerialsBatch({
     required int sessionId,
-    required int itemId,
+    required String itemCode,
     required List<Map<String, dynamic>> serials,
   }) async {
     try {
       final response = await _dio.post(
-        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemId${ApiEndpoints.serialsBatch}',
+        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemCode${ApiEndpoints.serialsBatch}',
         data: {
           'serials': serials
               .map(
@@ -542,18 +552,20 @@ class StockTakeRemoteDataSource {
     }
   }
 
-  /// List item serials
-  /// GET /stock-counts/{session_id}/items/{item_id}/serials
+  /// List item serials, identified by SAP item code in the URL. Unlike the
+  /// scan endpoints above, this does not auto-create the item - an
+  /// [itemCode] never added to this session returns a 404.
+  /// GET /stock-counts/{session_id}/items/{item_code}/serials
   Future<Map<String, dynamic>> listItemSerials(
     int sessionId,
-    int itemId, {
+    String itemCode, {
     String? status,
     int page = 1,
     int size = 100,
   }) async {
     try {
       final response = await _dio.get(
-        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemId${ApiEndpoints.stockCountSerials}',
+        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemCode${ApiEndpoints.stockCountSerials}',
         queryParameters: {
           if (status != null) 'status': status,
           'page': page,
@@ -567,17 +579,18 @@ class StockTakeRemoteDataSource {
     }
   }
 
-  /// Delete serial
-  /// DELETE /stock-counts/{session_id}/items/{item_id}/serials/{serial_id}
+  /// Delete serial, identified by SAP item code in the URL. Like list, does
+  /// not auto-create the item.
+  /// DELETE /stock-counts/{session_id}/items/{item_code}/serials/{serial_id}
   Future<void> deleteSerial({
     required int sessionId,
-    required int itemId,
+    required String itemCode,
     required int serialId,
     String? reason,
   }) async {
     try {
       await _dio.delete(
-        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemId${ApiEndpoints.stockCountSerials}/$serialId',
+        '${ApiEndpoints.stockCounts}/$sessionId${ApiEndpoints.stockCountItems}/$itemCode${ApiEndpoints.stockCountSerials}/$serialId',
         data: {if (reason != null) 'reason': reason},
       );
     } on DioException catch (e) {

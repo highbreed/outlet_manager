@@ -92,3 +92,9 @@ final deleteSerialProvider = FutureProvider<DeleteSerial>((ref) async {
   final repository = await ref.watch(stockTakeRepositoryProvider.future);
   return DeleteSerial(repository);
 });
+
+/// Provider for SyncItemSerials use case
+final syncItemSerialsProvider = FutureProvider<SyncItemSerials>((ref) async {
+  final repository = await ref.watch(stockTakeRepositoryProvider.future);
+  return SyncItemSerials(repository);
+});

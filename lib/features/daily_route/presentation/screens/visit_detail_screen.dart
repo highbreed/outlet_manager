@@ -1,14 +1,17 @@
 import 'dart:async';
+import 'dart:developer' as developer;
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/location/location_data.dart';
 import '../../../../core/network/failures.dart';
 import '../../../../core/providers/location_providers.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/widgets/widgets.dart';
+import '../../../location_tracking/location_tracking.dart';
 import '../../domain/entities/geofence_override_request.dart';
 import '../../domain/entities/outlet_visit.dart';
 import '../../providers/daily_route_providers.dart';
@@ -25,7 +28,8 @@ class VisitDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
-  Timer? _locationTimer;
+  StreamSubscription<LocationData>? _positionSubscription;
+  LocationData? _lastLocation;
   double? _currentDistance;
   double? _currentAccuracy;
   bool _isLoadingLocation = true;
@@ -39,28 +43,59 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
 
   @override
   void dispose() {
-    _locationTimer?.cancel();
+    _positionSubscription?.cancel();
+    // Best-effort — dispose() can't be awaited, and a failure here just
+    // means these stay paused until the next screen that pauses/resumes
+    // them, not a leak. try/catch guards a disposal-ordering edge case
+    // confirmed via Sentry: the whole ProviderScope can tear down
+    // concurrently with this State's own dispose() (seen during a hot
+    // restart, where a second Flutter engine briefly attaches while the
+    // first is still unwinding), which makes ref.read() throw "Cannot use
+    // ref after the widget was disposed". If that happens the whole app
+    // is going down anyway, so there's nothing left to actually resume.
+    try {
+      ref.read(locationServiceProvider).resumeForegroundAnchor();
+      ref.read(locationPingServiceProvider).startForegroundTracking();
+    } catch (_) {}
     super.dispose();
   }
 
-  void _startLocationUpdates() {
-    _updateLocation();
-    // Update location every 3 seconds
-    _locationTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-      _updateLocation();
-    });
-  }
-
-  Future<void> _updateLocation() async {
-    final visit = _getVisit();
-    if (visit == null) return;
-
-    try {
-      final locationService = ref.read(locationServiceProvider);
-      final location = await locationService.getCurrentLocation();
-
-      if (mounted) {
+  // A single continuous stream for as long as this screen is open, rather
+  // than a Timer repeatedly opening/closing a one-shot fetch — the latter
+  // is what made Android's location-in-use indicator blink on every cycle,
+  // a real sign of wasteful start/stop request churn, not just cosmetic.
+  // See LocationService.watchLocation.
+  //
+  // geolocator_android shares one native engine across all concurrent
+  // stream requests from the app. Confirmed on-device there were actually
+  // TWO other always-on continuous streams competing for it: the app-wide
+  // "Active Session" anchor (LocationService.startTracking(), running
+  // since app launch) and LocationPingService's own significant-change
+  // monitor (also running since app launch, via main.dart's app-resume
+  // handler) — GPS locked fine both times, zero callbacks ever reached
+  // this listener either time. Pausing/stopping both for the lifetime of
+  // this screen (resumed in dispose()) avoids the conflict. The user
+  // hasn't clocked in yet on this screen, so there's no active-session
+  // ping cadence depending on LocationPingService staying up in the
+  // meantime.
+  //
+  // Must be awaited before opening watchLocation() below, not fired and
+  // forgotten — confirmed on-device that calling pauseForegroundAnchor()
+  // without waiting for its native cancel() to actually complete still
+  // leaves the anchor stream briefly (or not so briefly) registered
+  // alongside the new one, recreating the exact same conflict this exists
+  // to avoid.
+  Future<void> _startLocationUpdates() async {
+    final locationService = ref.read(locationServiceProvider);
+    await locationService.pauseForegroundAnchor();
+    await ref.read(locationPingServiceProvider).stopForegroundTracking();
+    if (!mounted) return;
+    _positionSubscription = locationService.watchLocation().listen(
+      (location) {
+        final visit = _getVisit();
+        if (visit == null || !mounted) return;
         setState(() {
+          _lastLocation = location;
           _currentDistance = _calculateDistance(
             location.latitude,
             location.longitude,
@@ -71,15 +106,25 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
           _isLoadingLocation = false;
           _locationError = null;
         });
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isLoadingLocation = false;
-          _locationError = 'Unable to get location';
-        });
-      }
-    }
+      },
+      onError: (Object e, StackTrace st) {
+        // The generic UI message below doesn't say why — log the real
+        // exception so it's actually visible in the run console instead of
+        // being swallowed here.
+        developer.log(
+          '[VisitDetail] location stream error: $e',
+          name: 'VisitDetail',
+          error: e,
+          stackTrace: st,
+        );
+        if (mounted) {
+          setState(() {
+            _isLoadingLocation = false;
+            _locationError = 'Unable to get location';
+          });
+        }
+      },
+    );
   }
 
   OutletVisit? _getVisit() {
@@ -138,6 +183,7 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
     final isOverrideApproved =
         existingOverride?.status == GeofenceOverrideStatus.approved;
     final canClockIn =
+        visit.canClockIn &&
         _currentAccuracy != null &&
         _currentAccuracy! <= 200.0 &&
         (isOverrideApproved ||
@@ -323,20 +369,23 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
               ),
             const SizedBox(height: 12),
 
-            // Skip button
-            Center(
-              child: TextButton(
-                onPressed: () => _showSkipDialog(visit),
-                child: const Text(
-                  'Skip Visit',
-                  style: TextStyle(
-                    color: kSecondaryColor,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 13,
+            // Skip button — only offered while still pending. A visit
+            // that's already skipped can be clocked into (see
+            // OutletVisit.canClockIn) but not skipped again.
+            if (visit.canSkip)
+              Center(
+                child: TextButton(
+                  onPressed: () => _showSkipDialog(visit),
+                  child: const Text(
+                    'Skip Visit',
+                    style: TextStyle(
+                      color: kSecondaryColor,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
               ),
-            ),
         ],
       ),
     );
@@ -350,6 +399,8 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
     } else if (error is GpsAccuracyFailure) {
       message = error.displayMessage;
     } else if (error is VisitInProgressFailure) {
+      message = error.displayMessage;
+    } else if (error is InvalidVisitStateFailure) {
       message = error.displayMessage;
     } else if (error != null) {
       message = error.toString();
@@ -377,8 +428,15 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
   }
 
   Future<void> _clockIn(OutletVisit visit) async {
-    final locationService = ref.read(locationServiceProvider);
-    final location = await locationService.getCurrentLocation();
+    // Reuse the live reading the continuous stream above is already
+    // keeping current, rather than opening a second, independent
+    // Geolocator request here — while that stream is still subscribed
+    // (it isn't cancelled until dispose()), a concurrent getCurrentLocation()
+    // call is exactly the kind of conflict pauseForegroundAnchor() above
+    // exists to avoid. canClockIn already requires _currentAccuracy != null
+    // before this button is even tappable, so _lastLocation is guaranteed
+    // set by the time this runs.
+    final location = _lastLocation!;
 
     await ref
         .read(clockInNotifierProvider.notifier)

@@ -173,7 +173,10 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
     int size = 200,
   }) async {
     try {
-      // Fetch from the active session catalogue endpoint
+      // Fetch from the active session catalogue endpoint. Not cached: the
+      // backend is the single source of truth for what's in scope for this
+      // session, so every lookup goes live rather than risking a stale or
+      // cross-outlet result from an on-device cache.
       final products = await _remoteDataSource.fetchActiveSessionCatalogue(
         search: search,
         itemCode: itemCode,
@@ -189,103 +192,62 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
         size: size,
       );
 
-      // Cache for offline use
-      if (products.isNotEmpty) {
-        await _localDataSource.cacheCustomerProducts(products);
-      }
-
       return right(products.map((m) => m.toEntity()).toList());
     } on NetworkException catch (e) {
-      // Fall back to cached products if network fails
-      // Note: We need the customerId from the active session
       return left(e.toFailure());
     } catch (e) {
       return left(UnknownFailure(message: e.toString()));
     }
   }
 
-  /// Search for a product by barcode
-  /// First checks local cache, then fetches from backend if not found
+  /// Search for a product by barcode against the live, session-scoped
+  /// catalogue. Always hits the backend - no local cache - so a scan can
+  /// never resolve to a stale or another outlet's product.
   @override
   Future<Either<Failure, domain.CustomerProduct?>> findProductByBarcode(
     String barcode,
   ) async {
     try {
-      // 1. First search in local cache
-      final cachedProduct = await _localDataSource.findProductByBarcode(
-        barcode,
-      );
-      if (cachedProduct != null) {
-        return right(cachedProduct.toEntity());
-      }
-
-      // 2. Not found locally - search backend by barcode (exact match)
+      // 1. Search backend by barcode (exact match)
       final products = await _remoteDataSource.fetchActiveSessionCatalogue(
         barcode: barcode,
         size: 1,
       );
 
       if (products.isNotEmpty) {
-        // Cache the found product
-        await _localDataSource.cacheCustomerProducts(products);
         return right(products.first.toEntity());
       }
 
-      // 3. Still not found - try searching by item_code as fallback
+      // 2. Not found - try searching by item_code as fallback
       final productsByCode = await _remoteDataSource
           .fetchActiveSessionCatalogue(itemCode: barcode, size: 1);
 
       if (productsByCode.isNotEmpty) {
-        await _localDataSource.cacheCustomerProducts(productsByCode);
         return right(productsByCode.first.toEntity());
       }
 
-      // 4. Not found anywhere
+      // 3. Not found anywhere
       return right(null);
     } on NetworkException catch (e) {
-      // Network error - try local cache only and indicate network issue
-      final cachedProduct = await _localDataSource.findProductByBarcode(
-        barcode,
-      );
-      if (cachedProduct != null) {
-        return right(cachedProduct.toEntity());
-      }
       return left(e.toFailure());
     } catch (e) {
       return left(UnknownFailure(message: e.toString()));
     }
   }
 
-  /// Search for products by search term
-  /// First checks local cache, then fetches from backend
+  /// Search for products by search term against the live, session-scoped
+  /// catalogue. Always hits the backend - no local cache.
   @override
   Future<Either<Failure, List<domain.CustomerProduct>>> searchProducts(
     String searchTerm,
   ) async {
     try {
-      // 1. First search in local cache
-      final cachedProducts = await _localDataSource.searchProducts(searchTerm);
-      if (cachedProducts.isNotEmpty) {
-        return right(cachedProducts.map((m) => m.toEntity()).toList());
-      }
-
-      // 2. Not found locally - search backend
       final products = await _remoteDataSource.fetchActiveSessionCatalogue(
         search: searchTerm,
       );
 
-      if (products.isNotEmpty) {
-        // Cache the found products
-        await _localDataSource.cacheCustomerProducts(products);
-      }
-
       return right(products.map((m) => m.toEntity()).toList());
     } on NetworkException catch (e) {
-      // Network error - return local cache results only
-      final cachedProducts = await _localDataSource.searchProducts(searchTerm);
-      if (cachedProducts.isNotEmpty) {
-        return right(cachedProducts.map((m) => m.toEntity()).toList());
-      }
       return left(e.toFailure());
     } catch (e) {
       return left(UnknownFailure(message: e.toString()));
@@ -296,28 +258,18 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
   Future<Either<Failure, List<domain.CustomerProduct>>> getCustomerProducts(
     int customerId, {
     int? brandId,
+    String? search,
+    int page = 1,
+    int size = 100,
   }) async {
     try {
-      // Try cache first
-      final cached = brandId != null
-          ? await _localDataSource.getCustomerProductsByBrand(
-              customerId,
-              brandId,
-            )
-          : await _localDataSource.getCustomerProducts(customerId);
-
-      if (cached.isNotEmpty) {
-        return right(cached.map((m) => m.toEntity()).toList());
-      }
-
-      // Fetch from server
       final remote = await _remoteDataSource.fetchCustomerProducts(
         customerId: customerId,
         brandId: brandId,
+        search: search,
+        page: page,
+        size: size,
       );
-
-      // Cache for offline use
-      await _localDataSource.cacheCustomerProducts(remote);
 
       return right(remote.map((m) => m.toEntity()).toList());
     } on NetworkException catch (e) {
@@ -435,6 +387,7 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
           ..updatedAt = DateTime.now();
 
         await _localDataSource.createSession(localSession);
+
         print(
           '[StockTake] Created local session with localId=$localId, serverId=${response['id']}',
         );
@@ -963,20 +916,6 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
           print('[StockTakeRepo] Found ${items.length} items to sync');
 
           for (final item in items) {
-            // Ensure item is synced
-            if (item.serverId == null) {
-              print(
-                '[StockTakeRepo] Creating item on server for: ${item.localId}',
-              );
-              // Create item on server first
-              final itemResponse = await _remoteDataSource.addItem(
-                sessionId: session.serverId!,
-                customerProductId: item.customerProductId,
-              );
-              item.serverId = itemResponse['id'];
-              await _localDataSource.updateItem(item);
-            }
-
             // Get all serials for this item
             final serials = await _localDataSource.getItemSerials(item.localId);
 
@@ -989,11 +928,13 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
               '[StockTakeRepo] Item ${item.localId}: ${pendingSerials.length} pending serials',
             );
 
-            if (pendingSerials.isNotEmpty && item.serverId != null) {
+            if (pendingSerials.isNotEmpty) {
+              // Batch-uploading by item_code materializes the item on the
+              // server first if it isn't there yet, so there's no need for
+              // a separate "add item" call ahead of this one.
               print(
-                '[StockTakeRepo] Uploading ${pendingSerials.length} serials to item ${item.serverId}...',
+                '[StockTakeRepo] Uploading ${pendingSerials.length} serials to item ${item.itemCode}...',
               );
-              // Upload serials in batch
               final serialsData = pendingSerials
                   .map(
                     (s) => {
@@ -1009,7 +950,7 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
               try {
                 final response = await _remoteDataSource.uploadSerialsBatch(
                   sessionId: session.serverId!,
-                  itemId: item.serverId!,
+                  itemCode: item.itemCode,
                   serials: serialsData,
                 );
                 print('[StockTakeRepo] Serials uploaded successfully');
@@ -1050,6 +991,19 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
                 // Re-throw to trigger background sync
                 rethrow;
               }
+            } else if (item.serverId == null) {
+              // No serials to piggyback the item's creation on - it must be
+              // created explicitly so its counted_quantity still reaches
+              // the server.
+              print(
+                '[StockTakeRepo] Creating item on server for: ${item.localId}',
+              );
+              final itemResponse = await _remoteDataSource.addItem(
+                sessionId: session.serverId!,
+                itemCode: item.itemCode,
+              );
+              item.serverId = itemResponse['id'];
+              await _localDataSource.updateItem(item);
             }
           }
 
@@ -1134,18 +1088,6 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
       print('[StockTakeRepo] Found ${items.length} items to check');
 
       for (final item in items) {
-        // Ensure item is synced
-        if (item.serverId == null) {
-          print('[StockTakeRepo] Creating item on server for: ${item.localId}');
-          final itemResponse = await _remoteDataSource.addItem(
-            sessionId: session.serverId!,
-            customerProductId: item.customerProductId,
-          );
-          item.serverId = itemResponse['id'];
-          await _localDataSource.updateItem(item);
-          syncedCount++;
-        }
-
         // Get all serials for this item
         final serials = await _localDataSource.getItemSerials(item.localId);
 
@@ -1158,9 +1100,12 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
           '[StockTakeRepo] Item ${item.localId}: ${pendingSerials.length} pending serials',
         );
 
-        if (pendingSerials.isNotEmpty && item.serverId != null) {
+        if (pendingSerials.isNotEmpty) {
+          // Batch-uploading by item_code materializes the item on the
+          // server first if it isn't there yet, so there's no need for a
+          // separate "add item" call ahead of this one.
           print(
-            '[StockTakeRepo] Uploading ${pendingSerials.length} serials to item ${item.serverId}...',
+            '[StockTakeRepo] Uploading ${pendingSerials.length} serials to item ${item.itemCode}...',
           );
 
           final serialsData = pendingSerials
@@ -1176,7 +1121,7 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
 
           final response = await _remoteDataSource.uploadSerialsBatch(
             sessionId: session.serverId!,
-            itemId: item.serverId!,
+            itemCode: item.itemCode,
             serials: serialsData,
           );
           print('[StockTakeRepo] Serials uploaded successfully');
@@ -1205,6 +1150,18 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
           print(
             '[StockTakeRepo] Synced ${pendingSerials.length} serials for item',
           );
+        } else if (item.serverId == null) {
+          // No serials to piggyback the item's creation on - it must be
+          // created explicitly so its counted_quantity still reaches the
+          // server.
+          print('[StockTakeRepo] Creating item on server for: ${item.localId}');
+          final itemResponse = await _remoteDataSource.addItem(
+            sessionId: session.serverId!,
+            itemCode: item.itemCode,
+          );
+          item.serverId = itemResponse['id'];
+          await _localDataSource.updateItem(item);
+          syncedCount++;
         }
       }
 
@@ -1254,9 +1211,8 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
           data: {
             'session_server_id': session.serverId,
             'session_local_id': sessionLocalId,
-            'item_server_id': item.serverId,
             'item_local_id': item.localId,
-            'customer_product_id': item.customerProductId,
+            'item_code': item.itemCode,
             'serials': pendingSerials
                 .map(
                   (s) => {
@@ -1339,7 +1295,7 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
   @override
   Future<Either<Failure, domain.StockTakeItem>> addProduct({
     required String sessionLocalId,
-    required int customerProductId,
+    required domain.CustomerProduct product,
   }) async {
     try {
       final session = await _localDataSource.getSessionByLocalId(
@@ -1355,28 +1311,26 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
         );
       }
 
-      // Look up the product from local storage to get all fields
-      final product = await _localDataSource.getCustomerProductByServerId(
-        customerProductId,
-      );
-
-      // Create local item with product details from local storage
+      // Populate item details from the product the caller already resolved
+      // (via a live search/barcode lookup) rather than a local cache.
+      // customerProductId is stored only for legacy display/back-compat -
+      // itemCode (the SAP item code) is what identifies this item to the
+      // backend from here on, since it's stable across outlets while
+      // customer_product_id is a row id in an outlet-specific table.
       final localItem = StockTakeItemModel()
         ..localId = const Uuid().v4()
         ..sessionLocalId = sessionLocalId
-        ..customerProductId = customerProductId
-        ..brandId = product?.brandId ?? 0
-        ..brandName = product?.brandName ?? ''
-        ..itemCode = product?.itemCode ?? ''
-        ..itemName = product?.itemName ?? ''
-        ..itemDescription = product?.itemDescription
-        ..category = product?.itemGroup
-        ..modelNumber = product?.modelNumber
+        ..customerProductId = product.id
+        ..brandId = product.brandId
+        ..brandName = product.brandName
+        ..itemCode = product.itemCode
+        ..itemName = product.itemName
+        ..itemDescription = product.itemDescription
+        ..category = product.itemGroup
+        ..modelNumber = product.modelNumber
         ..serialCount = 0
-        ..minStockLevel =
-            product?.activeMinOnshelf ?? product?.zcMinOnshelfQty ?? 0
-        ..maxStockLevel =
-            product?.activeMaxOnshelf ?? product?.zcMaxOnshelfQty ?? 0
+        ..minStockLevel = product.minOnshelfQty
+        ..maxStockLevel = product.maxOnshelfQty
         ..status = ItemCountStatus.inProgress
         ..startedAt = DateTime.now()
         ..syncState = SyncState.pending
@@ -1393,7 +1347,7 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
         try {
           final response = await _remoteDataSource.addItem(
             sessionId: session.serverId!,
-            customerProductId: customerProductId,
+            itemCode: product.itemCode,
           );
           print(
             '[StockTakeRepo] Item synced to server, serverId: ${response['id']}',
@@ -1730,15 +1684,20 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
           serial.sessionLocalId,
         );
 
-        if (session?.serverId != null && item?.serverId != null) {
+        // item.serverId isn't required here - a synced serial (serverId !=
+        // null) can only exist if its parent item already exists on the
+        // server too, and deletion is identified by item.itemCode, which
+        // is always known locally regardless of whether item.serverId was
+        // ever explicitly captured.
+        if (session?.serverId != null && item != null) {
           print(
             '[StockTakeRepo] Deleting serial ${serial.serverId} from server '
-            '(session ${session!.serverId}, item ${item!.serverId})...',
+            '(session ${session!.serverId}, item ${item.itemCode})...',
           );
           try {
             await _remoteDataSource.deleteSerial(
               sessionId: session.serverId!,
-              itemId: item.serverId!,
+              itemCode: item.itemCode,
               serialId: serial.serverId!,
               reason: reason,
             );
@@ -1760,6 +1719,93 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
       return right(unit);
     } catch (e) {
       print('[StockTakeRepo] Error deleting serial: $e');
+      return left(UnknownFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> syncItemSerials(String itemLocalId) async {
+    try {
+      final item = await _localDataSource.getItemByLocalId(itemLocalId);
+      if (item == null) {
+        return left(
+          NotFoundFailure(
+            resourceType: 'Unknown',
+            resourceId: 'unknown',
+            message: 'Item not found',
+          ),
+        );
+      }
+
+      final session = await _localDataSource.getSessionByLocalId(
+        item.sessionLocalId,
+      );
+      if (session?.serverId == null) {
+        // Session hasn't synced to the server yet - nothing to push now,
+        // the completion/background sync flow will pick these up once it
+        // has.
+        return right(unit);
+      }
+
+      final serials = await _localDataSource.getItemSerials(itemLocalId);
+      final pendingSerials = serials
+          .where((s) => s.syncState == SyncState.pending)
+          .toList();
+      if (pendingSerials.isEmpty) {
+        return right(unit);
+      }
+
+      print(
+        '[StockTakeRepo] Syncing ${pendingSerials.length} serials now for item ${item.itemCode}...',
+      );
+
+      // Batch-uploading by item_code materializes the item on the server
+      // first if it isn't there yet, so there's no separate "add item"
+      // call needed here.
+      final serialsData = pendingSerials
+          .map(
+            (s) => {
+              'serial_number': s.serialNumberRaw,
+              'device_scan_id': s.deviceScanId,
+              'device_scanned_at': s.deviceScannedAt.toIso8601String(),
+              if (s.scanSequence != null) 'scan_sequence': s.scanSequence,
+            },
+          )
+          .toList();
+
+      final response = await _remoteDataSource.uploadSerialsBatch(
+        sessionId: session!.serverId!,
+        itemCode: item.itemCode,
+        serials: serialsData,
+      );
+
+      final uploadedSerials = response['serials'] as List<dynamic>? ?? [];
+      for (
+        var i = 0;
+        i < pendingSerials.length && i < uploadedSerials.length;
+        i++
+      ) {
+        final uploadedData = uploadedSerials[i] as Map<String, dynamic>;
+        pendingSerials[i]
+          ..serverId = uploadedData['id'] as int?
+          ..syncState = SyncState.synced;
+        await _localDataSource.updateSerial(pendingSerials[i]);
+      }
+      for (var i = uploadedSerials.length; i < pendingSerials.length; i++) {
+        pendingSerials[i].syncState = SyncState.synced;
+        await _localDataSource.updateSerial(pendingSerials[i]);
+      }
+
+      print('[StockTakeRepo] Synced ${pendingSerials.length} serials now');
+      return right(unit);
+    } on NetworkException catch (e) {
+      // Leave the serials pending locally - session completion or the
+      // background sync queue will retry them, so this failure doesn't
+      // need to block or alarm the caller.
+      print('[StockTakeRepo] Immediate serial sync failed, will retry later: ${e.message}');
+      return left(e.toFailure());
+    } catch (e) {
+      print('[StockTakeRepo] Error syncing item serials: $e');
       return left(UnknownFailure(message: e.toString()));
     }
   }

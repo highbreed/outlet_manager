@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Only exists for the native background tracking engine's own networking
+  (SecureTokenStore.kt, LocationSyncWorker.kt use HttpURLConnection, which —
+  unlike Dart's dart:io HttpClient the rest of the app uses — IS subject to
+  Android's cleartext-traffic block on API 28+). The dev API server runs
+  plain http:// on a LAN IP (see AppConfig / Regions.resolve's Environment.dev
+  case); production and staging are https:// and need no exception here.
+-->
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="false">192.168.1.18</domain>
+    </domain-config>
+</network-security-config>

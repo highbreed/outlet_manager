@@ -501,7 +501,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
   /// Add a product to the session
   Future<StockTakeItem?> addProduct({
     required String sessionLocalId,
-    required int customerProductId,
+    required CustomerProduct product,
   }) async {
     state = state.copyWith(
       isLoading: true,
@@ -513,10 +513,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
       addProductToSessionProvider.future,
     );
     final result = await addProductToSession(
-      AddProductParams(
-        sessionLocalId: sessionLocalId,
-        customerProductId: customerProductId,
-      ),
+      AddProductParams(sessionLocalId: sessionLocalId, product: product),
     );
 
     return result.fold(
@@ -543,6 +540,23 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     final result = await repository.getSession(sessionLocalId);
     return result.fold((_) => null, (session) => session);
   }
+
+  /// Fetches the session record for [sessionLocalId] directly, rather than
+  /// through [StockTakeSessionState.activeSession].
+  ///
+  /// activeSession is one shared field used across every stock-take screen
+  /// - it reflects whichever session was most recently loaded anywhere in
+  /// the app, not necessarily the session a given screen instance is
+  /// showing. If an agent leaves a session open at one outlet, clocks into
+  /// another, and starts a second session there, activeSession can end up
+  /// pointing at that second session while an earlier screen instance for
+  /// the first is still mounted. Anything that needs session data
+  /// (visitServerId, warehouseName, etc.) tied to a *specific* session -
+  /// e.g. right before completing/submitting it - must fetch it by that
+  /// session's own localId via this method instead of reading
+  /// state.activeSession.
+  Future<StockTakeSession?> getSessionByLocalId(String sessionLocalId) =>
+      _refreshSession(sessionLocalId);
 
   /// Delete an item from the session
   Future<bool> deleteItem(String itemLocalId) async {
@@ -1115,6 +1129,17 @@ class SerialScanController extends _$SerialScanController {
     );
   }
 
+  /// Pushes this item's scanned serials to the server now, instead of
+  /// waiting for the whole session to complete. Called when the user taps
+  /// "Done" on the serial-scan screen. Best-effort: a failure here isn't
+  /// surfaced as an error, since the serials are already saved locally and
+  /// will be retried at session completion / background sync either way -
+  /// it just means they'll reach the backend a little later than intended.
+  Future<void> syncNow() async {
+    final syncItemSerials = await ref.read(syncItemSerialsProvider.future);
+    await syncItemSerials(SyncItemSerialsParams(itemLocalId: itemLocalId));
+  }
+
   /// Clear error state
   void clearError() {
     state = state.copyWith(clearError: true);
@@ -1320,17 +1345,21 @@ Future<bool> shouldFilterBrandsBySession(Ref ref) async {
 // Product Search Providers
 // ============================================================================
 
-/// Provider for finding a product by barcode
-/// First checks local cache, then fetches from backend
+/// Provider for finding a product by barcode against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend,
+/// which is the sole source of truth for what's in scope for this session.
 @riverpod
 Future<CustomerProduct?> findProductByBarcode(Ref ref, String barcode) async {
+  final session = ref.watch(stockTakeSessionControllerProvider).activeSession;
+  if (session == null) return null;
+
   final repository = await ref.watch(stockTakeRepositoryProvider.future);
   final result = await repository.findProductByBarcode(barcode);
   return result.fold((failure) => null, (product) => product);
 }
 
-/// Provider for searching products by search term
-/// First checks local cache, then fetches from backend
+/// Provider for searching products by search term against the live,
+/// session-scoped catalogue. Not cached locally - always hits the backend.
 @riverpod
 Future<List<CustomerProduct>> searchCatalogueProducts(
   Ref ref,
@@ -1339,6 +1368,9 @@ Future<List<CustomerProduct>> searchCatalogueProducts(
   if (searchTerm.isEmpty) {
     return [];
   }
+
+  final session = ref.watch(stockTakeSessionControllerProvider).activeSession;
+  if (session == null) return [];
 
   final repository = await ref.watch(stockTakeRepositoryProvider.future);
   final result = await repository.searchProducts(searchTerm);

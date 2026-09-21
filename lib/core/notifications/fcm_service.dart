@@ -1,8 +1,12 @@
 import 'dart:developer' as developer;
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/widgets.dart';
 
+import '../../features/location_tracking/services/location_ping_request_handler.dart';
+import '../../features/stock_take/services/device_cache_dump_handler.dart';
 import 'notification_channels.dart';
 import 'notification_service.dart';
 
@@ -11,10 +15,34 @@ import 'notification_service.dart';
 /// annotated with @pragma so the AOT compiler keeps it.
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // Firebase is already initialised by main() before this runs.
+  // If the app was fully terminated, FCM spawns a fresh headless isolate
+  // for this call that never ran main() - nothing here can assume Firebase
+  // (or any other plugin) is already initialised. Firebase.initializeApp()
+  // is safe to call again when main() already did (same isolate, app still
+  // alive): it just returns the existing default app.
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   developer.log('[FCM] Background message: ${message.messageId}');
+  await _dispatchDataMessage(message.data);
   // flutter_local_notifications can show a local notification here if needed.
   // For most cases the system tray notification shown by FCM itself is enough.
+}
+
+/// Routes a data-only push to its handler based on `data.action`/`data.type`
+/// - shared between the background handler above and [FcmService]'s
+/// foreground listener, since neither surfaces a visible notification for
+/// these and both need the same dispatch.
+Future<void> _dispatchDataMessage(Map<String, dynamic> data) async {
+  final action = data['action'] as String? ?? data['type'] as String?;
+  switch (action) {
+    case NotificationTypes.cacheDumpRequest:
+      await handleCacheDumpRequest(data);
+    case NotificationTypes.locationPingRequest:
+      await handleLocationPingRequest(data);
+    default:
+      break;
+  }
 }
 
 /// Wraps [FirebaseMessaging] and wires it into [NotificationService].
@@ -112,6 +140,10 @@ class FcmService {
   void _setupForegroundHandler() {
     FirebaseMessaging.onMessage.listen((message) {
       developer.log('[FCM] Foreground message: ${message.messageId}');
+      // Foreground messages never go through firebaseMessagingBackgroundHandler
+      // (FCM only invokes that while backgrounded/terminated), so data-only
+      // pushes like the cache-dump request need their own dispatch here too.
+      _dispatchDataMessage(message.data);
       _showLocalNotification(message);
     });
   }

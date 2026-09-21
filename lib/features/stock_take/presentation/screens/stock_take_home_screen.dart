@@ -584,6 +584,13 @@ class _InProgressSessionCard extends ConsumerWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: _CompactButton(
+                      label: 'Complete',
+                      onTap: () => _confirmAndComplete(context, ref, session),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: _CompactButton(
                       label: 'Continue',
                       filled: true,
                       onTap: () async {
@@ -605,6 +612,58 @@ class _InProgressSessionCard extends ConsumerWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+/// Confirms via a modal before completing a session directly from its
+/// summary card (no item-by-item review here - that's what "Continue"
+/// leads to; this is the quick path for "I'm done, close it out").
+Future<void> _confirmAndComplete(
+  BuildContext context,
+  WidgetRef ref,
+  StockTakeSession session,
+) async {
+  final confirmed = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('Complete Session?'),
+      content: Text(
+        'This will close out the stock take at ${session.warehouseName} '
+        'with ${session.totalProducts} product(s) and '
+        '${session.totalSerials} serial(s) counted so far. '
+        'This cannot be undone.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(dialogContext, false),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () => Navigator.pop(dialogContext, true),
+          child: const Text('Complete'),
+        ),
+      ],
+    ),
+  );
+  if (confirmed != true || !context.mounted) return;
+
+  final success = await ref
+      .read(stockTakeSessionControllerProvider.notifier)
+      .completeSession(session.localId);
+
+  if (!context.mounted) return;
+
+  if (success) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('${session.warehouseName} session completed')),
+    );
+  } else {
+    final message =
+        ref.read(stockTakeSessionControllerProvider).errorMessage ??
+        'Failed to complete session';
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: kRedColor),
     );
   }
 }

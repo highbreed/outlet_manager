@@ -196,8 +196,11 @@ enum VisitType {
 
 /// Extension methods for OutletVisit
 extension OutletVisitX on OutletVisit {
-  /// Whether the visit can be clocked into
-  bool get canClockIn => status == VisitStatus.pending;
+  /// Whether the visit can be clocked into. Skipped visits stay eligible —
+  /// an agent who skips an outlet earlier in the day (e.g. it looked
+  /// closed) can still clock in later if they end up actually visiting.
+  bool get canClockIn =>
+      status == VisitStatus.pending || status == VisitStatus.skipped;
 
   /// Whether the visit can be clocked out of
   bool get canClockOut => status == VisitStatus.inProgress;

@@ -408,10 +408,7 @@ class _AddProductScreenState extends ConsumerState<AddProductScreen> {
     try {
       final item = await ref
           .read(stockTakeSessionControllerProvider.notifier)
-          .addProduct(
-            sessionLocalId: widget.sessionLocalId,
-            customerProductId: product.id,
-          );
+          .addProduct(sessionLocalId: widget.sessionLocalId, product: product);
 
       if (item != null && mounted) {
         ScaffoldMessenger.of(

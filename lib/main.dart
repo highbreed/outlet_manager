@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer' as developer;
 
 import 'package:firebase_core/firebase_core.dart';
@@ -6,10 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'core/notifications/fcm_service.dart';
-import 'core/notifications/notification_channels.dart';
+import 'core/notifications/notifications.dart';
 
 import 'core/config/app_config.dart';
+import 'core/location/background_location_service.dart';
+import 'core/storage/token_storage.dart';
 import 'features/auth/data/auth_controller.dart';
 import 'features/auth/data/auth_state.dart';
 import 'features/daily_route/providers/daily_route_providers.dart';
@@ -17,6 +19,9 @@ import 'core/debug/debug_region_banner.dart';
 import 'core/providers/providers.dart';
 import 'core/theme/colors.dart';
 import 'core/theme/theme.dart';
+import 'features/app_update/presentation/providers/app_update_providers.dart';
+import 'features/app_update/presentation/screens/update_required_screen.dart';
+import 'features/app_update/presentation/widgets/update_recommended_banner.dart';
 import 'features/connectivity/connectivity.dart';
 import 'features/location_tracking/location_tracking.dart';
 import 'features/stock_take/presentation/providers/stock_take_providers.dart';
@@ -88,6 +93,16 @@ class OutletManagerApp extends ConsumerWidget {
           );
         }
 
+        // Version gate takes priority over routing: an unsupported build
+        // never reaches the router (or the login screen it would otherwise
+        // sit behind), so an already-authenticated user on an old build is
+        // blocked too, not just fresh logins. A network failure while
+        // polling fails open — see appVersionCheckProvider.
+        final blockInfo = ref.watch(effectiveUpdateBlockProvider);
+        if (blockInfo != null) {
+          return UpdateRequiredScreen(info: blockInfo);
+        }
+
         // App initialized successfully, show main app with router
         final router = ref.watch(routerProvider);
 
@@ -104,8 +119,10 @@ class OutletManagerApp extends ConsumerWidget {
                   routerConfig: router,
                   builder: (context, child) {
                     // return DebugRegionBanner(
-                    return ConnectivityBanner(
-                      child: child ?? const SizedBox.shrink(),
+                    return UpdateRecommendedBanner(
+                      child: ConnectivityBanner(
+                        child: child ?? const SizedBox.shrink(),
+                      ),
                     );
                     // );
                   },
@@ -266,6 +283,9 @@ class _AppLifecycleHandler extends ConsumerStatefulWidget {
 
 class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
     with WidgetsBindingObserver {
+  StreamSubscription<NativeTokenRefresh>? _nativeTokenRefreshSubscription;
+  StreamSubscription<GeofenceTransition>? _geofenceTransitionSubscription;
+
   @override
   void initState() {
     super.initState();
@@ -275,11 +295,53 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _startLocationTracking();
     });
+
+    // The other half of the token-sync loop — see
+    // BackgroundLocationService.tokenRefreshedEvents' doc comment. Kept
+    // subscribed for the app's whole lifetime (not just while a session is
+    // active) since native can refresh independently at any point tracking
+    // is running.
+    _nativeTokenRefreshSubscription = ref
+        .read(backgroundLocationServiceProvider)
+        .tokenRefreshedEvents
+        .listen((refresh) {
+          TokenStorage().saveTokens(
+            accessToken: refresh.accessToken,
+            refreshToken: refresh.refreshToken,
+            accessExpiresIn: refresh.accessExpiresAt.difference(
+              DateTime.now(),
+            ),
+          );
+        });
+
+    // Purely a UX nicety: the native engine has already acted on the
+    // transition (faster polling, an immediate geofence_event ping) by the
+    // time this fires — this just surfaces the same notifications
+    // `GeofenceManager` used to show, for whenever the app happens to be
+    // foregrounded. No auto-clock-out here; that stays the backend's own
+    // geofence violation detector's job (see GeofenceHysteresisTracker's
+    // doc comment for why duplicating it client-side would be risky).
+    _geofenceTransitionSubscription = ref
+        .read(backgroundLocationServiceProvider)
+        .geofenceTransitionEvents
+        .listen((transition) {
+          final notifications = NotificationService();
+          if (transition.isExit) {
+            notifications.showGeofenceExitDetected(
+              outletName: transition.outletName,
+              distanceMeters: transition.distanceMeters,
+            );
+          } else {
+            notifications.clearGeofenceNotifications();
+          }
+        });
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _nativeTokenRefreshSubscription?.cancel();
+    _geofenceTransitionSubscription?.cancel();
     super.dispose();
   }
 
@@ -295,12 +357,25 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
         controller.syncPending();
         // Sync any pending stock take operations
         _syncPendingStockTakeOperations();
+        // Keep the native tracking engine's own token copy from drifting —
+        // AuthInterceptor only pushes when it actually performs a refresh,
+        // which doesn't happen if the cached token still looks valid to
+        // Dart. Pushing here too covers the case where native's copy has
+        // already gone stale (e.g. rotated out by some other refresh)
+        // without Dart ever needing to refresh its own.
+        _syncBackgroundTrackingTokens();
         break;
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
-        // App going to background - stop foreground tracking
-        // Background WorkManager task will take over
-        controller.stopTracking();
+        // Deliberately NOT stopping LocationPingService's heartbeat here.
+        // This used to stop it and rely on the WorkManager background task
+        // (>=15min floor) to take over, but that meant locking the screen
+        // silently dropped ping cadence down to ~15 minutes. LocationService
+        // now runs a real Android foreground service + wake lock
+        // (see LocationService._startAndroidForegroundService) specifically
+        // so the process survives long enough for these Dart timers to keep
+        // firing on their normal schedule while locked/backgrounded — so
+        // just leave them running.
         break;
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
@@ -334,6 +409,25 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
         name: 'StockTakeSync',
       );
     }
+  }
+
+  /// Pushes the current tokens to the native tracking engine's own
+  /// encrypted copy on every resume — see the call site's comment for why
+  /// this is needed in addition to AuthInterceptor's post-refresh push.
+  /// Best-effort and silent: BackgroundLocationService.syncTokens already
+  /// catches its own errors, and a missing/absent token here just means
+  /// not logged in, nothing to push.
+  Future<void> _syncBackgroundTrackingTokens() async {
+    final tokens = await TokenStorage().getTokens();
+    if (tokens == null) return;
+
+    await ref
+        .read(backgroundLocationServiceProvider)
+        .syncTokens(
+          accessToken: tokens.accessToken,
+          refreshToken: tokens.refreshToken,
+          accessExpiresAt: tokens.accessExpiresAt,
+        );
   }
 
   @override

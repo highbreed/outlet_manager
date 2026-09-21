@@ -1,4 +1,3 @@
-import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,10 +6,10 @@ import '../../../../core/core.dart';
 import '../../../daily_route/presentation/widgets/widgets.dart' show RouteBackHeader;
 import '../../../daily_route/providers/daily_route_providers.dart';
 import '../../../stock_take/domain/entities/entities.dart' show CustomerProduct;
-import '../../../stock_take/presentation/providers/stock_take_providers.dart';
 import '../../../stock_take/presentation/screens/barcode_scanner_screen.dart';
 import '../controllers/sale_cart_controller.dart';
 import '../widgets/widgets.dart';
+import 'product_picker_screen.dart';
 
 /// Register a new pending sale as a 3-step wizard: add products to a cart,
 /// record the buying customer, then review the estimated total and submit.
@@ -37,16 +36,6 @@ class _RegisterSaleScreenState extends ConsumerState<RegisterSaleScreen> {
   int _step = 0;
 
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref
-          .read(saleCartControllerProvider.notifier)
-          .warmCatalogue(widget.customerId);
-    });
-  }
-
-  @override
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
@@ -66,7 +55,7 @@ class _RegisterSaleScreenState extends ConsumerState<RegisterSaleScreen> {
     if (result == null || !mounted) return;
     await ref
         .read(saleCartControllerProvider.notifier)
-        .addByBarcode(result.barcode);
+        .addByBarcode(result.barcode, widget.customerId);
   }
 
   bool get _canAdvance {
@@ -75,7 +64,8 @@ class _RegisterSaleScreenState extends ConsumerState<RegisterSaleScreen> {
       case 0:
         return cartState.items.isNotEmpty;
       case 1:
-        return _nameController.text.trim().isNotEmpty;
+        return _nameController.text.trim().isNotEmpty &&
+            _phoneController.text.trim().isNotEmpty;
       default:
         return true;
     }
@@ -319,14 +309,18 @@ class _ProductsStep extends ConsumerStatefulWidget {
 }
 
 class _ProductsStepState extends ConsumerState<_ProductsStep> {
-  // Lets us reset the dropdown's field back to empty right after a pick,
-  // so the next search starts from a blank state instead of showing the
-  // model that was just added to the cart.
-  final _dropdownKey = GlobalKey<DropdownSearchState<CustomerProduct>>();
+  Future<void> _openPicker() async {
+    final controller = ref.read(saleCartControllerProvider.notifier);
+    final product = await Navigator.of(context).push<CustomerProduct>(
+      MaterialPageRoute(
+        builder: (_) => ProductPickerScreen(customerId: widget.customerId),
+      ),
+    );
+    if (product != null) controller.addProduct(product);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final customerId = widget.customerId;
     final customerName = widget.customerName;
     final cartState = widget.cartState;
     final onScanBarcode = widget.onScanBarcode;
@@ -344,49 +338,38 @@ class _ProductsStepState extends ConsumerState<_ProductsStep> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: DropdownSearch<CustomerProduct>(
-                key: _dropdownKey,
-                popupProps: const PopupProps.menu(
-                  showSearchBox: true,
-                  searchFieldProps: TextFieldProps(
-                    decoration: InputDecoration(
-                      hintText: 'Search by name, model number or code',
-                    ),
-                  ),
-                ),
-                compareFn: (a, b) => a.id == b.id,
-                itemAsString: (product) =>
-                    '${product.itemName}${product.modelNumber != null ? ' (${product.modelNumber})' : ''}',
-                items: (filter, _) async {
-                  final repository = await ref.read(
-                    stockTakeRepositoryProvider.future,
-                  );
-                  final result = filter.trim().isEmpty
-                      ? await repository.getCustomerProducts(customerId)
-                      : await repository.searchProducts(filter);
-                  return result.fold((_) => <CustomerProduct>[], (p) => p);
-                },
-                onChanged: (product) {
-                  if (product == null) return;
-                  controller.addProduct(product);
-                  // Reset the field so the next scan/search starts blank
-                  // instead of leaving the just-added model showing.
-                  WidgetsBinding.instance.addPostFrameCallback(
-                    (_) => _dropdownKey.currentState?.clear(),
-                  );
-                },
-                decoratorProps: DropDownDecoratorProps(
-                  baseStyle: const TextStyle(color: kTextDark, fontSize: 14),
-                  decoration: InputDecoration(
-                    hintText: 'Search or select product',
-                    hintStyle: const TextStyle(color: kTextFaint),
-                    prefixIcon: const Icon(Icons.search, color: kTextMuted),
-                    filled: true,
-                    fillColor: kPrimaryLightColor,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
-                    border: OutlineInputBorder(
+              child: Material(
+                color: kPrimaryLightColor,
+                borderRadius: BorderRadius.circular(15),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(15),
+                  onTap: _openPicker,
+                  child: Container(
+                    height: 52,
+                    padding: const EdgeInsets.symmetric(horizontal: 14),
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
-                      borderSide: const BorderSide(color: kBorderColor),
+                      border: Border.all(color: kBorderColor),
+                    ),
+                    child: const Row(
+                      children: [
+                        Icon(Icons.search, color: kTextMuted, size: 18),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            'Search or select product',
+                            style: TextStyle(
+                              color: kTextFaint,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.chevron_right,
+                          color: kTextFaint,
+                          size: 20,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -517,7 +500,7 @@ class _CustomerStep extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         const Text(
-          'Full name',
+          'Full name *',
           style: TextStyle(fontSize: 11, color: kTextMuted),
         ),
         const SizedBox(height: 5),
@@ -539,7 +522,7 @@ class _CustomerStep extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         const Text(
-          'Phone number',
+          'Phone number *',
           style: TextStyle(fontSize: 11, color: kTextMuted),
         ),
         const SizedBox(height: 5),
@@ -548,7 +531,7 @@ class _CustomerStep extends StatelessWidget {
           keyboardType: TextInputType.phone,
           style: const TextStyle(color: kTextDark, fontSize: 14),
           decoration: InputDecoration(
-            hintText: 'Phone number (optional)',
+            hintText: 'Phone number',
             filled: true,
             fillColor: kPrimaryLightColor,
             border: OutlineInputBorder(

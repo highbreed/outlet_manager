@@ -23,7 +23,7 @@ final tokenStorageProvider = AutoDisposeProvider<TokenStorage>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TokenStorageRef = AutoDisposeProviderRef<TokenStorage>;
-String _$dioHash() => r'4eefb30f9b936589b64cde9ef1ec3462103d0286';
+String _$dioHash() => r'f7d50630a5841796e31d9b7e2fe8123d8f36a05e';
 
 /// See also [dio].
 @ProviderFor(dio)

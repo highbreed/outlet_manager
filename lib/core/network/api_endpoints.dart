@@ -3,6 +3,9 @@ abstract class ApiEndpoints {
   // Base (configured in Dio client)
   static const String api = '/api/v1';
 
+  // App version gate — public, unauthenticated, never gated itself
+  static const String appVersion = '/app/version';
+
   // Auth
   static const String login = '/auth/login';
   static const String logout = '/auth/logout';
@@ -121,4 +124,11 @@ abstract class ApiEndpoints {
   static const String replenishmentCurrent = '/replenishment/current';
   static String replenishmentByVisit(int visitId) =>
       '/replenishment/visits/$visitId';
+
+  // Device Cache Dump (support/ops on-demand read of what this device has
+  // cached locally for a stock count session, triggered by a silent FCM
+  // push). Only the mobile-facing report endpoint lives here — the
+  // staff-facing request/poll endpoints are backend/web-console only.
+  static String deviceCacheReport(String requestId) =>
+      '/device-cache/requests/$requestId/report';
 }

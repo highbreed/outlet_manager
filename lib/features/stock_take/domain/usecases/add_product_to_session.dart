@@ -7,11 +7,11 @@ import 'base_usecase.dart';
 
 class AddProductParams {
   final String sessionLocalId;
-  final int customerProductId;
+  final CustomerProduct product;
 
   const AddProductParams({
     required this.sessionLocalId,
-    required this.customerProductId,
+    required this.product,
   });
 }
 
@@ -25,7 +25,7 @@ class AddProductToSession implements UseCase<StockTakeItem, AddProductParams> {
   Future<Either<Failure, StockTakeItem>> call(AddProductParams params) async {
     return _repository.addProduct(
       sessionLocalId: params.sessionLocalId,
-      customerProductId: params.customerProductId,
+      product: params.product,
     );
   }
 }

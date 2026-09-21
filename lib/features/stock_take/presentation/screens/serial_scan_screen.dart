@@ -40,6 +40,7 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
   final _serialController = TextEditingController();
   final _focusNode = FocusNode();
   bool _isAdding = false;
+  bool _isFinishing = false;
   String? _validationMessage;
   bool _isValidationSuccess = true;
 
@@ -76,6 +77,12 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
     final minLevel = widget.minStockLevel;
 
     return PopScope(
+      // Block the hardware/gesture back button entirely while actively
+      // scanning - the only sanctioned way out is the "Done" button (which
+      // pops explicitly via Navigator.pop and so isn't affected by
+      // canPop), so leaving always goes through _finish()'s "at least one
+      // serial scanned" check. Read-only views have nothing to guard.
+      canPop: widget.readOnly,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) {
           // The session screen's item list is refreshed here rather than by
@@ -86,7 +93,14 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
           ref
               .read(stockTakeSessionControllerProvider.notifier)
               .loadSessionItems(widget.sessionLocalId);
+          return;
         }
+        // Blocked system back press - nudge the user toward Done instead
+        // of silently doing nothing.
+        setState(() {
+          _validationMessage = 'Scan at least one serial, then tap Done to leave';
+          _isValidationSuccess = false;
+        });
       },
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -104,6 +118,12 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
                 maxLevel: maxLevel,
                 modelNumber: widget
                     .modelNumber, // You can pass the model number if available
+                // Read-only views can leave freely; the active scan view
+                // funnels this through the same "Done" gate so there's no
+                // way to leave without at least one serial scanned.
+                onBack: widget.readOnly
+                    ? () => Navigator.pop(context)
+                    : (_isFinishing ? () {} : _finish),
               ),
 
               Expanded(
@@ -302,8 +322,11 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
                           label: widget.readOnly
                               ? 'Close'
                               : "Done · ${serials.length} serials",
-                          onPressed: !serialState.isLoading
-                              ? () => Navigator.pop(context)
+                          isLoading: _isFinishing,
+                          onPressed: !serialState.isLoading && !_isFinishing
+                              ? (widget.readOnly
+                                    ? () => Navigator.pop(context)
+                                    : _finish)
                               : null,
                         ),
                       ),
@@ -406,6 +429,39 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
         );
       },
     );
+  }
+
+  /// Pushes the scanned serials to the backend now instead of waiting for
+  /// session completion, then leaves the screen - the serials are already
+  /// saved locally, so a sync failure here just means they'll be retried
+  /// at session completion / background sync instead. Refuses to leave at
+  /// all if nothing has been scanned yet for this product.
+  Future<void> _finish() async {
+    final serials = ref
+        .read(
+          serialScanControllerProvider(widget.sessionLocalId, widget.itemLocalId),
+        )
+        .scannedSerials;
+
+    if (serials.isEmpty) {
+      setState(() {
+        _validationMessage = 'Scan at least one serial number before finishing';
+        _isValidationSuccess = false;
+      });
+      HapticFeedback.heavyImpact();
+      return;
+    }
+
+    setState(() => _isFinishing = true);
+    await ref
+        .read(
+          serialScanControllerProvider(
+            widget.sessionLocalId,
+            widget.itemLocalId,
+          ).notifier,
+        )
+        .syncNow();
+    if (mounted) Navigator.pop(context);
   }
 
   Future<void> _openCameraScanner() async {
@@ -649,7 +705,15 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
   }
 
   bool _isLikelyUrl(String input) {
-    final lowerInput = input.toLowerCase();
+    // Strip leading slashes before checking: protocol-relative URLs
+    // ("//qrcode.link/a/xyz", as many QR codes/deep links encode) and
+    // "http://..." links (which _normalizeBarcode above already reduces to
+    // "//..." by stripping the "http:" prefix like any other
+    // "prefix:payload" barcode format) don't start with a letter, so the
+    // checks below need to see past the slashes to recognize the
+    // domain-plus-path shape underneath.
+    final normalized = input.trim().replaceFirst(RegExp(r'^/+'), '');
+    final lowerInput = normalized.toLowerCase();
 
     if (lowerInput.startsWith('http') ||
         lowerInput.startsWith('www') ||
@@ -661,7 +725,7 @@ class _SerialScanScreenState extends ConsumerState<SerialScanScreen> {
       r'^[a-z0-9]+([\-\.][a-z0-9]+)*\.[a-z]{2,}(\/.*)?$',
       caseSensitive: false,
     );
-    if (urlPattern.hasMatch(input)) {
+    if (urlPattern.hasMatch(normalized)) {
       return true;
     }
 
@@ -705,6 +769,7 @@ class _SerialHeader extends StatelessWidget {
   final int validCount;
   final int? minLevel;
   final int? maxLevel;
+  final VoidCallback onBack;
 
   const _SerialHeader({
     required this.itemName,
@@ -713,6 +778,7 @@ class _SerialHeader extends StatelessWidget {
     required this.minLevel,
     required this.maxLevel,
     required this.modelNumber,
+    required this.onBack,
   });
 
   @override
@@ -736,7 +802,7 @@ class _SerialHeader extends StatelessWidget {
           Row(
             children: [
               GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
+                onTap: onBack,
                 child: const Icon(
                   Icons.arrow_back,
                   color: kTextLight,

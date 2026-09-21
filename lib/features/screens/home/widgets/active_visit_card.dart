@@ -116,7 +116,7 @@ class _ActiveVisitCardState extends ConsumerState<ActiveVisitCard> {
                 borderRadius: BorderRadius.circular(999),
               ),
               child: const Text(
-                'Continue Visit →',
+                'End Visit →',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: kTextDark,

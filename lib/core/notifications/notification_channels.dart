@@ -131,4 +131,18 @@ class NotificationTypes {
   static const String route = 'route';
   static const String settings = 'settings';
   static const String home = 'home';
+
+  /// Silent data-only push asking this device to report back what it has
+  /// cached locally for a stock count session (support/ops debugging aid).
+  /// Never carries a `notification` block, so it's handled purely in the
+  /// data-message path — see [handleCacheDumpRequest].
+  static const String cacheDumpRequest = 'cache_dump_request';
+
+  /// Silent data-only push asking this device to send a location ping right
+  /// now, sent when the backend notices a clocked-in agent's location has
+  /// gone stale. The response isn't a bespoke reply — it's just a normal
+  /// ping via the existing endpoint. Never carries a `notification` block,
+  /// so it's handled purely in the data-message path — see
+  /// [handleLocationPingRequest].
+  static const String locationPingRequest = 'location_ping_request';
 }

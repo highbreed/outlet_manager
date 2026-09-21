@@ -782,7 +782,9 @@ class ProductsRemoteDataSource {
   /// [itemGroup1]/[itemGroup2]/[itemGroup3] mirror the three taxonomy
   /// levels returned by [fetchFilterOptions] (group → sub-group-2 →
   /// sub-group-3). [priceList] selects which price list to price
-  /// against — the backend defaults to `1` when omitted.
+  /// against — the backend defaults to `1` when omitted. [cardCode] is
+  /// optional — the catalogue is global, but the backend narrows results
+  /// to what's relevant to that outlet when it's supplied.
   Future<ProductsPageResponse> fetchProducts({
     String? search,
     String? itemGroup1,
@@ -790,6 +792,7 @@ class ProductsRemoteDataSource {
     String? itemGroup3,
     String? brand,
     int? priceList,
+    String? cardCode,
     int page = 1,
     int size = 20,
   }) async {
@@ -806,6 +809,7 @@ class ProductsRemoteDataSource {
             'item_group3': itemGroup3,
           if (brand != null && brand.isNotEmpty) 'brand': brand,
           if (priceList != null) 'price_list': priceList,
+          if (cardCode != null && cardCode.isNotEmpty) 'card_code': cardCode,
           'page': page,
           'size': size,
         },

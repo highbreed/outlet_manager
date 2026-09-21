@@ -538,7 +538,7 @@ class _StockTakeSessionScreenState
           .read(stockTakeSessionControllerProvider.notifier)
           .addProduct(
             sessionLocalId: widget.sessionLocalId,
-            customerProductId: matchingProduct.id,
+            product: matchingProduct,
           );
 
       if (item != null && mounted) {
@@ -801,11 +801,18 @@ class _StockTakeSessionScreenState
     }
   }
 
-  void _completeSession() {
+  Future<void> _completeSession() async {
     final sessionState = ref.read(stockTakeSessionControllerProvider);
     final items = sessionState.sessionItems;
-    final session = sessionState.activeSession;
-    if (session == null) return;
+    // Fetched by this screen's own sessionLocalId, not the shared
+    // activeSession field - see getSessionByLocalId's doc comment: if
+    // another outlet's session was loaded elsewhere in the app since this
+    // screen was opened, activeSession would no longer necessarily match
+    // the session this screen (and thus "Complete"/"Submit") is for.
+    final session = await ref
+        .read(stockTakeSessionControllerProvider.notifier)
+        .getSessionByLocalId(widget.sessionLocalId);
+    if (session == null || !mounted) return;
 
     final blankItems = items.where((item) => item.serialCount == 0).toList();
 
@@ -888,10 +895,17 @@ class _StockTakeSessionScreenState
   }
 
   Future<void> _submitSession() async {
-    final visitServerId = ref
-        .read(stockTakeSessionControllerProvider)
-        .activeSession
+    // Fetched by this screen's own sessionLocalId - see
+    // getSessionByLocalId's doc comment. Using the shared activeSession
+    // field here risked sending the agent to the wrong outlet's
+    // proposed-order screen after a correct submission, if a different
+    // outlet's session had been loaded elsewhere in the app in the
+    // meantime.
+    final visitServerId = (await ref
+            .read(stockTakeSessionControllerProvider.notifier)
+            .getSessionByLocalId(widget.sessionLocalId))
         ?.visitServerId;
+    if (!mounted) return;
 
     setState(() => _isActionInProgress = true);
     try {

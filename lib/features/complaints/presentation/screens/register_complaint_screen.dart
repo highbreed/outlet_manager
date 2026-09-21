@@ -401,7 +401,8 @@ class _RegisterComplaintScreenState
               _selectedZone = null;
               _selectedTown = null;
             }),
-            decoration: _inputDecoration('Region'),
+            decoration: _inputDecoration('Region *'),
+            validator: (v) => v == null ? 'Region is required' : null,
           ),
           const SizedBox(height: 12),
           _ZoneDropdown(
@@ -411,21 +412,26 @@ class _RegisterComplaintScreenState
               _selectedZone = z;
               _selectedTown = null;
             }),
-            decoration: _inputDecoration('Zone'),
+            decoration: _inputDecoration('Zone *'),
+            validator: (v) => v == null ? 'Zone is required' : null,
           ),
           const SizedBox(height: 12),
           _TownDropdown(
             zoneId: _selectedZone?.id,
             selected: _selectedTown,
             onChanged: (t) => setState(() => _selectedTown = t),
-            decoration: _inputDecoration('Town'),
+            decoration: _inputDecoration('Town *'),
+            validator: (v) => v == null ? 'Town is required' : null,
           ),
           const SizedBox(height: 12),
           TextFormField(
             controller: _addressCtrl,
             maxLines: 2,
             textCapitalization: TextCapitalization.sentences,
-            decoration: _inputDecoration('Physical Address'),
+            decoration: _inputDecoration('Physical Address *'),
+            validator: (v) => (v == null || v.trim().isEmpty)
+                ? 'Address is required'
+                : null,
           ),
         ],
       ),
@@ -1324,12 +1330,14 @@ class _ZoneDropdown extends ConsumerWidget {
   final LocationZone? selected;
   final ValueChanged<LocationZone?> onChanged;
   final InputDecoration decoration;
+  final FormFieldValidator<LocationZone>? validator;
 
   const _ZoneDropdown({
     required this.regionId,
     required this.selected,
     required this.onChanged,
     required this.decoration,
+    this.validator,
   });
 
   @override
@@ -1344,6 +1352,7 @@ class _ZoneDropdown extends ConsumerWidget {
         ),
         popupProps: PopupProps.modalBottomSheet(showSearchBox: true),
         onChanged: (_) {},
+        validator: validator,
       );
     }
 
@@ -1391,6 +1400,7 @@ class _ZoneDropdown extends ConsumerWidget {
         ),
       ),
       onChanged: onChanged,
+      validator: validator,
     );
   }
 }
@@ -1404,12 +1414,14 @@ class _TownDropdown extends ConsumerWidget {
   final LocationTown? selected;
   final ValueChanged<LocationTown?> onChanged;
   final InputDecoration decoration;
+  final FormFieldValidator<LocationTown>? validator;
 
   const _TownDropdown({
     required this.zoneId,
     required this.selected,
     required this.onChanged,
     required this.decoration,
+    this.validator,
   });
 
   @override
@@ -1424,6 +1436,7 @@ class _TownDropdown extends ConsumerWidget {
         ),
         popupProps: PopupProps.modalBottomSheet(showSearchBox: true),
         onChanged: (_) {},
+        validator: validator,
       );
     }
 
@@ -1471,6 +1484,7 @@ class _TownDropdown extends ConsumerWidget {
         ),
       ),
       onChanged: onChanged,
+      validator: validator,
     );
   }
 }
@@ -1522,11 +1536,13 @@ class _RegionDropdown extends ConsumerWidget {
   final LocationRegion? selected;
   final ValueChanged<LocationRegion?> onChanged;
   final InputDecoration decoration;
+  final FormFieldValidator<LocationRegion>? validator;
 
   const _RegionDropdown({
     required this.selected,
     required this.onChanged,
     required this.decoration,
+    this.validator,
   });
 
   @override
@@ -1576,6 +1592,7 @@ class _RegionDropdown extends ConsumerWidget {
         ),
       ),
       onChanged: onChanged,
+      validator: validator,
     );
   }
 }

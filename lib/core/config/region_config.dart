@@ -19,6 +19,13 @@ class RegionConfig {
   final String fiscalUnitType; // "SCU" for Kenya/Rwanda, "FDN" for Uganda
   final String imageNamespace; // S3 namespace for product images
 
+  /// Whether this region's devices act on a `location_ping_request` silent
+  /// push (respond to a stale-location check with a fresh ping). Gated
+  /// per-region for a phased rollout — starts Kenya-only; flip on for
+  /// another region here once it's been validated, no other code changes
+  /// needed.
+  final bool locationPingRequestEnabled;
+
   const RegionConfig({
     required this.code,
     required this.countryCode,
@@ -38,6 +45,7 @@ class RegionConfig {
     this.loyaltyProgramEnabled = false,
     required this.fiscalUnitType,
     this.imageNamespace = 'mikaimgs',
+    this.locationPingRequestEnabled = false,
   });
 }
 
@@ -60,6 +68,7 @@ class Regions {
     poBox: '',
     companyName: 'MIKA TRADING COMPANY LIMITED',
     fiscalUnitType: 'SCU',
+    locationPingRequestEnabled: true,
   );
 
   static const rwanda = RegionConfig(

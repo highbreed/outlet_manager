@@ -181,54 +181,73 @@ class _GeofenceOverrideRequestScreenState
     final overrideAsync = ref.watch(geofenceOverrideNotifierProvider);
     final visit = _visit;
 
-    return Scaffold(
-      backgroundColor: kBackground,
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RouteBackHeader(
-              title: 'Request Override',
-              onBack: () =>
-                  context.canPop() ? context.pop() : context.go('/daily-route/visits'),
-            ),
-            Expanded(
-              child: overrideAsync.when(
-                loading: () => const Center(child: CircularProgressIndicator()),
-                error: (e, _) => _ErrorBody(
-                  message: e is Exception
-                      ? e.toString().replaceFirst('Exception: ', '')
-                      : e.toString(),
-                  onRetry: () => ref.invalidate(geofenceOverrideNotifierProvider),
-                ),
-                data: (override) {
-                  if (override == null) {
-                    return _RequestForm(
-                      visit: visit,
-                      distanceFromOutlet: _distanceFromOutlet,
-                      fetchingLocation: _fetchingLocation,
-                      locationError: _locationError,
-                      accuracy: _accuracy,
-                      formKey: _formKey,
-                      reasonCtrl: _reasonCtrl,
-                      onSubmit: _submit,
-                      onRetryLocation: _fetchLocation,
-                    );
-                  }
-                  return _OverrideStatusBody(
-                    request: override,
-                    timeRemaining: _timeRemaining,
-                    onRefresh: () => _refreshStatus(override),
-                    onClockIn: () => _clockInWithOverride(override),
-                    onCancel: () {
-                      ref.invalidate(geofenceOverrideNotifierProvider);
-                      context.pop();
-                    },
-                  );
-                },
+    // With the reason field focused and the keyboard open, Android's back
+    // gesture/button would otherwise pop this screen straight back to the
+    // visit detail screen instead of just closing the keyboard first (a
+    // known predictive-back interaction on Android 13+, since the app
+    // declares enableOnBackInvokedCallback). Block the pop while the
+    // keyboard is showing and dismiss it instead - a second back press,
+    // with the keyboard now closed, pops normally.
+    final keyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
+
+    return PopScope(
+      canPop: !keyboardVisible,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: kBackground,
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RouteBackHeader(
+                title: 'Request Override',
+                onBack: () => context.canPop()
+                    ? context.pop()
+                    : context.go('/daily-route/visits'),
               ),
-            ),
-          ],
+              Expanded(
+                child: overrideAsync.when(
+                  loading: () =>
+                      const Center(child: CircularProgressIndicator()),
+                  error: (e, _) => _ErrorBody(
+                    message: e is Exception
+                        ? e.toString().replaceFirst('Exception: ', '')
+                        : e.toString(),
+                    onRetry: () =>
+                        ref.invalidate(geofenceOverrideNotifierProvider),
+                  ),
+                  data: (override) {
+                    if (override == null) {
+                      return _RequestForm(
+                        visit: visit,
+                        distanceFromOutlet: _distanceFromOutlet,
+                        fetchingLocation: _fetchingLocation,
+                        locationError: _locationError,
+                        accuracy: _accuracy,
+                        formKey: _formKey,
+                        reasonCtrl: _reasonCtrl,
+                        onSubmit: _submit,
+                        onRetryLocation: _fetchLocation,
+                      );
+                    }
+                    return _OverrideStatusBody(
+                      request: override,
+                      timeRemaining: _timeRemaining,
+                      onRefresh: () => _refreshStatus(override),
+                      onClockIn: () => _clockInWithOverride(override),
+                      onCancel: () {
+                        ref.invalidate(geofenceOverrideNotifierProvider);
+                        context.pop();
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

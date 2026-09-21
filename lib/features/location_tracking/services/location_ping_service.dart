@@ -36,7 +36,7 @@ class LocationPingService {
   final Battery _battery;
 
   Timer? _foregroundTimer;
-  Timer? _significantChangeTimer;
+  StreamSubscription<LocationData>? _significantChangeSubscription;
   Timer? _syncTimer;
   DateTime? _lastPingTime;
   LocationData? _lastPingLocation;
@@ -136,12 +136,19 @@ class LocationPingService {
   }
 
   /// Stop foreground tracking.
-  void stopForegroundTracking() {
+  ///
+  /// Returns a Future (existing callers that don't await it are
+  /// unaffected) so a caller that specifically needs the underlying
+  /// Geolocator stream fully released before opening its own — e.g.
+  /// VisitDetailScreen, avoiding the same geolocator_android
+  /// single-native-engine conflict LocationService.pauseForegroundAnchor's
+  /// doc comment describes — actually can wait for it.
+  Future<void> stopForegroundTracking() async {
     _isTracking = false;
     _foregroundTimer?.cancel();
     _foregroundTimer = null;
-    _significantChangeTimer?.cancel();
-    _significantChangeTimer = null;
+    await _significantChangeSubscription?.cancel();
+    _significantChangeSubscription = null;
     _syncTimer?.cancel();
     _syncTimer = null;
   }
@@ -155,7 +162,7 @@ class LocationPingService {
     if (_isTracking) {
       // Restart timers with new intervals
       _foregroundTimer?.cancel();
-      _significantChangeTimer?.cancel();
+      _significantChangeSubscription?.cancel();
       _syncTimer?.cancel();
       _startHeartbeatTimer();
       _startSignificantChangeMonitoring();
@@ -195,21 +202,23 @@ class LocationPingService {
 
   /// Start significant change monitoring (Trigger A).
   ///
-  /// Polls location more frequently to detect significant movement,
-  /// but only sends when movement threshold is crossed.
+  /// One continuous position stream for as long as tracking is active,
+  /// rather than a Timer repeatedly opening/closing a one-shot fetch every
+  /// 5-15 seconds — the latter is what made Android's location-in-use
+  /// indicator blink continuously on every screen except visit-detail
+  /// (which got the same fix earlier), since this runs app-wide for the
+  /// whole time tracking is on, independent of whatever screen is showing.
+  /// See LocationService.watchLocation. The distanceFilter also means the
+  /// OS itself only emits events once the mode's movement threshold is
+  /// crossed, instead of Dart re-checking distance on every poll.
   void _startSignificantChangeMonitoring() {
-    _significantChangeTimer?.cancel();
-
-    // Poll every 10-15 seconds to check for significant movement
-    // This is a balance between responsiveness and battery
-    final pollInterval = _currentMode == TrackingMode.highPrecision
-        ? const Duration(seconds: 5)
-        : const Duration(seconds: 15);
-
-    _significantChangeTimer = Timer.periodic(
-      pollInterval,
-      (_) => _checkSignificantChange(),
-    );
+    _significantChangeSubscription?.cancel();
+    _significantChangeSubscription = _locationService
+        .watchLocation(distanceFilter: currentDistanceThreshold.round())
+        .listen(
+          _evaluateSignificantChange,
+          onError: (_) {}, // Location not available — try again on the next update.
+        );
   }
 
   /// Start periodic sync timer to send pending pings.
@@ -230,17 +239,11 @@ class LocationPingService {
     }
   }
 
-  /// Check if user has moved significantly since last ping.
-  Future<void> _checkSignificantChange() async {
+  /// Evaluate a position-stream update against the significant-change
+  /// conditions (Trigger A) — called for every event from the continuous
+  /// stream [_startSignificantChangeMonitoring] opens, not a poll.
+  Future<void> _evaluateSignificantChange(LocationData currentLocation) async {
     if (!_isTracking) return;
-
-    // Get current location
-    late final LocationData currentLocation;
-    try {
-      currentLocation = await _locationService.getCurrentLocation();
-    } catch (_) {
-      return; // Location not available
-    }
 
     // Get mode-specific thresholds
     final accuracyThreshold = switch (_currentMode) {

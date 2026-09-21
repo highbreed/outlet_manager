@@ -44,6 +44,7 @@ Dio dio(Ref ref) {
       baseUrl: AppConfig.apiBaseUrl,
     ),
     PasswordChangeGateInterceptor(ref),
+    VersionGateInterceptor(ref),
     RetryInterceptor(),
     ErrorMappingInterceptor(),
     LoggingInterceptor(),
