@@ -72,14 +72,23 @@ class GeofenceTransition {
 ///    `POST /visits/location/device-ping`, authenticated with a separate,
 ///    narrowly-scoped `device_location` JWT (24h TTL, no self-renewal,
 ///    revoked on logout/password change — minted via `POST
-///    /auth/device-token`, see [ensureDeviceLocationToken]). This exists
-///    *because* Dart-side headless delivery turned out to be unreliable in
-///    this plugin version: registering a `registerHeadlessTask` callback
-///    was confirmed on-device to break live foreground `onLocation`
-///    delivery entirely (native fired the event; nothing reached Dart).
-///    Native's own HTTP layer has no such dependency on the Dart bridge at
-///    all, which is what makes it robust to that bug — there is
-///    deliberately no headless Dart task registered anymore.
+///    /auth/device-token`, see [ensureDeviceLocationToken]). This covers
+///    `LOCATION`/geofence fixes without needing any Dart bridge, since
+///    native captures and persists those on its own regardless of
+///    headless dispatch.
+///
+/// [bg.Event.HEARTBEAT] is the one gap path 2 can't cover: the plugin
+/// doesn't auto-request a position on heartbeat the way it auto-captures
+/// LOCATION/geofence fixes (confirmed via the plugin's own doc comment on
+/// `HeartbeatEvent.location`), so a terminated *and stationary* device
+/// needs Dart code to actually run in response. [backgroundGeolocationHeadlessTask]
+/// below handles exactly that, scoped to `HEARTBEAT` only, registered from
+/// [startTracking] rather than unconditionally at app boot — registering
+/// it at boot was confirmed on-device to break live foreground `onLocation`
+/// delivery entirely in this plugin version (native fired events; nothing
+/// reached Dart); this later registration point is the current experiment
+/// to get heartbeat coverage back without reintroducing that regression.
+/// If foreground `onLocation` breaks again, revert this immediately.
 ///
 /// Running both concurrently while the app is alive means occasional
 /// double-posts of the same fix — accepted deliberately: the backend
@@ -150,10 +159,18 @@ class BackgroundGeolocationService {
           heartbeatInterval: 60,
           stopOnTerminate: false,
           startOnBoot: true,
-          // No Dart headless task is registered (see the class doc
-          // comment) — terminated-app delivery goes through native
-          // autoSync instead, which needs no headless Dart bridge at all.
-          enableHeadless: false,
+          // EXPERIMENT — re-enabling headless, scoped to HEARTBEAT only
+          // (registered from startTracking, not unconditionally at app
+          // boot — see registerBackgroundGeolocationHeadlessTask's doc
+          // comment). Confirmed on-device: heartbeat is the one event
+          // type native autoSync can't cover on its own (the plugin
+          // doesn't auto-request a position on heartbeat the way it
+          // auto-captures LOCATION/geofence fixes), so a terminated +
+          // stationary device never got a ping without this. If this
+          // breaks live foreground onLocation delivery again (the
+          // reason headless was disabled before), revert immediately —
+          // that's worse than a missing heartbeat ping.
+          enableHeadless: true,
           backgroundPermissionRationale: bg.PermissionRationale(
             title:
                 'Allow {applicationName} to access this device\'s location even when the app is closed or not in use.',
@@ -220,6 +237,17 @@ class BackgroundGeolocationService {
     _outletLongitude = outletLongitude;
 
     await _configureDeviceAutoSync();
+
+    try {
+      await registerBackgroundGeolocationHeadlessTask();
+    } catch (e, st) {
+      developer.log(
+        '[BackgroundGeolocationService] registerHeadlessTask failed: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+    }
 
     try {
       await bg.BackgroundGeolocation.addGeofence(
@@ -772,6 +800,62 @@ class BackgroundGeolocationService {
       networkType: networkType,
       pingSource: pingSource,
       recordedAt: DateTime.now(),
+    );
+  }
+}
+
+/// Registers [backgroundGeolocationHeadlessTask] with the plugin. Called
+/// from [BackgroundGeolocationService.startTracking] — deliberately NOT
+/// unconditionally at app boot (the plugin's own docs recommend that
+/// pattern). Registering it at boot was confirmed on-device to break live
+/// foreground `onLocation` delivery entirely in this plugin version;
+/// registration timing relative to `configure()`/`ready()` is the one
+/// variable that differs with this later call site. The native side
+/// persists the registered callback handle once this succeeds, so it
+/// doesn't need to be re-called on every app start — only once per
+/// install, in practice once per first clock-in.
+Future<void> registerBackgroundGeolocationHeadlessTask() =>
+    bg.BackgroundGeolocation.registerHeadlessTask(
+      backgroundGeolocationHeadlessTask,
+    );
+
+/// Receives plugin events while the app is fully terminated. Deliberately
+/// scoped to ONLY [bg.Event.HEARTBEAT] — [bg.Event.LOCATION]/`.GEOFENCE`
+/// fixes are captured and persisted by the native side automatically
+/// regardless of headless dispatch (native `autoSync` already covers
+/// those, see the class doc comment), but a heartbeat is purely a "wake up
+/// and decide" signal with no automatic native location capture (per the
+/// plugin's own doc comment on `HeartbeatEvent.location`) — this is the
+/// one gap native autoSync can't cover on its own. Runs in a fresh,
+/// minimal engine that never ran this app's own `main()`/`_bootstrap()` —
+/// see [BackgroundGeolocationService._onHeartbeat] for why a fresh
+/// position is explicitly requested rather than using the stale
+/// `event.location`.
+///
+/// Must be a top-level (or static) function, not a closure — the plugin
+/// addresses it via `PluginUtilities.getCallbackHandle`, which only works
+/// for one of those. `@pragma('vm:entry-point')` keeps AOT tree-shaking
+/// from stripping it since nothing in this app calls it directly.
+@pragma('vm:entry-point')
+void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
+  if (headlessEvent.name != bg.Event.HEARTBEAT) return;
+  try {
+    final location = await bg.BackgroundGeolocation.getCurrentPosition(
+      samples: 1,
+      timeout: 10,
+      persist: true,
+      desiredAccuracy: 200,
+    );
+    await BackgroundGeolocationService()._handleLocation(
+      location,
+      pingSource: PingSource.background,
+    );
+  } catch (e, st) {
+    developer.log(
+      '[BackgroundGeolocationService] headless heartbeat failed: $e',
+      name: 'BackgroundGeolocationService',
+      error: e,
+      stackTrace: st,
     );
   }
 }
