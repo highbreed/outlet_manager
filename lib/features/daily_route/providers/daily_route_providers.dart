@@ -295,7 +295,7 @@ class DayStatusPoll extends _$DayStatusPoll {
   }
 
   Future<void> _reconcileBackgroundTracking(DayStatusInfo info) async {
-    final backgroundService = ref.read(backgroundLocationServiceProvider);
+    final backgroundService = ref.read(backgroundGeolocationServiceProvider);
     final activeVisit = info.route?.activeVisit;
     final status = await backgroundService.getTrackingStatus();
 
@@ -459,10 +459,10 @@ class ClockInNotifier extends _$ClockInNotifier {
       ref.invalidate(todaysRouteProvider);
       ref.invalidate(dayStatusPollProvider);
       // Fire-and-forget: best-effort by design (see
-      // BackgroundLocationService), must not block clock-in on tracking
+      // BackgroundGeolocationService), must not block clock-in on tracking
       // startup succeeding.
       ref
-          .read(backgroundLocationServiceProvider)
+          .read(backgroundGeolocationServiceProvider)
           .startTracking(
             visitId: visit.localId,
             outletName: visit.outletName,
@@ -507,7 +507,7 @@ class ClockOutNotifier extends _$ClockOutNotifier {
         ref.invalidate(dayStatusPollProvider);
         ref.invalidate(routeToCloseProvider);
         // Fire-and-forget: see ClockInNotifier.clockIn for why.
-        ref.read(backgroundLocationServiceProvider).stopTracking();
+        ref.read(backgroundGeolocationServiceProvider).stopTracking();
         return AsyncData(visit);
       },
     );
@@ -663,7 +663,7 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
         ref.invalidate(dayStatusPollProvider);
         // Fire-and-forget: see ClockInNotifier.clockIn for why.
         ref
-            .read(backgroundLocationServiceProvider)
+            .read(backgroundGeolocationServiceProvider)
             .startTracking(
               visitId: visit.localId,
               outletName: visit.outletName,

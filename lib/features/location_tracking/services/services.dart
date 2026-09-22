@@ -1,2 +1,1 @@
-export 'location_ping_service.dart';
-export 'location_ping_worker.dart';
+export 'location_ping_request_handler.dart';

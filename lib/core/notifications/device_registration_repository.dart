@@ -3,7 +3,8 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
+
+import '../device/device_fingerprint.dart';
 
 class DeviceRegistrationRepository {
   static const _fingerprintKey = 'device_fingerprint';
@@ -45,13 +46,5 @@ class DeviceRegistrationRepository {
     }
   }
 
-  Future<String> _getOrCreateFingerprint() async {
-    final prefs = await SharedPreferences.getInstance();
-    var fingerprint = prefs.getString(_fingerprintKey);
-    if (fingerprint == null) {
-      fingerprint = const Uuid().v4();
-      await prefs.setString(_fingerprintKey, fingerprint);
-    }
-    return fingerprint;
-  }
+  Future<String> _getOrCreateFingerprint() => DeviceFingerprint.getOrCreate();
 }

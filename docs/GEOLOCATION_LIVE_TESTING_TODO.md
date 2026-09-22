@@ -1,71 +1,73 @@
 # Geolocation — Live Device Testing TODO
 
-Pending on-device verification for the native background location tracking
-engine (`android/app/src/main/kotlin/com/mikappliance/outletManager/location/`).
+Pending on-device verification for the `flutter_background_geolocation`
+(Transistorsoft) tracking engine (`lib/core/location/background_geolocation_service.dart`),
+which replaced the custom native Kotlin engine documented in the plan below —
+that engine (and this doc's old test items for it) has been deleted. See
+`/Users/stephen/.claude/plans/enchanted-juggling-ocean.md` ("Phase 3") for the
+full migration history and rationale.
+
 Everything here needs a real device and real GPS/reboot — not something
-`flutter analyze`/`flutter build` can confirm. See
-`/Users/stephen/.claude/plans/enchanted-juggling-ocean.md` for the full
-implementation history.
+`flutter analyze`/`flutter build` can confirm.
 
-_Last updated: 2026-09-18_
+_Last updated: 2026-09-22_
 
-## Phase 1 — reboot recovery
+## Already confirmed on-device (SM-A165F, `RF8YA124W7F`)
 
-- [ ] **Clean reboot-recovery confirmation.** Direct-boot storage and the
-  battery-optimization exemption are both implemented and individually
-  confirmed (`dumpsys deviceidle whitelist` shows the exemption granted),
-  but the last two end-to-end attempts were confounded: the test visit got
-  auto-skipped by the backend's own geofence-violation detector while the
-  device sat out of range during a long test session, so `activeVisit` was
-  already `null` by the time of the reboot and the reconciliation logic
-  correctly did nothing — that's a red herring, not a real pass/fail.
-  - [ ] Fresh clock-in on a visit the device stays genuinely inside the
-        geofence for
-  - [ ] Reboot the device
-  - [ ] Check tracking status (`dumpsys activity services`, or
-        `getTrackingStatus` via the app) **before** unlocking, to confirm
-        `BootReceiver` restarted `LocationTrackingService` pre-unlock
+- [x] Location permission flow (`location_permission_screen.dart`) — plain
+  foreground grant, then the plugin's own `requestPermission()` upgrading to
+  background ("Allow all the time") + motion/activity-recognition
+  authorization in one flow.
+- [x] Battery-optimization exemption flow (`DeviceSettings.showIgnoreBatteryOptimizations`)
+  — lands on the OS's battery-management screen.
+- [x] Clock-in → `BackgroundGeolocationService.startTracking()` → native
+  geofence registered (`TSGeofenceManager monitoring N/N`,
+  `GeofencingClient addGeofences SUCCESS`).
+- [x] `onLocation` fires and the full save-locally-then-post pipeline works
+  — confirmed real `POST /api/v1/visits/location/ping` requests returning
+  `200`/`ping_id`.
+- [x] Clock-out → `stopTracking()` → geofence removed, tracking service
+  stopped cleanly (`GeofencingClient removeGeofences SUCCESS`, `TrackingService
+  stopped`).
+- [x] Pre-clock-in live-distance UI (`visit_detail_screen.dart`) via
+  `BackgroundGeolocationService.watchPosition()`'s `getCurrentPosition()`
+  poll loop — resolves correctly. (Note: the plugin's own `watchPosition`
+  native API was found to have a broken native→Dart event-bus bridge in
+  this version — `getCurrentPosition()` polling is the deliberate
+  workaround, not a bug in this codebase; see that method's doc comment.)
 
-## Phase 2 — geofence hysteresis
+## Still pending
 
-- [ ] **Live exit/re-entry crossing test.** Implemented in
-  `GeofenceHysteresisTracker.kt` + `LocationTrackingService.kt`; builds
-  clean and is installed on the SM-A175F test device
-  (`R5GYB50NBEX`), but never exercised with real GPS movement (no
-  mock-location tool was used).
-  - [ ] Clock into a real visit while genuinely inside the outlet's
-        geofence radius
-  - [ ] Physically step outside the radius; confirm via `logcat`
-        (`LocationTrackingService` tag) that polling switches from 5min to
-        30s on the first outside reading, and that "Geofence exit
-        confirmed" logs within ~1 minute
-  - [ ] Confirm the confirming ping reaches the backend tagged
-        `ping_source: geofence_event` (backend logs), not `background`
-  - [ ] Confirm `showGeofenceExitDetected` appears in the notification
-        shade while the app is foregrounded
-  - [ ] Walk back inside; confirm "Geofence re-entry confirmed" logs,
-        cadence drops back to 5min, and the notification clears
-
-## Phase 2 — Activity Recognition motion-aware tracking
-
-- [ ] **Live stationary/motion cadence test.** Implemented in
-  `MotionStateStore.kt` + `MotionTransitionReceiver.kt` +
-  `LocationTrackingService.desiredIntervalMs()`; builds clean and is
-  installed on the SM-A175F test device (`R5GYB50NBEX`), but never
-  exercised with real device motion.
-  - [ ] Grant the `ACTIVITY_RECOGNITION` permission when prompted on the
-        location-permission screen (confirm the prompt actually appears)
-  - [ ] Clock into a real visit and stay genuinely stationary, inside the
-        geofence, for several minutes; confirm via `logcat` that Activity
-        Recognition reports a STILL transition and polling widens from 5min
-        to 15min
-  - [ ] Start walking; confirm polling narrows back to 5min immediately
-        (via `ACTION_MOTION_UPDATE`) rather than waiting out the current
-        15-minute cycle
-  - [ ] Confirm the interaction with geofence hysteresis: while genuinely
-        outside the geofence buffer, cadence should stay at 30s regardless
-        of STILL/moving state (geofence always wins — see
-        `desiredIntervalMs`'s doc comment)
-  - [ ] Deny the permission on a fresh install and confirm tracking still
-        works normally at the 5min default (the feature must be a pure
-        no-op when absent, not a crash or a stuck cadence)
+- [ ] **Lock screen.** Clock in, lock the device, confirm pings keep
+  arriving on schedule while locked.
+- [ ] **Backgrounded app.** Clock in, Home button to background the app
+  (not force-closed), confirm pings continue.
+- [ ] **Recents-swipe.** Clock in, swipe the app away from Recents, confirm
+  the plugin's own foreground service/notification survives and pings
+  continue (`stopOnTerminate: false`).
+- [ ] **Reboot recovery.** Clock in, reboot the device, confirm tracking
+  resumes automatically (`startOnBoot: true`) without reopening the app.
+- [ ] **Headless delivery (fully terminated app).** Not yet wired —
+  `registerHeadlessTask` was deliberately deferred out of the initial
+  cutover (see the plan's "Recommended approach": *"Headless mode is
+  required, not optional"*). Needs its own implementation pass before this
+  can be tested; the app's permission disclosure already promises tracking
+  survives full termination, so this is a real gap, not just an
+  untested nice-to-have.
+- [ ] **Live geofence exit/re-entry.** Clock into a visit while genuinely
+  inside the outlet's radius, physically step outside, confirm the
+  `geofence_event`-tagged ping fires promptly and
+  `showGeofenceExitDetected` appears; walk back in and confirm
+  `clearGeofenceNotifications` fires.
+- [ ] **Motion-aware cadence.** Confirm the plugin's own stationary/moving
+  detection (`GeoConfig.stopTimeout`) actually widens/narrows ping cadence
+  as expected in the field — this is entirely the plugin's own behavior
+  now (no custom hysteresis/motion code left in this app), so this is
+  really about confirming the *configured* thresholds feel right in
+  practice, not verifying custom logic.
+- [ ] **Original bug's repro case.** Confirm `visit_detail_screen.dart`'s
+  live distance resolves without hanging under the specific conditions
+  that caused the original "Getting your location..." bug reports (weak
+  indoor signal) — the `getCurrentPosition()` `desiredAccuracy: 200`
+  threshold should resolve much faster than a tight GPS-grade fix would,
+  but hasn't been stress-tested across many real indoor locations yet.

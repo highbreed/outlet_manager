@@ -16,7 +16,8 @@
       "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 shell input tap 540 1080)",
       "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 shell screencap -p /sdcard/screen.png)",
       "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 pull /sdcard/screen.png /private/tmp/claude-501/-Users-stephen-Mobile-outlet-manager/78187400-b80a-4b00-927f-56a3281adcd0/scratchpad/screenshots/02_after_allow.png)",
-      "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 pull /sdcard/screen.png /private/tmp/claude-501/-Users-stephen-Mobile-outlet-manager/78187400-b80a-4b00-927f-56a3281adcd0/scratchpad/screenshots/04_route_v2.png)"
+      "Bash(/Users/stephen/Library/Android/sdk/platform-tools/adb -s emulator-5554 pull /sdcard/screen.png /private/tmp/claude-501/-Users-stephen-Mobile-outlet-manager/78187400-b80a-4b00-927f-56a3281adcd0/scratchpad/screenshots/04_route_v2.png)",
+      "Read(//Users/stephen/.pub-cache/hosted/pub.dev/flutter_background_geolocation-5.7.0/lib/models/**)"
     ]
   }
 }

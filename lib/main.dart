@@ -10,8 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/notifications/notifications.dart';
 
 import 'core/config/app_config.dart';
-import 'core/location/background_location_service.dart';
-import 'core/storage/token_storage.dart';
+import 'core/location/background_geolocation_service.dart';
 import 'features/auth/data/auth_controller.dart';
 import 'features/auth/data/auth_state.dart';
 import 'features/daily_route/providers/daily_route_providers.dart';
@@ -23,7 +22,6 @@ import 'features/app_update/presentation/providers/app_update_providers.dart';
 import 'features/app_update/presentation/screens/update_required_screen.dart';
 import 'features/app_update/presentation/widgets/update_recommended_banner.dart';
 import 'features/connectivity/connectivity.dart';
-import 'features/location_tracking/location_tracking.dart';
 import 'features/stock_take/presentation/providers/stock_take_providers.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -60,10 +58,13 @@ Future<void> _bootstrap(Environment env) async {
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
-  await AppConfig.initialize(env);
+  // No Dart headless task is registered here — terminated-app delivery
+  // goes through the plugin's own native autoSync layer instead (a
+  // separately-scoped device-location token, no Dart bridge involved).
+  // See BackgroundGeolocationService's doc comment for the full story,
+  // including why the Dart headless path was abandoned.
 
-  // Initialize background location tracking (WorkManager)
-  await initializeBackgroundLocationPing();
+  await AppConfig.initialize(env);
 
   // Lock orientation for mobile (optional)
   await SystemChrome.setPreferredOrientations([
@@ -283,7 +284,6 @@ class _AppLifecycleHandler extends ConsumerStatefulWidget {
 
 class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
     with WidgetsBindingObserver {
-  StreamSubscription<NativeTokenRefresh>? _nativeTokenRefreshSubscription;
   StreamSubscription<GeofenceTransition>? _geofenceTransitionSubscription;
 
   @override
@@ -291,38 +291,15 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
-    // Start location tracking after first frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _startLocationTracking();
-    });
-
-    // The other half of the token-sync loop — see
-    // BackgroundLocationService.tokenRefreshedEvents' doc comment. Kept
-    // subscribed for the app's whole lifetime (not just while a session is
-    // active) since native can refresh independently at any point tracking
-    // is running.
-    _nativeTokenRefreshSubscription = ref
-        .read(backgroundLocationServiceProvider)
-        .tokenRefreshedEvents
-        .listen((refresh) {
-          TokenStorage().saveTokens(
-            accessToken: refresh.accessToken,
-            refreshToken: refresh.refreshToken,
-            accessExpiresIn: refresh.accessExpiresAt.difference(
-              DateTime.now(),
-            ),
-          );
-        });
-
-    // Purely a UX nicety: the native engine has already acted on the
-    // transition (faster polling, an immediate geofence_event ping) by the
+    // Purely a UX nicety: the plugin has already acted on the transition
+    // (native OS-level geofencing, an immediate geofence_event ping) by the
     // time this fires — this just surfaces the same notifications
     // `GeofenceManager` used to show, for whenever the app happens to be
     // foregrounded. No auto-clock-out here; that stays the backend's own
     // geofence violation detector's job (see GeofenceHysteresisTracker's
     // doc comment for why duplicating it client-side would be risky).
     _geofenceTransitionSubscription = ref
-        .read(backgroundLocationServiceProvider)
+        .read(backgroundGeolocationServiceProvider)
         .geofenceTransitionEvents
         .listen((transition) {
           final notifications = NotificationService();
@@ -340,56 +317,28 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _nativeTokenRefreshSubscription?.cancel();
     _geofenceTransitionSubscription?.cancel();
     super.dispose();
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final controller = ref.read(locationPingControllerProvider.notifier);
-
     switch (state) {
       case AppLifecycleState.resumed:
-        // App came to foreground - start foreground tracking
-        controller.startTracking();
-        // Sync any pending pings from when we were offline
-        controller.syncPending();
+        // Sync any pending pings from when we were offline — drains
+        // whatever's still queued in the shared Isar-backed ping queue.
+        ref.read(backgroundGeolocationServiceProvider).syncPendingPings();
         // Sync any pending stock take operations
         _syncPendingStockTakeOperations();
-        // Keep the native tracking engine's own token copy from drifting —
-        // AuthInterceptor only pushes when it actually performs a refresh,
-        // which doesn't happen if the cached token still looks valid to
-        // Dart. Pushing here too covers the case where native's copy has
-        // already gone stale (e.g. rotated out by some other refresh)
-        // without Dart ever needing to refresh its own.
-        _syncBackgroundTrackingTokens();
         break;
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
-        // Deliberately NOT stopping LocationPingService's heartbeat here.
-        // This used to stop it and rely on the WorkManager background task
-        // (>=15min floor) to take over, but that meant locking the screen
-        // silently dropped ping cadence down to ~15 minutes. LocationService
-        // now runs a real Android foreground service + wake lock
-        // (see LocationService._startAndroidForegroundService) specifically
-        // so the process survives long enough for these Dart timers to keep
-        // firing on their normal schedule while locked/backgrounded — so
-        // just leave them running.
-        break;
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
-        // No action needed
+        // No action needed — flutter_background_geolocation runs its own
+        // engine independent of app lifecycle/Flutter isolate state.
         break;
     }
-  }
-
-  void _startLocationTracking() {
-    // Start foreground tracking
-    ref.read(locationPingControllerProvider.notifier).startTracking();
-
-    // Register periodic background task (for when app is closed)
-    registerPeriodicLocationPing();
   }
 
   /// Sync any pending stock take operations when app resumes
@@ -409,25 +358,6 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
         name: 'StockTakeSync',
       );
     }
-  }
-
-  /// Pushes the current tokens to the native tracking engine's own
-  /// encrypted copy on every resume — see the call site's comment for why
-  /// this is needed in addition to AuthInterceptor's post-refresh push.
-  /// Best-effort and silent: BackgroundLocationService.syncTokens already
-  /// catches its own errors, and a missing/absent token here just means
-  /// not logged in, nothing to push.
-  Future<void> _syncBackgroundTrackingTokens() async {
-    final tokens = await TokenStorage().getTokens();
-    if (tokens == null) return;
-
-    await ref
-        .read(backgroundLocationServiceProvider)
-        .syncTokens(
-          accessToken: tokens.accessToken,
-          refreshToken: tokens.refreshToken,
-          accessExpiresAt: tokens.accessExpiresAt,
-        );
   }
 
   @override
@@ -478,7 +408,7 @@ class _BackgroundSyncListenerState
         name: 'BackgroundSync',
       );
 
-      ref.read(locationPingControllerProvider.notifier).syncPending();
+      ref.read(backgroundGeolocationServiceProvider).syncPendingPings();
 
       final handler = await ref.read(stockTakeSyncHandlerProvider.future);
       final count = await handler.processAllPending();
@@ -506,6 +436,11 @@ class _BackgroundSyncListenerState
 /// transitions to an authenticated state (login or session restore).
 /// Token refreshes while authenticated are handled separately via
 /// [initializedFcmServiceProvider]'s onTokenRefresh callback.
+///
+/// Also mints/caches the `device_location` token here, at the same
+/// trigger — so it's ready well before any clock-in rather than being
+/// fetched for the first time mid-clock-in. See
+/// BackgroundGeolocationService.ensureDeviceLocationToken's doc comment.
 class _DeviceRegistrationListener extends ConsumerStatefulWidget {
   final Widget child;
 
@@ -523,6 +458,7 @@ class _DeviceRegistrationListenerState
     ref.listen<AuthState>(authControllerProvider, (previous, next) {
       if (next is Authenticated) {
         _registerFcmToken();
+        ref.read(backgroundGeolocationServiceProvider).ensureDeviceLocationToken();
       }
     });
     return widget.child;

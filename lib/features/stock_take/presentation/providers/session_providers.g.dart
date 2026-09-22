@@ -1348,7 +1348,7 @@ final paginatedCatalogueControllerProvider =
 typedef _$PaginatedCatalogueController =
     AutoDisposeNotifier<PaginatedCatalogueState>;
 String _$stockTakeSessionControllerHash() =>
-    r'ec8562902dcdf41f38103b76b935b9b16cf455e8';
+    r'f4b5d509165f9a0e58bf580811fca0a61b2a0ec7';
 
 /// Main controller for stock take session management
 ///
@@ -1371,7 +1371,7 @@ final stockTakeSessionControllerProvider =
 typedef _$StockTakeSessionController =
     AutoDisposeNotifier<StockTakeSessionState>;
 String _$serialScanControllerHash() =>
-    r'16817850f0bd2a3185d33f8b37fd7ef27dcd04c3';
+    r'58d51c53a2918d3c0a402c44de925ca6d2037515';
 
 abstract class _$SerialScanController
     extends BuildlessAutoDisposeNotifier<SerialScanState> {

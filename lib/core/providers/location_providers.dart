@@ -1,50 +1,21 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../database/isar_database.dart';
-import '../location/background_location_service.dart';
-import '../location/geofence_manager.dart';
+import '../location/background_geolocation_service.dart';
 import '../location/location_service.dart';
-import 'notification_providers.dart';
 
 /// Provides the LocationService instance
 final locationServiceProvider = Provider<LocationService>((ref) {
   return LocationService();
 });
 
-/// Provides the native background location tracking engine (Android — see
-/// `android/app/src/main/kotlin/.../location/`). Started on clock-in, stopped
-/// on clock-out; see `ClockInNotifier`/`ClockOutNotifier` in
-/// `daily_route_providers.dart`.
-final backgroundLocationServiceProvider = Provider<BackgroundLocationService>((
-  ref,
-) {
-  return BackgroundLocationService();
-});
-
-/// Provides the GeofenceManager instance
-final geofenceManagerProvider = Provider<GeofenceManager>((ref) {
-  // This will throw until initialized
-  throw UnimplementedError(
-    'GeofenceManager must be initialized with Isar instance and NotificationService',
-  );
-});
-
-/// Async geofence manager provider that waits for database and notifications
-final asyncGeofenceManagerProvider = FutureProvider<GeofenceManager>((
-  ref,
-) async {
-  final isar = await IsarDatabase.getInstance();
-  final locationService = ref.watch(locationServiceProvider);
-  final notificationService = await ref.watch(
-    initializedNotificationServiceProvider.future,
-  );
-
-  return GeofenceManager(
-    locationService: locationService,
-    isar: isar,
-    notificationService: notificationService,
-  );
-});
+/// Provides the `flutter_background_geolocation`-based tracking engine —
+/// the replacement for the old native Kotlin engine (deleted, see the
+/// "Phase 3" plan). Started on clock-in, stopped on clock-out; see
+/// `ClockInNotifier`/`ClockOutNotifier` in `daily_route_providers.dart`.
+final backgroundGeolocationServiceProvider =
+    Provider<BackgroundGeolocationService>((ref) {
+      return BackgroundGeolocationService();
+    });
 
 /// Stream of current location (when tracking is active)
 final locationStreamProvider = StreamProvider.autoDispose((ref) {

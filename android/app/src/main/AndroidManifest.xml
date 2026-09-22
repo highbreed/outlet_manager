@@ -19,22 +19,28 @@
          while the screen is locked during an active session. -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <!-- Native background tracking engine (com.mikappliance.outletManager.location) -->
+    <!-- Needed by flutter_background_geolocation's startOnBoot: true (see
+         BackgroundGeolocationService.configure) — its own AAR registers a
+         BootReceiver, but doesn't declare this permission itself, so the
+         app must. Without it, BOOT_COMPLETED is never delivered and
+         tracking silently stays off after a reboot mid-shift. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <!-- Confirmed by device testing: without an exemption, Doze/App Standby
-         (and this device's own OEM battery management) can block delivery
-         of BOOT_COMPLETED and other broadcasts outright, regardless of the
-         manifest otherwise being correct. Google Play restricts this
+    <!-- Backs BackgroundGeolocationService.requestBatteryOptimizationExemption
+         (DeviceSettings.showIgnoreBatteryOptimizations) — confirmed by
+         device testing this is required for that flow to work; the
+         plugin's AAR doesn't declare it itself. Without an exemption,
+         Doze/App Standby (and OEM battery management) can throttle
+         background delivery outright. Google Play restricts this
          permission to apps with genuine ongoing background work, which a
          field-agent location-tracking app qualifies for — see
          location_permission_screen.dart for where the user-facing prompt
          triggering it lives. -->
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-    <!-- Runtime permission on Android 10+ (API 29), requested from
-         location_permission_screen.dart alongside the battery exemption.
-         Lets LocationTrackingService widen its ping interval while
-         Activity Recognition confirms the device is STILL — absence is a
-         safe no-op (see LocationTrackingService.startMotionUpdates). -->
+    <!-- Runtime permission on Android 10+ (API 29) — backs the plugin's own
+         motion/activity-recognition authorization, requested as part of
+         BackgroundGeolocationService.requestPermission() (see
+         location_permission_screen.dart). Absence is a safe no-op: the
+         plugin just never gets motion-aware cadence adjustments. -->
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
 
     <!-- Camera permission for barcode scanning -->
@@ -88,39 +94,13 @@
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="general_notifications" />
 
-        <!-- Native background tracking engine — see
-             android/app/src/main/kotlin/.../location/ and the Phase 1 plan
-             this implements. Owns the tracking lifecycle independently of
-             the Flutter Activity/engine.
-
-             android:directBootAware="true" on both: confirmed by device
-             testing that BOOT_COMPLETED can arrive before the user's first
-             unlock after a reboot. Without this, Android defers delivering
-             the broadcast to BootReceiver at all until after unlock — so a
-             reboot mid-shift would silently leave tracking stopped until
-             the agent happened to reopen the app themselves. TrackingStateStore
-             and LocationQueueDb live in Device Protected storage precisely
-             so this actually works pre-unlock (see deviceProtectedContext). -->
-        <service
-            android:name=".location.LocationTrackingService"
-            android:exported="false"
-            android:directBootAware="true"
-            android:foregroundServiceType="location" />
-        <receiver
-            android:name=".location.BootReceiver"
-            android:exported="true"
-            android:directBootAware="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-            </intent-filter>
-        </receiver>
-        <!-- Target of LocationTrackingService's Activity Recognition
-             PendingIntent — not launched via an intent-filter, only by that
-             explicit PendingIntent, so exported="false" is correct. -->
-        <receiver
-            android:name=".location.MotionTransitionReceiver"
-            android:exported="false"
-            android:directBootAware="true" />
+        <!-- flutter_background_geolocation (Transistorsoft) trial license —
+             value comes from android/local.properties (gitignored) via
+             the transistorsoftLicenseKey manifest placeholder set in
+             android/app/build.gradle.kts. -->
+        <meta-data
+            android:name="com.transistorsoft.locationmanager.license"
+            android:value="${transistorsoftLicenseKey}" />
 
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->

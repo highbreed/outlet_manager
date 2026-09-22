@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -155,18 +154,6 @@ class MenuScreen extends ConsumerWidget {
                 ),
               ],
             ),
-            if (kDebugMode) ...[
-              const SizedBox(height: 20),
-              _MenuGroup(
-                title: 'Debug',
-                rows: [
-                  _MenuRow(
-                    label: 'Geofence Debug',
-                    onTap: () => context.push('/debug/geofence'),
-                  ),
-                ],
-              ),
-            ],
           ],
         ),
       ),

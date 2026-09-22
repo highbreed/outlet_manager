@@ -11,7 +11,6 @@ import '../../../../core/network/failures.dart';
 import '../../../../core/providers/location_providers.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/widgets/widgets.dart';
-import '../../../location_tracking/location_tracking.dart';
 import '../../domain/entities/geofence_override_request.dart';
 import '../../domain/entities/outlet_visit.dart';
 import '../../providers/daily_route_providers.dart';
@@ -28,7 +27,7 @@ class VisitDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
-  StreamSubscription<LocationData>? _positionSubscription;
+  Future<void> Function()? _stopWatchingPosition;
   LocationData? _lastLocation;
   double? _currentDistance;
   double? _currentAccuracy;
@@ -43,88 +42,65 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
 
   @override
   void dispose() {
-    _positionSubscription?.cancel();
-    // Best-effort — dispose() can't be awaited, and a failure here just
-    // means these stay paused until the next screen that pauses/resumes
-    // them, not a leak. try/catch guards a disposal-ordering edge case
-    // confirmed via Sentry: the whole ProviderScope can tear down
-    // concurrently with this State's own dispose() (seen during a hot
-    // restart, where a second Flutter engine briefly attaches while the
-    // first is still unwinding), which makes ref.read() throw "Cannot use
-    // ref after the widget was disposed". If that happens the whole app
-    // is going down anyway, so there's nothing left to actually resume.
-    try {
-      ref.read(locationServiceProvider).resumeForegroundAnchor();
-      ref.read(locationPingServiceProvider).startForegroundTracking();
-    } catch (_) {}
+    // Fire-and-forget — dispose() can't be awaited, and a failure here
+    // just means the native watch stays registered until the plugin's own
+    // next lifecycle event, not a leak we need to guard further. There's
+    // only one location engine involved (flutter_background_geolocation's
+    // own watchPosition, independent of startTracking()/stopTracking()),
+    // so — unlike the old geolocator-based anchor/significant-change
+    // streams this replaces — there's nothing else to pause/resume around
+    // it, and no disposal-ordering race to guard against.
+    _stopWatchingPosition?.call();
     super.dispose();
   }
 
-  // A single continuous stream for as long as this screen is open, rather
-  // than a Timer repeatedly opening/closing a one-shot fetch — the latter
-  // is what made Android's location-in-use indicator blink on every cycle,
-  // a real sign of wasteful start/stop request churn, not just cosmetic.
-  // See LocationService.watchLocation.
-  //
-  // geolocator_android shares one native engine across all concurrent
-  // stream requests from the app. Confirmed on-device there were actually
-  // TWO other always-on continuous streams competing for it: the app-wide
-  // "Active Session" anchor (LocationService.startTracking(), running
-  // since app launch) and LocationPingService's own significant-change
-  // monitor (also running since app launch, via main.dart's app-resume
-  // handler) — GPS locked fine both times, zero callbacks ever reached
-  // this listener either time. Pausing/stopping both for the lifetime of
-  // this screen (resumed in dispose()) avoids the conflict. The user
-  // hasn't clocked in yet on this screen, so there's no active-session
-  // ping cadence depending on LocationPingService staying up in the
-  // meantime.
-  //
-  // Must be awaited before opening watchLocation() below, not fired and
-  // forgotten — confirmed on-device that calling pauseForegroundAnchor()
-  // without waiting for its native cancel() to actually complete still
-  // leaves the anchor stream briefly (or not so briefly) registered
-  // alongside the new one, recreating the exact same conflict this exists
-  // to avoid.
+  // A single continuous watch for as long as this screen is open, via the
+  // plugin's own `watchPosition` API (see
+  // BackgroundGeolocationService.watchPosition's doc comment) — lightweight
+  // and tracking-independent, so it doesn't need startTracking()/a visit/a
+  // geofence, and doesn't compete with anything else for a shared engine
+  // the way the old geolocator-based anchor + significant-change streams
+  // did (see git history for that saga). The user hasn't clocked in yet on
+  // this screen, so nothing else needs to be paused in the meantime.
   Future<void> _startLocationUpdates() async {
-    final locationService = ref.read(locationServiceProvider);
-    await locationService.pauseForegroundAnchor();
-    await ref.read(locationPingServiceProvider).stopForegroundTracking();
-    if (!mounted) return;
-    _positionSubscription = locationService.watchLocation().listen(
-      (location) {
-        final visit = _getVisit();
-        if (visit == null || !mounted) return;
-        setState(() {
-          _lastLocation = location;
-          _currentDistance = _calculateDistance(
-            location.latitude,
-            location.longitude,
-            visit.outletLatitude,
-            visit.outletLongitude,
+    try {
+      _stopWatchingPosition = await ref
+          .read(backgroundGeolocationServiceProvider)
+          .watchPosition(
+            onLocation: (location) {
+              final visit = _getVisit();
+              if (visit == null || !mounted) return;
+              setState(() {
+                _lastLocation = location;
+                _currentDistance = _calculateDistance(
+                  location.latitude,
+                  location.longitude,
+                  visit.outletLatitude,
+                  visit.outletLongitude,
+                );
+                _currentAccuracy = location.accuracy;
+                _isLoadingLocation = false;
+                _locationError = null;
+              });
+            },
           );
-          _currentAccuracy = location.accuracy;
+    } catch (e, st) {
+      // The generic UI message below doesn't say why — log the real
+      // exception so it's actually visible in the run console instead of
+      // being swallowed here.
+      developer.log(
+        '[VisitDetail] location watch error: $e',
+        name: 'VisitDetail',
+        error: e,
+        stackTrace: st,
+      );
+      if (mounted) {
+        setState(() {
           _isLoadingLocation = false;
-          _locationError = null;
+          _locationError = 'Unable to get location';
         });
-      },
-      onError: (Object e, StackTrace st) {
-        // The generic UI message below doesn't say why — log the real
-        // exception so it's actually visible in the run console instead of
-        // being swallowed here.
-        developer.log(
-          '[VisitDetail] location stream error: $e',
-          name: 'VisitDetail',
-          error: e,
-          stackTrace: st,
-        );
-        if (mounted) {
-          setState(() {
-            _isLoadingLocation = false;
-            _locationError = 'Unable to get location';
-          });
-        }
-      },
-    );
+      }
+    }
   }
 
   OutletVisit? _getVisit() {

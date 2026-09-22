@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/auth/auth.dart';
 import '../../features/connectivity/connectivity.dart';
-import '../providers/location_tracking_providers.dart';
+import '../../features/daily_route/providers/daily_route_providers.dart';
 import '../utils/assets.dart';
 import 'confirmation_dialog.dart';
 
@@ -32,7 +32,14 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final locationTracking = ref.watch(locationTrackingControllerProvider);
+    // Reflects the real clock-in/tracking state (whether the new
+    // flutter_background_geolocation engine is actually running for a
+    // visit), not the old LocationTrackingController — that controller's
+    // isTracking flag is only ever set by its own startTracking(), whose
+    // one call site (location_permission_screen.dart) was deliberately
+    // removed (see that file's _completePostPermissionSetup doc comment),
+    // so it would otherwise always read false now.
+    final isTracking = ref.watch(activeVisitProvider) != null;
     final isOnline = ref.watch(isOnlineProvider);
     final user = ref.watch(currentUserProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -64,7 +71,7 @@ class CustomAppBar extends ConsumerWidget implements PreferredSizeWidget {
           Padding(
             padding: const EdgeInsets.only(right: 8),
             child: Center(
-              child: locationTracking.isTracking
+              child: isTracking
                   ? Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

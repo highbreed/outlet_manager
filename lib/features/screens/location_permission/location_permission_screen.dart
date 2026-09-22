@@ -1,7 +1,8 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:permission_handler/permission_handler.dart' as ph;
 
 import '../../../core/core.dart';
 import 'widgets/widgets.dart';
@@ -127,19 +128,49 @@ class _LocationPermissionScreenState
   }
 
   /// Runs everything that happens once location permission is confirmed
-  /// granted — starting tracking and requesting the two follow-on system
-  /// permissions — exactly once at a time. See [_isCompletingSetup]'s doc
-  /// comment for why the guard is needed: each step below can itself
-  /// trigger a resume that re-enters this same method via
-  /// [didChangeAppLifecycleState].
+  /// granted — starting tracking and requesting the follow-on system
+  /// permissions the new engine needs — exactly once at a time. See
+  /// [_isCompletingSetup]'s doc comment for why the guard is needed: each
+  /// step below can itself trigger a resume that re-enters this same
+  /// method via [didChangeAppLifecycleState].
   Future<void> _completePostPermissionSetup() async {
     if (_isCompletingSetup) return;
     _isCompletingSetup = true;
     try {
-      final controller = ref.read(locationTrackingControllerProvider.notifier);
-      await controller.startTracking();
+      // Deliberately does NOT call
+      // locationTrackingControllerProvider.notifier.startTracking() here
+      // anymore — that opened LocationService's app-wide geolocator
+      // "anchor" stream (running for the rest of the app's life), whose
+      // only actual consumer was app_bar.dart's cosmetic tracking-active
+      // dot (nothing reads its position data — confirmed by searching for
+      // other consumers). Left running, it silently competed with any
+      // other screen's own one-shot LocationService.getCurrentLocation()
+      // call (e.g. geofence_override_request_screen.dart) for
+      // geolocator_android's single shared native engine — the same class
+      // of multi-stream-contention bug the flutter_background_geolocation
+      // migration exists to eliminate, just recurring on a screen outside
+      // that migration's scope. See the "Phase 3" plan.
+
+      // Upgrades to background ("Allow all the time") location + motion/
+      // activity-recognition authorization in one call — the plugin's own
+      // requestPermission() (no explicit Permission passed) requests
+      // everything its current config needs, using
+      // BackgroundGeolocationService.configure's backgroundPermissionRationale
+      // for the background-location step. The plain OS grant above only
+      // gets "while using the app"; without this, pings after clock-in
+      // would silently stop the moment the app backgrounds. A denial here
+      // isn't fatal to this screen — foreground use still works — so it's
+      // logged, not surfaced as an error.
+      try {
+        await ref.read(backgroundGeolocationServiceProvider).requestPermission();
+      } catch (e) {
+        developer.log(
+          '[LocationPermissionScreen] background/motion permission not fully granted: $e',
+          name: 'LocationPermissionScreen',
+        );
+      }
+
       await _requestBatteryOptimizationExemptionIfNeeded();
-      await _requestActivityRecognitionPermissionIfNeeded();
 
       if (mounted) {
         context.go('/');
@@ -152,29 +183,16 @@ class _LocationPermissionScreenState
   /// Requests the battery-optimization exemption, right after location
   /// permission is granted — the same screen has already explained why
   /// background tracking matters (BackgroundLocationDisclosure above), so
-  /// this isn't an unprompted system dialog. Confirmed by device testing:
-  /// without this exemption, broadcast delivery (BOOT_COMPLETED included)
-  /// can be blocked outright regardless of anything else the app does
-  /// correctly — see BackgroundLocationService.requestBatteryOptimizationExemption.
+  /// this isn't an unprompted system dialog. Confirmed by device testing
+  /// (on the old native engine, same underlying OS mechanism): without this
+  /// exemption, background delivery can be throttled regardless of
+  /// anything else the app does correctly — see
+  /// BackgroundGeolocationService.requestBatteryOptimizationExemption.
   Future<void> _requestBatteryOptimizationExemptionIfNeeded() async {
-    final service = ref.read(backgroundLocationServiceProvider);
+    final service = ref.read(backgroundGeolocationServiceProvider);
     final alreadyExempt = await service.isIgnoringBatteryOptimizations();
     if (!alreadyExempt) {
       await service.requestBatteryOptimizationExemption();
-    }
-  }
-
-  /// Best-effort, same reasoning as the battery-optimization exemption
-  /// above: this screen has already explained why background tracking
-  /// matters, so this isn't an unprompted system dialog. A denial is a safe
-  /// no-op — it just means LocationTrackingService never widens its ping
-  /// interval for a stationary agent (see
-  /// LocationTrackingService.startMotionUpdates); tracking itself is
-  /// unaffected either way.
-  Future<void> _requestActivityRecognitionPermissionIfNeeded() async {
-    final status = await ph.Permission.activityRecognition.status;
-    if (!status.isGranted) {
-      await ph.Permission.activityRecognition.request();
     }
   }
 

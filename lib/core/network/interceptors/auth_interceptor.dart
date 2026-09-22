@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../../../features/auth/data/auth_controller.dart';
 import '../../config/app_config.dart';
-import '../../providers/location_providers.dart';
 import '../../storage/token_storage.dart';
 
 /// Handles JWT token attachment and automatic refresh
@@ -146,29 +143,6 @@ class AuthInterceptor extends QueuedInterceptor {
           accessToken: accessToken,
           refreshToken: newRefreshToken,
           accessExpiresIn: Duration(seconds: expiresIn),
-        );
-
-        // Best-effort, fire-and-forget: keeps the native background
-        // tracking engine's own encrypted token copy (SecureTokenStore.kt)
-        // from drifting out of sync with this one. It refreshes
-        // independently (no Flutter engine may be alive to ask this
-        // interceptor for a token) — if the backend rotates refresh tokens
-        // on use, whichever side refreshes first invalidates the other's
-        // copy, and native has no way back from a rejected refresh on its
-        // own. This runs on every refresh this interceptor performs
-        // (proactive and reactive), including ones triggered by polling
-        // that keeps running while the screen is locked, so native's copy
-        // gets a chance to catch up well before it goes stale.
-        unawaited(
-          _ref
-              .read(backgroundLocationServiceProvider)
-              .syncTokens(
-                accessToken: accessToken,
-                refreshToken: newRefreshToken,
-                accessExpiresAt: DateTime.now().add(
-                  Duration(seconds: expiresIn),
-                ),
-              ),
         );
 
         return true;

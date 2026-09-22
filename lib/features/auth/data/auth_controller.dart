@@ -2,9 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/database/isar_database.dart';
-import '../../../core/providers/location_providers.dart';
 import '../../../core/providers/notification_providers.dart';
-import '../../../core/storage/token_storage.dart';
 import 'auth_repository.dart';
 import 'auth_state.dart';
 import '../domain/user.dart';
@@ -51,13 +49,6 @@ class AuthController extends _$AuthController {
       },
       (user) {
         state = AuthState.authenticated(user: user);
-        // A cold start restoring an existing session is actually the more
-        // common trigger than a fresh login for most users — and after a
-        // long-running app (many hours, many background refreshes), this is
-        // exactly the moment the native tracking engine's own token copy is
-        // most likely to have drifted stale. See login()'s call below for
-        // the full reasoning.
-        _syncTokensToNativeTracking();
       },
     );
   }
@@ -80,34 +71,8 @@ class AuthController extends _$AuthController {
       },
       (user) {
         state = AuthState.authenticated(user: user);
-        // A brand-new login never goes through AuthInterceptor's refresh
-        // path (that only fires for an *existing* token nearing expiry) or
-        // BackgroundLocationService.startTracking (only fires on clock-in)
-        // — so without this, native's SecureTokenStore never learns about
-        // fresh-login tokens at all until one of those happens to occur
-        // later. Push it now.
-        _syncTokensToNativeTracking();
       },
     );
-  }
-
-  /// Best-effort, fire-and-forget push of the current tokens to the native
-  /// background tracking engine's own encrypted copy (SecureTokenStore.kt)
-  /// — see BackgroundLocationService.syncTokens and its other call sites
-  /// (AuthInterceptor post-refresh, app-resume in main.dart) for the full
-  /// picture of why native needs to be told about tokens proactively rather
-  /// than only seeding once at clock-in.
-  void _syncTokensToNativeTracking() {
-    TokenStorage().getTokens().then((tokens) {
-      if (tokens == null) return;
-      ref
-          .read(backgroundLocationServiceProvider)
-          .syncTokens(
-            accessToken: tokens.accessToken,
-            refreshToken: tokens.refreshToken,
-            accessExpiresAt: tokens.accessExpiresAt,
-          );
-    });
   }
 
   /// Logout (best-effort)

@@ -14,11 +14,27 @@ const _kBarTrack = Color(0xFFEFEFEC);
 const _kRowDivider = Color(0xFFF0F0EE);
 
 const _weekdayNames = [
-  'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday',
 ];
 const _monthNames = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 String _formatToday() {
@@ -131,18 +147,18 @@ class VisitListScreen extends ConsumerWidget {
     final skippedCount = routeWithVisits.skippedVisits.length;
     final activeVisit = routeWithVisits.activeVisit;
     final pendingOnly = routeWithVisits.pendingVisits;
-    final pendingCount = pendingOnly.length +
+    final pendingCount =
+        pendingOnly.length +
         visits.where((v) => v.status == VisitStatus.inProgress).length;
 
     final nextVisit = pendingOnly.isNotEmpty
         ? (routeWithVisits.sortedVisits
-                  ..sort((a, b) => a.visitOrder.compareTo(b.visitOrder)))
+                ..sort((a, b) => a.visitOrder.compareTo(b.visitOrder)))
               .firstWhere((v) => v.status == VisitStatus.pending)
         : null;
-    final upcoming = pendingOnly
-        .where((v) => v.localId != nextVisit?.localId)
-        .toList()
-      ..sort((a, b) => a.visitOrder.compareTo(b.visitOrder));
+    final upcoming =
+        pendingOnly.where((v) => v.localId != nextVisit?.localId).toList()
+          ..sort((a, b) => a.visitOrder.compareTo(b.visitOrder));
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,15 +213,24 @@ class VisitListScreen extends ConsumerWidget {
                       children: [
                         Text(
                           '$total total',
-                          style: const TextStyle(fontSize: 12, color: kTextMuted),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: kTextMuted,
+                          ),
                         ),
                         Text(
                           '$pendingCount pending',
-                          style: const TextStyle(fontSize: 12, color: kTextMuted),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: kTextMuted,
+                          ),
                         ),
                         Text(
                           '$completed done',
-                          style: const TextStyle(fontSize: 12, color: kTextMuted),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: kTextMuted,
+                          ),
                         ),
                       ],
                     ),
@@ -224,7 +249,7 @@ class VisitListScreen extends ConsumerWidget {
                 const SizedBox(height: 8),
                 _NextOutletCard(
                   visit: activeVisit,
-                  ctaLabel: 'Continue Visit',
+                  ctaLabel: 'End Visit',
                   onTap: () => context.push(
                     '/daily-route/visit/${activeVisit.localId}/active',
                   ),
@@ -258,8 +283,9 @@ class VisitListScreen extends ConsumerWidget {
                         _UpcomingRow(
                           visit: upcoming[i],
                           isLast: i == upcoming.length - 1,
-                          onTap: () => context
-                              .push('/daily-route/visit/${upcoming[i].localId}'),
+                          onTap: () => context.push(
+                            '/daily-route/visit/${upcoming[i].localId}',
+                          ),
                         ),
                     ],
                   ),
@@ -364,7 +390,10 @@ class VisitListScreen extends ConsumerWidget {
           )
           .toList();
 
-      skipResults = await BulkSkipReasonsDialog.show(context, visits: bulkVisits);
+      skipResults = await BulkSkipReasonsDialog.show(
+        context,
+        visits: bulkVisits,
+      );
       if (skipResults == null) return; // User cancelled
     }
 
@@ -545,7 +574,11 @@ class _NextOutletCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 4),
-                        const Icon(Icons.arrow_forward, size: 14, color: kTextDark),
+                        const Icon(
+                          Icons.arrow_forward,
+                          size: 14,
+                          color: kTextDark,
+                        ),
                       ],
                     ),
                   ),
@@ -590,7 +623,10 @@ class _UpcomingRow extends StatelessWidget {
                 children: [
                   Text(
                     '${visit.visitOrder.toString().padLeft(2, '0')} · ${visit.outletName}',
-                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -43,9 +43,12 @@ dependencies:
   # Location
   geolocator: ^13.0.2
   permission_handler: ^11.3.1
-  
-  # Background tasks & device info
-  workmanager: ^0.9.0
+  # Background tracking/geofencing engine — replacing the custom native
+  # engine + geolocator's continuous-stream usage. See the "Phase 3" plan
+  # in /Users/stephen/.claude/plans/enchanted-juggling-ocean.md.
+  flutter_background_geolocation: ^5.7.0
+
+  # Device info
   battery_plus: ^6.0.3
   
   # Local storage

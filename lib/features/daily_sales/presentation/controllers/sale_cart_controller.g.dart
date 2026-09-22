@@ -7,14 +7,15 @@ part of 'sale_cart_controller.dart';
 // **************************************************************************
 
 String _$saleCartControllerHash() =>
-    r'50e4e284da47ab5db6f951357074aad5d6b6bd22';
+    r'6d12f8464cdc0449133af77c2adb20753a6c30dd';
 
 /// Controller for building and submitting the register-sale cart.
 ///
-/// Product resolution (barcode scan + search) uses the products feature's
-/// catalogue browser (`GET /products`, via `productsRemoteDataSourceProvider`)
-/// rather than a second product data path - always live, never cached, and
-/// independent of any stock take session.
+/// Product resolution (barcode scan + search) reuses the stock_take
+/// feature's outlet product catalogue (`GET /product-catalogue`, via
+/// `stockTakeRepositoryProvider.getCustomerProducts`) rather than a second
+/// product data path - outlet-scoped by numeric customer id, not cached,
+/// and independent of any stock take session.
 ///
 /// Copied from [SaleCartController].
 @ProviderFor(SaleCartController)

@@ -15,6 +15,16 @@ if (keystorePropertiesFile.exists()) {
     keystorePropertiesFile.inputStream().use { keystoreProperties.load(it) }
 }
 
+// flutter_background_geolocation (Transistorsoft) trial/production license
+// key — lives in android/local.properties (already gitignored, same file
+// Flutter itself uses for sdk.dir/flutter.sdk), never committed.
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.inputStream().use { localProperties.load(it) }
+}
+val transistorsoftLicenseKey = localProperties.getProperty("transistorsoft.license.key", "")
+
 android {
     namespace = "com.mikappliance.outletManager"
     compileSdk = 36
@@ -38,6 +48,8 @@ android {
         targetSdk = 36
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        manifestPlaceholders["transistorsoftLicenseKey"] = transistorsoftLicenseKey
     }
 
     signingConfigs {
@@ -70,12 +82,4 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
-
-    // Native background location tracking engine (see
-    // lib/core/location/background_location_service.dart and
-    // android/app/src/main/kotlin/.../location/).
-    implementation("com.google.android.gms:play-services-location:21.3.0")
-    implementation("androidx.work:work-runtime-ktx:2.9.1")
-    implementation("androidx.security:security-crypto:1.1.0-alpha06")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 }

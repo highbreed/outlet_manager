@@ -640,7 +640,7 @@ class _OverrideForVisitProviderElement
   String get visitLocalId => (origin as OverrideForVisitProvider).visitLocalId;
 }
 
-String _$dayStatusPollHash() => r'6e9304321a4c37b4d072a82a3a93870b81ce3cc5';
+String _$dayStatusPollHash() => r'834737fe9285e8f74f261d7d4acf38db4b42add5';
 
 /// Polled snapshot of the agent's day from `GET /visits/routes/day-status`
 /// — blocked / not scheduled / not activated / active / at outlet / in
@@ -699,7 +699,7 @@ final routeActivationNotifierProvider =
 
 typedef _$RouteActivationNotifier =
     AutoDisposeNotifier<AsyncValue<DailyRoute?>>;
-String _$clockInNotifierHash() => r'f0cdd0c0a7885485c534423092f576030f7fd32d';
+String _$clockInNotifierHash() => r'ef1a5e39beb93a3cbbf0c9e9883bca79041dce1b';
 
 /// Notifier for clock-in action.
 ///
@@ -720,7 +720,7 @@ final clockInNotifierProvider =
     );
 
 typedef _$ClockInNotifier = AutoDisposeNotifier<AsyncValue<OutletVisit?>>;
-String _$clockOutNotifierHash() => r'841eb04951e587cb36d6f2d17b3e1c402a3f35ff';
+String _$clockOutNotifierHash() => r'b1b9a0a1fc68f69e69ef70c61dfa3644aeea04b8';
 
 /// Notifier for clock-out action.
 ///
@@ -785,7 +785,7 @@ final routeCloseNotifierProvider =
 
 typedef _$RouteCloseNotifier = AutoDisposeNotifier<AsyncValue<DailyRoute?>>;
 String _$geofenceOverrideNotifierHash() =>
-    r'22f393f91551142d863e50d4a623277a6447c132';
+    r'364530f80eff4ef561af59a842f461978d46ebed';
 
 /// Notifier for geofence override request.
 ///

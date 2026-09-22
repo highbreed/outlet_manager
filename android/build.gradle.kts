@@ -2,6 +2,9 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // flutter_background_geolocation (Transistorsoft) — its Android AAR
+        // isn't published to Maven Central/Google's repo.
+        maven(url = "https://maven.transistorsoft.com")
     }
 }
 

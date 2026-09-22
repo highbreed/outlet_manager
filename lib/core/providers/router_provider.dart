@@ -20,7 +20,6 @@ import '../../features/replenishment/replenishment.dart';
 import '../../features/shelf_share/shelf_share.dart';
 import '../../features/facings_count/facings_count.dart';
 import '../../features/visit_schedules/visit_schedules.dart';
-import '../../features/debug/geofence_debug_screen.dart';
 
 /// Lets [GoRouter] re-run its `redirect` callback whenever
 /// [locationPermissionStatusProvider] emits, without rebuilding the whole
@@ -216,15 +215,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/help',
         builder: (context, state) => const HelpCenterScreen(),
       ),
-      // Temporary field-testing tool for the native background tracking
-      // engine — see GeofenceDebugScreen's doc comment. Entry point in
-      // MenuScreen is gated behind kDebugMode; this route itself is left
-      // ungated for simplicity (unreachable without that entry point).
-      GoRoute(
-        path: '/debug/geofence',
-        builder: (context, state) => const GeofenceDebugScreen(),
-      ),
-
       // ===== Daily Route Feature Routes =====
       GoRoute(
         path: '/daily-route',

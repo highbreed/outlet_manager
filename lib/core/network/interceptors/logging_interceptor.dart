@@ -48,10 +48,21 @@ class LoggingInterceptor extends Interceptor {
       if (duration != null) {
         debugPrint('│ Duration: ${duration}ms');
       }
-      // Log sanitized response body for debugging
+      // Log sanitized response body for debugging — chunked, since a
+      // single long line here silently gets truncated by Android's
+      // per-log-entry size limit (~4KB) rather than by anything in this
+      // app, hiding whatever comes after that point in the JSON.
+      // TEMPORARY, same as the native verbose logger — remove once the
+      // day-status/activeVisit investigation is done.
       if (response.data != null) {
-        final sanitizedData = _sanitizeBody(response.data);
-        debugPrint('│ Body: $sanitizedData');
+        final sanitizedData = _sanitizeBody(response.data).toString();
+        const chunkSize = 800;
+        for (var i = 0; i < sanitizedData.length; i += chunkSize) {
+          final end = (i + chunkSize < sanitizedData.length)
+              ? i + chunkSize
+              : sanitizedData.length;
+          debugPrint('│ Body[${i ~/ chunkSize}]: ${sanitizedData.substring(i, end)}');
+        }
       }
       debugPrint('└────────────────────────────────────────────────────');
     }
