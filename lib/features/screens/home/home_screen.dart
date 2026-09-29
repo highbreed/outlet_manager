@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/core.dart';
 import '../../auth/auth.dart';
 import '../../daily_route/daily_route.dart';
+import '../../outlet_mapping/presentation/widgets/mapping_request_card.dart';
 import 'widgets/widgets.dart';
 
 /// Main home screen shown after successful authentication.
@@ -21,6 +22,11 @@ class HomeScreen extends ConsumerWidget {
     // still feeds ActiveVisitCard's own live duration ticker.
     final dayStatus = ref.watch(dayStatusPollProvider).valueOrNull;
     final hasActiveVisit = dayStatus?.status == DayStatus.atOutlet;
+    // Same source ActiveVisitCard itself reads (activeVisitProvider is
+    // dayStatusPollProvider-sourced) — kept as a separate watch here
+    // rather than threaded through ActiveVisitCard so the mapping card
+    // still renders even before/without ActiveVisitCard's own build.
+    final activeVisit = ref.watch(activeVisitProvider);
     final routeInProgress =
         dayStatus != null &&
         (dayStatus.status == DayStatus.active ||
@@ -41,6 +47,10 @@ class HomeScreen extends ConsumerWidget {
               const SizedBox(height: 10),
               if (hasActiveVisit) ...[
                 const ActiveVisitCard(),
+                const SizedBox(height: 18),
+              ],
+              if (hasActiveVisit && activeVisit != null) ...[
+                MappingRequestCard(visit: activeVisit),
                 const SizedBox(height: 18),
               ],
               const RouteStatusCard(),

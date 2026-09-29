@@ -470,7 +470,7 @@ final canCloseRouteProvider = AutoDisposeProvider<bool>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CanCloseRouteRef = AutoDisposeProviderRef<bool>;
-String _$overrideForVisitHash() => r'1db064f3be6af3d06e9ebc291be021c4773d9fc3';
+String _$overrideForVisitHash() => r'c7d32e97ac1cf945aafcdec876d1c565f19f19ff';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -493,31 +493,59 @@ class _SystemHash {
   }
 }
 
-/// Loads the most recent override for a given visit from local storage
-/// regardless of status (pending/approved/rejected/expired).
-/// Used by the visit detail screen to show a status banner.
+/// Loads the most recent override for a given visit, regardless of status
+/// (pending/approved/rejected/expired). Used by the visit detail screen
+/// to show a status banner and to decide whether the clock-in button can
+/// bypass the geofence check — a decision consequential enough that a
+/// stale local snapshot isn't good enough. The local record is only the
+/// starting point; if one exists, this actively re-checks its status
+/// with the backend (same "don't trust a possibly-stale cached value for
+/// a security-relevant gate" principle already applied to biometric
+/// status — see biometricStatusProvider) before returning it, same as
+/// GeofenceOverrideNotifier.loadExistingForVisit.
 ///
 /// Copied from [overrideForVisit].
 @ProviderFor(overrideForVisit)
 const overrideForVisitProvider = OverrideForVisitFamily();
 
-/// Loads the most recent override for a given visit from local storage
-/// regardless of status (pending/approved/rejected/expired).
-/// Used by the visit detail screen to show a status banner.
+/// Loads the most recent override for a given visit, regardless of status
+/// (pending/approved/rejected/expired). Used by the visit detail screen
+/// to show a status banner and to decide whether the clock-in button can
+/// bypass the geofence check — a decision consequential enough that a
+/// stale local snapshot isn't good enough. The local record is only the
+/// starting point; if one exists, this actively re-checks its status
+/// with the backend (same "don't trust a possibly-stale cached value for
+/// a security-relevant gate" principle already applied to biometric
+/// status — see biometricStatusProvider) before returning it, same as
+/// GeofenceOverrideNotifier.loadExistingForVisit.
 ///
 /// Copied from [overrideForVisit].
 class OverrideForVisitFamily
     extends Family<AsyncValue<GeofenceOverrideRequest?>> {
-  /// Loads the most recent override for a given visit from local storage
-  /// regardless of status (pending/approved/rejected/expired).
-  /// Used by the visit detail screen to show a status banner.
+  /// Loads the most recent override for a given visit, regardless of status
+  /// (pending/approved/rejected/expired). Used by the visit detail screen
+  /// to show a status banner and to decide whether the clock-in button can
+  /// bypass the geofence check — a decision consequential enough that a
+  /// stale local snapshot isn't good enough. The local record is only the
+  /// starting point; if one exists, this actively re-checks its status
+  /// with the backend (same "don't trust a possibly-stale cached value for
+  /// a security-relevant gate" principle already applied to biometric
+  /// status — see biometricStatusProvider) before returning it, same as
+  /// GeofenceOverrideNotifier.loadExistingForVisit.
   ///
   /// Copied from [overrideForVisit].
   const OverrideForVisitFamily();
 
-  /// Loads the most recent override for a given visit from local storage
-  /// regardless of status (pending/approved/rejected/expired).
-  /// Used by the visit detail screen to show a status banner.
+  /// Loads the most recent override for a given visit, regardless of status
+  /// (pending/approved/rejected/expired). Used by the visit detail screen
+  /// to show a status banner and to decide whether the clock-in button can
+  /// bypass the geofence check — a decision consequential enough that a
+  /// stale local snapshot isn't good enough. The local record is only the
+  /// starting point; if one exists, this actively re-checks its status
+  /// with the backend (same "don't trust a possibly-stale cached value for
+  /// a security-relevant gate" principle already applied to biometric
+  /// status — see biometricStatusProvider) before returning it, same as
+  /// GeofenceOverrideNotifier.loadExistingForVisit.
   ///
   /// Copied from [overrideForVisit].
   OverrideForVisitProvider call(String visitLocalId) {
@@ -546,16 +574,30 @@ class OverrideForVisitFamily
   String? get name => r'overrideForVisitProvider';
 }
 
-/// Loads the most recent override for a given visit from local storage
-/// regardless of status (pending/approved/rejected/expired).
-/// Used by the visit detail screen to show a status banner.
+/// Loads the most recent override for a given visit, regardless of status
+/// (pending/approved/rejected/expired). Used by the visit detail screen
+/// to show a status banner and to decide whether the clock-in button can
+/// bypass the geofence check — a decision consequential enough that a
+/// stale local snapshot isn't good enough. The local record is only the
+/// starting point; if one exists, this actively re-checks its status
+/// with the backend (same "don't trust a possibly-stale cached value for
+/// a security-relevant gate" principle already applied to biometric
+/// status — see biometricStatusProvider) before returning it, same as
+/// GeofenceOverrideNotifier.loadExistingForVisit.
 ///
 /// Copied from [overrideForVisit].
 class OverrideForVisitProvider
     extends AutoDisposeFutureProvider<GeofenceOverrideRequest?> {
-  /// Loads the most recent override for a given visit from local storage
-  /// regardless of status (pending/approved/rejected/expired).
-  /// Used by the visit detail screen to show a status banner.
+  /// Loads the most recent override for a given visit, regardless of status
+  /// (pending/approved/rejected/expired). Used by the visit detail screen
+  /// to show a status banner and to decide whether the clock-in button can
+  /// bypass the geofence check — a decision consequential enough that a
+  /// stale local snapshot isn't good enough. The local record is only the
+  /// starting point; if one exists, this actively re-checks its status
+  /// with the backend (same "don't trust a possibly-stale cached value for
+  /// a security-relevant gate" principle already applied to biometric
+  /// status — see biometricStatusProvider) before returning it, same as
+  /// GeofenceOverrideNotifier.loadExistingForVisit.
   ///
   /// Copied from [overrideForVisit].
   OverrideForVisitProvider(String visitLocalId)
@@ -640,6 +682,29 @@ class _OverrideForVisitProviderElement
   String get visitLocalId => (origin as OverrideForVisitProvider).visitLocalId;
 }
 
+String _$lunchBreakHash() => r'd8ff381b1c3aafc502e4370c4976d0b8675bd6ac';
+
+/// The agent's lunch-break state for today, sourced from
+/// [dayStatusPollProvider] — never decided locally. `null` means
+/// day-status hasn't loaded yet; a resolved [LunchBreakState.unavailable]
+/// is a distinct, real answer from the backend and must not be confused
+/// with "still loading" by defaulting one into the other.
+///
+/// Copied from [lunchBreak].
+@ProviderFor(lunchBreak)
+final lunchBreakProvider = AutoDisposeProvider<LunchBreak?>.internal(
+  lunchBreak,
+  name: r'lunchBreakProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$lunchBreakHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef LunchBreakRef = AutoDisposeProviderRef<LunchBreak?>;
 String _$dayStatusPollHash() => r'834737fe9285e8f74f261d7d4acf38db4b42add5';
 
 /// Polled snapshot of the agent's day from `GET /visits/routes/day-status`
@@ -699,7 +764,7 @@ final routeActivationNotifierProvider =
 
 typedef _$RouteActivationNotifier =
     AutoDisposeNotifier<AsyncValue<DailyRoute?>>;
-String _$clockInNotifierHash() => r'ef1a5e39beb93a3cbbf0c9e9883bca79041dce1b';
+String _$clockInNotifierHash() => r'42e9f6a0befbeb466adc50a04e1630ea8059f012';
 
 /// Notifier for clock-in action.
 ///
@@ -785,7 +850,7 @@ final routeCloseNotifierProvider =
 
 typedef _$RouteCloseNotifier = AutoDisposeNotifier<AsyncValue<DailyRoute?>>;
 String _$geofenceOverrideNotifierHash() =>
-    r'364530f80eff4ef561af59a842f461978d46ebed';
+    r'eac0be19729d41e9b1f81728d34cfdaf845acc65';
 
 /// Notifier for geofence override request.
 ///
@@ -807,5 +872,34 @@ final geofenceOverrideNotifierProvider =
 
 typedef _$GeofenceOverrideNotifier =
     AutoDisposeNotifier<AsyncValue<GeofenceOverrideRequest?>>;
+String _$lunchBreakNotifierHash() =>
+    r'0223e905b9ff9cf7f80eb07159ba98285f7919e2';
+
+/// Notifier for starting/ending today's lunch break.
+///
+/// This notifier's own [AsyncValue] only drives the Start/End button's
+/// loading/error affordance — the lunch state the UI actually *renders*
+/// always comes from [lunchBreakProvider]. Both actions reconcile against
+/// a freshly-refetched day-status on every outcome, success or failure:
+/// a lost response after a real server-side success (or `/end` losing a
+/// race against automatic server-side expiry, returning `NO_LUNCH_BREAK`)
+/// must never be shown to the agent as a failure when the backend already
+/// has it right. Only a failure that *still* reproduces after reconciling
+/// is surfaced as a real error.
+///
+/// Copied from [LunchBreakNotifier].
+@ProviderFor(LunchBreakNotifier)
+final lunchBreakNotifierProvider =
+    AutoDisposeNotifierProvider<LunchBreakNotifier, AsyncValue<void>>.internal(
+      LunchBreakNotifier.new,
+      name: r'lunchBreakNotifierProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$lunchBreakNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
+
+typedef _$LunchBreakNotifier = AutoDisposeNotifier<AsyncValue<void>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

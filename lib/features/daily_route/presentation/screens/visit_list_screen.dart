@@ -238,6 +238,8 @@ class VisitListScreen extends ConsumerWidget {
                 ),
               ),
 
+              const LunchBreakBanner(),
+
               if (skippedCount > 0) ...[
                 const SizedBox(height: 12),
                 _SkippedOutletsLink(count: skippedCount),

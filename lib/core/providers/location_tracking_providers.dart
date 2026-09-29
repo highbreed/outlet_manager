@@ -51,31 +51,36 @@ final locationPermissionStatusProvider =
       }
     });
 
-/// Location tracking state
+/// Polls (every 5s, same cadence as [locationPermissionStatusProvider])
+/// whether "Full screen intents" access is granted — Android 14+ only,
+/// always `true` on older Android and iOS (see
+/// `BackgroundGeolocationService.isFullScreenIntentPermissionGranted`).
+/// Backs the mandatory gate to `FullScreenIntentPermissionScreen`: without
+/// this permission, the native reboot reminder
+/// (`TrackingReminderScheduler`) silently downgrades from a full-screen
+/// alarm to an easily-missed heads-up notification.
+final fullScreenIntentPermissionGrantedProvider = StreamProvider<bool>((
+  ref,
+) async* {
+  final service = ref.watch(backgroundGeolocationServiceProvider);
+  yield await service.isFullScreenIntentPermissionGranted();
+  await for (final _ in Stream.periodic(const Duration(seconds: 5))) {
+    yield await service.isFullScreenIntentPermissionGranted();
+  }
+});
+
+/// Location tracking state — just the last permission-request error, if
+/// any. [currentPosition]/continuous tracking fields were removed with the
+/// rest of this controller's dead tracking methods (see the "Phase 3"
+/// plan, Stage 4) — nothing has read tracking state from here since
+/// app_bar.dart was switched onto activeVisitProvider instead.
 class LocationTrackingState {
-  final bool isTracking;
-  final LocationData? currentPosition;
   final String? error;
 
-  const LocationTrackingState({
-    this.isTracking = false,
-    this.currentPosition,
-    this.error,
-  });
+  const LocationTrackingState({this.error});
 
-  // Alias for compatibility
-  LocationData? get currentLocation => currentPosition;
-
-  LocationTrackingState copyWith({
-    bool? isTracking,
-    LocationData? currentPosition,
-    String? error,
-  }) {
-    return LocationTrackingState(
-      isTracking: isTracking ?? this.isTracking,
-      currentPosition: currentPosition ?? this.currentPosition,
-      error: error ?? this.error,
-    );
+  LocationTrackingState copyWith({String? error}) {
+    return LocationTrackingState(error: error ?? this.error);
   }
 }
 
@@ -109,45 +114,6 @@ class LocationTrackingController extends StateNotifier<LocationTrackingState> {
   /// Open location settings
   Future<bool> openLocationSettings() async {
     return await _locationService.openLocationSettings();
-  }
-
-  Future<void> startTracking() async {
-    try {
-      state = state.copyWith(isTracking: true, error: null);
-      await _locationService.startTracking();
-
-      // Listen to position updates
-      _locationService.locationStream.listen(
-        (locationData) {
-          state = state.copyWith(currentPosition: locationData);
-        },
-        onError: (error) {
-          state = state.copyWith(error: error.toString());
-        },
-      );
-    } catch (e) {
-      state = state.copyWith(isTracking: false, error: e.toString());
-    }
-  }
-
-  Future<void> stopTracking() async {
-    try {
-      await _locationService.stopTracking();
-      state = state.copyWith(isTracking: false);
-    } catch (e) {
-      state = state.copyWith(error: e.toString());
-    }
-  }
-
-  Future<LocationData?> getCurrentPosition() async {
-    try {
-      final location = await _locationService.getCurrentLocation();
-      state = state.copyWith(currentPosition: location);
-      return location;
-    } catch (e) {
-      state = state.copyWith(error: e.toString());
-      return null;
-    }
   }
 }
 

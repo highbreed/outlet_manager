@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import '../../../../core/network/failures.dart';
 import '../entities/daily_route.dart';
 import '../entities/outlet_visit.dart';
+import '../entities/lunch_break.dart';
 
 /// Repository interface for daily route operations.
 ///
@@ -111,6 +112,19 @@ abstract class DailyRouteRepository {
   Future<Either<Failure, List<OutletVisit>>> getVisitsForRoute(
     String routeLocalId,
   );
+
+  // === Lunch Break ===
+
+  /// Start today's lunch break. [latitude]/[longitude]/[accuracyMeters]
+  /// are optional and never block this call — see [LunchBreak].
+  Future<Either<Failure, LunchBreak>> startLunchBreak({
+    double? latitude,
+    double? longitude,
+    double? accuracyMeters,
+  });
+
+  /// End today's lunch break early. Safe to call repeatedly.
+  Future<Either<Failure, LunchBreak>> endLunchBreak();
 }
 
 /// Parameters for skipping a visit during route close.

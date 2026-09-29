@@ -123,6 +123,15 @@ class OutletVisitModel {
   // === Timestamps ===
   late DateTime createdAt;
   late DateTime updatedAt;
+
+  // === Outlet Mapping ===
+  // Denormalized copy of the visit response's `mapping_request` — null
+  // when this outlet doesn't currently need mapping. Not the source of
+  // truth for an in-progress local capture (MappingSessionModel is); this
+  // only backs the "required" card state before a local session exists.
+  int? mappingRequestId;
+  int? mappingFootprintId;
+  String? mappingFootprintStatus;
 }
 
 /// Status of an outlet visit (Isar enum)

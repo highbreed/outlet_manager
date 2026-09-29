@@ -10,6 +10,7 @@ export 'entities/outlet_visit.dart';
 export 'entities/geofence_override_request.dart';
 export 'entities/skip_reason.dart';
 export 'entities/day_status.dart';
+export 'entities/lunch_break.dart';
 
 // Repositories
 export 'repositories/daily_route_repository.dart';

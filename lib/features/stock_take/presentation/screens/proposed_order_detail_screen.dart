@@ -175,7 +175,11 @@ class _ProposedOrderDetailScreenState
             const SizedBox(height: 18),
             _LineItemsSection(items: _order!.items, currency: _order!.currency),
             const SizedBox(height: 24),
-            _ActionButtons(order: _order!, visitId: widget.visitId),
+            _ActionButtons(
+              order: _order!,
+              visitId: widget.visitId,
+              onConverted: _loadOrder,
+            ),
           ],
         ),
       ),
@@ -234,12 +238,12 @@ class _StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final variant = switch (status) {
-      ProposedOrderStatus.approved => StatusChipVariant.success,
-      ProposedOrderStatus.converted => StatusChipVariant.info,
-      ProposedOrderStatus.pending => StatusChipVariant.warning,
+      ProposedOrderStatus.accepted => StatusChipVariant.success,
+      ProposedOrderStatus.ordered => StatusChipVariant.info,
+      ProposedOrderStatus.sent => StatusChipVariant.warning,
       ProposedOrderStatus.rejected => StatusChipVariant.danger,
       ProposedOrderStatus.draft => StatusChipVariant.neutral,
-      ProposedOrderStatus.expired => StatusChipVariant.neutral,
+      ProposedOrderStatus.quoted => StatusChipVariant.neutral,
       ProposedOrderStatus.unknown => StatusChipVariant.neutral,
     };
     return StatusChip(label: status.displayName, variant: variant);
@@ -471,8 +475,13 @@ class _LineItemRow extends StatelessWidget {
 class _ActionButtons extends ConsumerStatefulWidget {
   final ProposedOrderDetail order;
   final int visitId;
+  final VoidCallback onConverted;
 
-  const _ActionButtons({required this.order, required this.visitId});
+  const _ActionButtons({
+    required this.order,
+    required this.visitId,
+    required this.onConverted,
+  });
 
   @override
   ConsumerState<_ActionButtons> createState() => _ActionButtonsState();
@@ -481,49 +490,50 @@ class _ActionButtons extends ConsumerStatefulWidget {
 class _ActionButtonsState extends ConsumerState<_ActionButtons> {
   _PdfState _pdfState = _PdfState.idle;
   String? _pdfError;
+  bool _isConverting = false;
+  String? _convertError;
+
+  // A converted order can't be converted again, and a rejected quotation
+  // shouldn't be — every other point in the lifecycle (still being
+  // drafted/quoted/sent, or the customer already said yes) is fair game.
+  bool get _canConvert =>
+      widget.order.status != ProposedOrderStatus.ordered &&
+      widget.order.status != ProposedOrderStatus.rejected;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (widget.order.status == ProposedOrderStatus.draft ||
-            widget.order.status == ProposedOrderStatus.pending ||
-            widget.order.status == ProposedOrderStatus.approved)
+        if (_canConvert)
           PrimaryButton(
             label: 'Convert to Sales Order',
             trailingIcon: Icons.shopping_cart_outlined,
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Convert to order coming soon')),
-              );
-            },
+            isLoading: _isConverting,
+            onPressed: _isConverting ? null : _handleConvertToOrder,
           ),
+        if (_convertError != null) ...[
+          const SizedBox(height: 8),
+          Text(
+            _convertError!,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, color: kRedColor),
+          ),
+        ],
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: SecondaryButton(
-                label: 'Email',
-                leadingIcon: Icons.email_outlined,
-                onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Email feature coming soon')),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: SecondaryButton(
-                label: _pdfButtonLabel,
-                leadingIcon: Icons.picture_as_pdf_outlined,
-                onPressed: _pdfState == _PdfState.generating || _pdfState == _PdfState.downloading
-                    ? null
-                    : _handlePdfAction,
-              ),
-            ),
-          ],
+        // No "Email" button here — the quotation is already emailed to the
+        // customer automatically at proposed-order creation time (see
+        // `auto_send_email` in generateProposedOrder/generateVisitProposedOrder),
+        // confirmed by this screen's own customerEmail/emailSentAt "Sent"
+        // chip. There's also no resend-capable backend endpoint scoped
+        // correctly for this visit-consolidated order model — see
+        // sendQuotationEmail's doc comment in stock_take_remote_datasource.dart.
+        SecondaryButton(
+          label: _pdfButtonLabel,
+          leadingIcon: Icons.picture_as_pdf_outlined,
+          onPressed: _pdfState == _PdfState.generating || _pdfState == _PdfState.downloading
+              ? null
+              : _handlePdfAction,
         ),
         if (_pdfState == _PdfState.generating || _pdfState == _PdfState.downloading) ...[
           const SizedBox(height: 12),
@@ -545,6 +555,64 @@ class _ActionButtonsState extends ConsumerState<_ActionButtons> {
         ],
       ],
     );
+  }
+
+  Future<void> _handleConvertToOrder() async {
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Convert to Sales Order?'),
+        content: const Text(
+          'This creates a real sales order from this quotation. This '
+          'action cannot be undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Convert'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true || !mounted) return;
+
+    setState(() {
+      _isConverting = true;
+      _convertError = null;
+    });
+
+    final result = await ref
+        .read(stockTakeSessionControllerProvider.notifier)
+        .convertProposedOrderToSalesOrder(orderId: widget.order.id);
+
+    if (!mounted) return;
+
+    if (result == null || !result.success) {
+      setState(() {
+        _isConverting = false;
+        _convertError = result?.message ??
+            ref.read(stockTakeSessionControllerProvider).errorMessage ??
+            'Failed to convert order';
+      });
+      return;
+    }
+
+    setState(() => _isConverting = false);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          result.salesOrderNumber != null
+              ? 'Converted to sales order ${result.salesOrderNumber}'
+              : 'Converted to sales order',
+        ),
+      ),
+    );
+    widget.onConverted();
   }
 
   String get _pdfButtonLabel {

@@ -1,5 +1,6 @@
 import '../usecases/get_todays_route_usecase.dart';
 import 'daily_route.dart';
+import 'lunch_break.dart';
 
 /// Single-call snapshot of the agent's day, from
 /// `GET /visits/routes/day-status`. Meant to be polled: an admin can close,
@@ -83,6 +84,7 @@ class DayStatusInfo {
   final BlockedRouteSummary? blockedRoute;
   final List<ScheduledStop> scheduledStops;
   final DailyRouteWithVisits? route;
+  final LunchBreak lunchBreak;
 
   const DayStatusInfo({
     required this.status,
@@ -92,5 +94,6 @@ class DayStatusInfo {
     this.blockedRoute,
     this.scheduledStops = const [],
     this.route,
+    required this.lunchBreak,
   });
 }

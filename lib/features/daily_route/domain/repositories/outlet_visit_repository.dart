@@ -46,11 +46,21 @@ abstract class OutletVisitRepository {
   /// - [GeofenceViolationFailure] if outside radius
   /// - [GpsAccuracyFailure] if accuracy > 200m
   /// - [VisitInProgressFailure] if another visit is active
+  /// - [BiometricVerificationFailure.clockInRejected] if [verificationId]
+  ///   is missing/expired/invalid/already-used and the backend enforces
+  ///   verification for this employee
+  ///
+  /// [verificationId] is null for a legacy clock-in — normal when the
+  /// backend reports `clock_in_verification_required: false`. [deviceId]
+  /// is sent alongside a non-null [verificationId] for the backend's
+  /// device-match check.
   Future<Either<Failure, OutletVisit>> clockIn({
     required String visitLocalId,
     required double latitude,
     required double longitude,
     required double accuracyMeters,
+    String? verificationId,
+    String? deviceId,
     String? notes,
   });
 
@@ -142,9 +152,14 @@ abstract class OutletVisitRepository {
   ///
   /// - Override must be approved
   /// - Uses the location from override request
+  ///
+  /// [verificationId]/[deviceId] follow the same optional-when-not-
+  /// enforced rule as [clockIn].
   Future<Either<Failure, OutletVisit>> clockInWithOverride({
     required String visitLocalId,
     required String overrideLocalId,
+    String? verificationId,
+    String? deviceId,
     String? notes,
   });
 

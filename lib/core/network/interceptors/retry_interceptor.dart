@@ -47,6 +47,15 @@ class RetryInterceptor extends Interceptor {
   bool _shouldRetry(DioException err, int retryCount) {
     if (retryCount >= _maxRetries) return false;
 
+    // Explicit opt-out, same pattern as AuthInterceptor's `skipAuth` extra
+    // flag. Used by biometric verify/enroll calls: a blind retry after a
+    // timeout could create a duplicate verification attempt server-side.
+    // Those calls are already excluded by the POST-without-Idempotency-Key
+    // rule below regardless — this exists to make the intent
+    // self-documenting rather than relying on that as an implicit side
+    // effect. See the "Phase 4" plan's "RetryInterceptor" section.
+    if (err.requestOptions.extra['skipRetry'] == true) return false;
+
     // Never retry non-idempotent methods without idempotency key
     final method = err.requestOptions.method.toUpperCase();
     final hasIdempotencyKey =

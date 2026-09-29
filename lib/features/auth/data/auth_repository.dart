@@ -95,6 +95,14 @@ class AuthRepository {
           originalError: e,
         ),
       );
+    } catch (e) {
+      // Not just DioException — a malformed/unexpected response shape
+      // (User.fromJson throwing a TypeError/FormatException) must also
+      // resolve to a Left, not escape uncaught. AuthController._restoreSession
+      // calls this during app startup with no fallback of its own beyond
+      // this Either; an uncaught throw here left session restoration
+      // permanently stuck (see that method's own doc comment).
+      return Left(UnknownFailure(message: e.toString()));
     }
   }
 

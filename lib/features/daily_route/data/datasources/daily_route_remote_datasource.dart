@@ -1,10 +1,16 @@
+import 'dart:developer' as developer;
+
 import 'package:dio/dio.dart';
 
 import '../../domain/entities/daily_route.dart';
 import '../../domain/entities/outlet_visit.dart';
 import '../../domain/entities/geofence_override_request.dart';
 import '../../domain/entities/day_status.dart';
+import '../../domain/entities/lunch_break.dart';
 import '../../domain/usecases/get_todays_route_usecase.dart';
+import '../../../outlet_mapping/domain/entities/mapping_request.dart';
+import '../../../outlet_mapping/data/models/mapping_response_models.dart'
+    show parseBackendTimestampOrNull;
 
 /// Remote data source for daily route operations.
 ///
@@ -56,11 +62,17 @@ abstract class DailyRouteRemoteDataSource {
 
   /// Clock in to a visit
   /// POST /{visit_id}/clock-in
+  ///
+  /// [verificationId]/[deviceId] are omitted from the request body when
+  /// null — a legacy clock-in for an employee not yet enforced. See the
+  /// "Phase 5" plan's section D.
   Future<OutletVisitResponse> clockIn(
     String visitId, {
     required double latitude,
     required double longitude,
     required double accuracy,
+    String? verificationId,
+    String? deviceId,
     String? notes,
     String? overrideRequestId,
   });
@@ -104,6 +116,23 @@ abstract class DailyRouteRemoteDataSource {
   /// Get skip reasons
   /// GET /skip-reasons
   Future<List<SkipReasonResponse>> getSkipReasons();
+
+  // === Lunch Break ===
+
+  /// Start today's lunch break. [latitude]/[longitude]/[accuracyMeters]
+  /// are optional and stored for audit only — never block this call
+  /// waiting for GPS.
+  /// POST /routes/today/lunch-break/start
+  Future<LunchBreakResponse> startLunchBreak({
+    double? latitude,
+    double? longitude,
+    double? accuracyMeters,
+  });
+
+  /// End today's lunch break early. Safe to repeat — an already-ended
+  /// break is returned unchanged.
+  /// POST /routes/today/lunch-break/end
+  Future<LunchBreakResponse> endLunchBreak();
 }
 
 /// Implementation of [DailyRouteRemoteDataSource] using Dio.
@@ -189,6 +218,8 @@ class DailyRouteRemoteDataSourceImpl implements DailyRouteRemoteDataSource {
     required double latitude,
     required double longitude,
     required double accuracy,
+    String? verificationId,
+    String? deviceId,
     String? notes,
     String? overrideRequestId,
   }) async {
@@ -198,6 +229,8 @@ class DailyRouteRemoteDataSourceImpl implements DailyRouteRemoteDataSource {
         'latitude': latitude,
         'longitude': longitude,
         'accuracy_meters': accuracy,
+        if (verificationId != null) 'verification_id': verificationId,
+        if (deviceId != null) 'device_id': deviceId,
         if (notes != null) 'notes': notes,
         if (overrideRequestId != null) 'override_request_id': overrideRequestId,
       },
@@ -273,6 +306,33 @@ class DailyRouteRemoteDataSourceImpl implements DailyRouteRemoteDataSource {
     final response = await _dio.get('$_basePath/skip-reasons');
     final List<dynamic> data = response.data;
     return data.map((json) => SkipReasonResponse.fromJson(json)).toList();
+  }
+
+  // === Lunch Break ===
+
+  @override
+  Future<LunchBreakResponse> startLunchBreak({
+    double? latitude,
+    double? longitude,
+    double? accuracyMeters,
+  }) async {
+    final response = await _dio.post(
+      '$_basePath/routes/today/lunch-break/start',
+      data: {
+        if (latitude != null) 'latitude': latitude,
+        if (longitude != null) 'longitude': longitude,
+        if (accuracyMeters != null) 'accuracy_meters': accuracyMeters,
+      },
+    );
+    return LunchBreakResponse.fromJson(response.data);
+  }
+
+  @override
+  Future<LunchBreakResponse> endLunchBreak() async {
+    final response = await _dio.post(
+      '$_basePath/routes/today/lunch-break/end',
+    );
+    return LunchBreakResponse.fromJson(response.data);
   }
 }
 
@@ -481,6 +541,7 @@ class OutletVisitResponse {
   final String? visitNotes;
   final String createdAt;
   final String updatedAt;
+  final MappingRequest? mappingRequest;
 
   OutletVisitResponse({
     required this.id,
@@ -520,6 +581,7 @@ class OutletVisitResponse {
     this.visitNotes,
     required this.createdAt,
     required this.updatedAt,
+    this.mappingRequest,
   });
 
   factory OutletVisitResponse.fromJson(Map<String, dynamic> json) {
@@ -602,6 +664,9 @@ class OutletVisitResponse {
           json['created_at'] as String? ?? DateTime.now().toIso8601String(),
       updatedAt:
           json['updated_at'] as String? ?? DateTime.now().toIso8601String(),
+      mappingRequest: json['mapping_request'] != null
+          ? MappingRequest.fromJson(json['mapping_request'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -651,6 +716,7 @@ class OutletVisitResponse {
       visitNotes: visitNotes,
       syncState: SyncState.synced,
       lastSyncedAt: DateTime.now(),
+      mappingRequest: mappingRequest,
     );
   }
 
@@ -962,6 +1028,99 @@ class ScheduledStopResponse {
   );
 }
 
+/// Response DTO for the `lunch_break` object — returned embedded in
+/// `GET /visits/routes/day-status` and directly by the start/end
+/// endpoints. See [LunchBreak].
+class LunchBreakResponse {
+  final String state;
+  final int allowedMinutes;
+  final String? startedAt;
+  final String? endsAt;
+  final String? returnedAt;
+  final String? endReason;
+  final int? remainingSeconds;
+  final int? outletVisitId;
+
+  LunchBreakResponse({
+    required this.state,
+    required this.allowedMinutes,
+    this.startedAt,
+    this.endsAt,
+    this.returnedAt,
+    this.endReason,
+    this.remainingSeconds,
+    this.outletVisitId,
+  });
+
+  factory LunchBreakResponse.fromJson(Map<String, dynamic> json) {
+    return LunchBreakResponse(
+      state: json['state'] as String,
+      allowedMinutes: json['allowed_minutes'] as int? ?? 0,
+      startedAt: json['started_at'] as String?,
+      endsAt: json['ends_at'] as String?,
+      returnedAt: json['returned_at'] as String?,
+      endReason: json['end_reason'] as String?,
+      remainingSeconds: json['remaining_seconds'] as int?,
+      outletVisitId: json['outlet_visit_id'] as int?,
+    );
+  }
+
+  /// Fallback used when `lunch_break` is missing or malformed on a
+  /// day-status response — a lunch-feature contract problem must never
+  /// break parsing of the rest of the (unrelated) route/visit data.
+  factory LunchBreakResponse.unavailable() =>
+      LunchBreakResponse(state: 'unavailable', allowedMinutes: 0);
+
+  LunchBreakState _parseState() {
+    switch (state) {
+      case 'available':
+        return LunchBreakState.available;
+      case 'on_break':
+        return LunchBreakState.onBreak;
+      case 'used':
+        return LunchBreakState.used;
+      case 'unavailable':
+        return LunchBreakState.unavailable;
+      default:
+        developer.log(
+          'lunch_break: unknown state "$state", defaulting to unavailable',
+          name: 'DailyRoute',
+        );
+        return LunchBreakState.unavailable;
+    }
+  }
+
+  LunchBreakEndReason? _parseEndReason() {
+    switch (endReason) {
+      case null:
+        return null;
+      case 'manual':
+        return LunchBreakEndReason.manual;
+      case 'expired':
+        return LunchBreakEndReason.expired;
+      case 'route_closed':
+        return LunchBreakEndReason.routeClosed;
+      default:
+        developer.log(
+          'lunch_break: unknown end_reason "$endReason", dropping it',
+          name: 'DailyRoute',
+        );
+        return null;
+    }
+  }
+
+  LunchBreak toDomain() => LunchBreak(
+    state: _parseState(),
+    allowedMinutes: allowedMinutes,
+    startedAt: parseBackendTimestampOrNull(startedAt),
+    endsAt: parseBackendTimestampOrNull(endsAt),
+    returnedAt: parseBackendTimestampOrNull(returnedAt),
+    endReason: _parseEndReason(),
+    remainingSeconds: remainingSeconds,
+    outletVisitId: outletVisitId,
+  );
+}
+
 /// Response DTO for `GET /visits/routes/day-status` — a single-call
 /// snapshot of the agent's day (blocked / not scheduled / not activated /
 /// active / at outlet / in transit / completed). See [DayStatusInfo].
@@ -973,6 +1132,7 @@ class DayStatusResponse {
   final PendingRouteResponse? blockedRoute;
   final List<ScheduledStopResponse> scheduledStops;
   final DailyRouteWithVisitsResponse? route;
+  final LunchBreakResponse lunchBreak;
 
   DayStatusResponse({
     required this.status,
@@ -982,7 +1142,32 @@ class DayStatusResponse {
     this.blockedRoute,
     this.scheduledStops = const [],
     this.route,
+    required this.lunchBreak,
   });
+
+  /// Defensive: a malformed/missing `lunch_break` field must never break
+  /// parsing of the rest of this response — route/visit data is
+  /// unrelated and must keep working regardless.
+  static LunchBreakResponse _parseLunchBreak(dynamic raw) {
+    if (raw is! Map<String, dynamic>) {
+      developer.log(
+        'day-status: lunch_break missing or malformed, defaulting to unavailable',
+        name: 'DailyRoute',
+      );
+      return LunchBreakResponse.unavailable();
+    }
+    try {
+      return LunchBreakResponse.fromJson(raw);
+    } catch (e, st) {
+      developer.log(
+        'day-status: failed to parse lunch_break: $e',
+        name: 'DailyRoute',
+        error: e,
+        stackTrace: st,
+      );
+      return LunchBreakResponse.unavailable();
+    }
+  }
 
   factory DayStatusResponse.fromJson(Map<String, dynamic> json) {
     return DayStatusResponse(
@@ -1006,6 +1191,7 @@ class DayStatusResponse {
               json['route'] as Map<String, dynamic>,
             )
           : null,
+      lunchBreak: _parseLunchBreak(json['lunch_break']),
     );
   }
 
@@ -1054,6 +1240,7 @@ class DayStatusResponse {
       blockedRoute: blockedRoute?.toDomain(),
       scheduledStops: scheduledStops.map((s) => s.toDomain()).toList(),
       route: routeWithVisits,
+      lunchBreak: lunchBreak.toDomain(),
     );
   }
 }

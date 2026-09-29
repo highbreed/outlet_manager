@@ -5,9 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/device/device_fingerprint.dart';
+import '../../../../core/network/failures.dart';
 import '../../../../core/providers/location_providers.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/widgets/widgets.dart';
+import '../../../biometric_verification/biometric_verification.dart';
 import '../../domain/entities/geofence_override_request.dart';
 import '../../domain/entities/outlet_visit.dart';
 import '../../providers/daily_route_providers.dart';
@@ -163,16 +166,115 @@ class _GeofenceOverrideRequestScreenState
   }
 
   Future<void> _clockInWithOverride(GeofenceOverrideRequest override) async {
+    // An approved override bypasses the geofence check only, never
+    // identity — fresh status decides whether a verification is required
+    // for this employee at all. A fetch failure fails OPEN (treats as not
+    // required); the backend's own clock-in-side rejection is the real
+    // security backstop if that guess is wrong. See the "Phase 5" plan's
+    // "Fail-open design principle".
+    final statusResult = await ref.read(getBiometricStatusUseCaseProvider).call();
+    if (!mounted) return;
+    final requiresVerification = statusResult.fold(
+      (failure) => false,
+      (status) => status.clockInVerificationRequired,
+    );
+
+    String? verificationId;
+    String? deviceId;
+
+    if (requiresVerification) {
+      final outcome = await verifyBiometric(context, purpose: BiometricPurpose.clockIn);
+      debugPrint(
+        '[DIAG-override] verifyBiometric returned: outcome=$outcome '
+        'verified=${outcome?.verified} verificationId=${outcome?.verificationId} '
+        'mounted=$mounted',
+      );
+      if (outcome == null || !outcome.verified || outcome.verificationId == null) {
+        debugPrint('[DIAG-override] _clockInWithOverride bailing out — no valid outcome');
+        return;
+      }
+      verificationId = outcome.verificationId;
+      deviceId = await DeviceFingerprint.getOrCreate();
+    }
+
+    debugPrint('[DIAG-override] calling _attemptClockInWithOverride verificationId=$verificationId');
+    await _attemptClockInWithOverride(
+      override: override,
+      verificationId: verificationId,
+      deviceId: deviceId,
+      allowRetry: true,
+    );
+  }
+
+  /// [allowRetry] bounds the stale-token recovery to a single resend —
+  /// confirmed decision (automatic, not a manual "tap to retry"), see the
+  /// "Phase 5" plan's section D.
+  Future<void> _attemptClockInWithOverride({
+    required GeofenceOverrideRequest override,
+    required String? verificationId,
+    required String? deviceId,
+    required bool allowRetry,
+  }) async {
+    debugPrint(
+      '[DIAG-override] _attemptClockInWithOverride starting: '
+      'visitLocalId=${widget.visitLocalId} overrideLocalId=${override.localId} '
+      'verificationId=$verificationId deviceId=$deviceId allowRetry=$allowRetry',
+    );
     await ref
         .read(geofenceOverrideNotifierProvider.notifier)
         .clockInWithOverride(
           visitLocalId: widget.visitLocalId,
           overrideLocalId: override.localId,
+          verificationId: verificationId,
+          deviceId: deviceId,
         );
 
     final state = ref.read(geofenceOverrideNotifierProvider);
-    if (!state.hasError && mounted) {
-      context.go('/daily-route/visit/${widget.visitLocalId}/active');
+    debugPrint(
+      '[DIAG-override] result: hasError=${state.hasError} error=${state.error} '
+      'value=${state.valueOrNull}',
+    );
+
+    if (!state.hasError) {
+      if (mounted) context.go('/daily-route/visit/${widget.visitLocalId}/active');
+      return;
+    }
+
+    if (!allowRetry || !mounted) return;
+
+    final error = state.error;
+    if (error is! BiometricVerificationFailure) return;
+
+    final reason = error.mapOrNull(clockInRejected: (f) => f.reason);
+
+    if (reason == BiometricClockInRejectionReason.verificationExpired ||
+        reason == BiometricClockInRejectionReason.verificationInvalid) {
+      final outcome = await verifyBiometric(context, purpose: BiometricPurpose.clockIn);
+      if (outcome == null || !outcome.verified || outcome.verificationId == null) {
+        return;
+      }
+      await _attemptClockInWithOverride(
+        override: override,
+        verificationId: outcome.verificationId,
+        deviceId: await DeviceFingerprint.getOrCreate(),
+        allowRetry: false,
+      );
+      return;
+    }
+
+    if (reason == BiometricClockInRejectionReason.verificationAlreadyUsed) {
+      ref.invalidate(todaysRouteProvider);
+      ref.invalidate(dayStatusPollProvider);
+      final refreshed = await ref
+          .read(outletVisitRepositoryProvider)
+          .getVisitByLocalId(widget.visitLocalId);
+      final alreadyInProgress = refreshed.fold(
+        (failure) => false,
+        (v) => v?.status == VisitStatus.inProgress,
+      );
+      if (alreadyInProgress && mounted) {
+        context.go('/daily-route/visit/${widget.visitLocalId}/active');
+      }
     }
   }
 

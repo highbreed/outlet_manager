@@ -6,6 +6,7 @@ import '../database/isar_database.dart';
 import '../location/location_service.dart';
 import '../notifications/notification_service.dart';
 import '../permissions/permission_service.dart';
+import '../providers/initialization_providers.dart';
 import '../providers/notification_providers.dart';
 import '../sync/sync_service.dart';
 
@@ -58,17 +59,49 @@ class AppInitializationService {
   Future<InitializationResult> initializeWithRef(Ref ref) async {
     developer.log('🚀 Starting app initialization...');
 
+    // This service instance outlives a single initializeWithRef() call —
+    // appInitializationServiceProvider is a plain Provider, so it isn't
+    // recreated when appInitializationProvider is invalidated by the error
+    // screen's retry button. Clear here so a retry never shows leftover
+    // status from the previous attempt.
+    _serviceStatus.clear();
+
+    void setPhase(String phase) {
+      developer.log('▶️ $phase');
+      // Deferred to a microtask, not written synchronously: this whole
+      // method runs as appInitializationProvider's own build function, and
+      // the very first call here happens before this function's first
+      // `await` — i.e. still inside that provider's own creation. Riverpod
+      // asserts against a provider modifying another provider's state
+      // while it's still building ("Providers are not allowed to modify
+      // other providers during their initialization"), which this would
+      // trip on every cold start. Scheduling the write as a microtask lets
+      // appInitializationProvider's creation call return first; Dart drains
+      // the microtask queue before any awaited phase can actually progress,
+      // so the UI still updates in the same order, just no longer
+      // synchronously nested inside the other provider's build.
+      Future.microtask(() {
+        ref.read(initializationPhaseProvider.notifier).state = phase;
+      });
+    }
+
     try {
       // Phase 1: Database (no dependencies)
+      setPhase('Starting database…');
       await _initializeDatabase();
 
       // Phase 2: Services that depend only on database
+      setPhase('Checking notifications…');
       await _initializeNotificationService();
+      setPhase('Checking permissions…');
       await _initializePermissionService();
 
       // Phase 3: Services that need other services
+      setPhase('Checking location services…');
       await _initializeLocationService();
+      setPhase('Starting sync service…');
       await _initializeSyncService();
+      setPhase('Connecting push notifications…');
       await _initializeFcmService(ref);
 
       developer.log('✅ App initialization completed successfully');
@@ -84,10 +117,22 @@ class AppInitializationService {
   }
 
   /// Phase 1: Initialize database
+  ///
+  /// Unlike every phase below, this one has no timeout — confirmed the one
+  /// gap left after the FCM hang above was fixed. `IsarDatabase
+  /// .getInstance()` can genuinely hang rather than error on some devices:
+  /// `getApplicationDocumentsDirectory()` is a platform-channel call that
+  /// can stall on certain OEM Android skins, and `Isar.open()` itself can
+  /// block waiting on a native file lock if a previous process was
+  /// force-stopped/OOM-killed mid-write and never released it cleanly —
+  /// both are device/history-dependent, matching "some phones, not
+  /// others" rather than a universal failure. A timeout turns that
+  /// indefinite hang into the same clear, catchable failure every other
+  /// phase already gets.
   Future<void> _initializeDatabase() async {
     try {
       developer.log('📦 Initializing database...');
-      final isar = await IsarDatabase.getInstance();
+      final isar = await IsarDatabase.getInstance().timeout(_phaseTimeout);
       _serviceStatus['database'] = isar.isOpen;
       developer.log('✓ Database initialized');
     } catch (e) {

@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/device/device_fingerprint.dart';
 import '../../../../core/location/location_data.dart';
 import '../../../../core/network/failures.dart';
 import '../../../../core/providers/location_providers.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../../core/widgets/widgets.dart';
+import '../../../biometric_verification/biometric_verification.dart';
 import '../../domain/entities/geofence_override_request.dart';
 import '../../domain/entities/outlet_visit.dart';
 import '../../providers/daily_route_providers.dart';
@@ -187,6 +189,8 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
     GeofenceOverrideRequest? existingOverride,
     bool canClockIn,
   ) {
+    final isOverrideApproved =
+        existingOverride?.status == GeofenceOverrideStatus.approved;
     return SingleChildScrollView(
       padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
       child: Column(
@@ -320,8 +324,27 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
             ],
 
             // Clock in button
+            //
+            // When an override is approved, canClockIn is true purely on
+            // the strength of the override — the raw distance can still
+            // be far outside the geofence (confirmed on-device: 1948m
+            // against a 200m radius). Tapping straight into _clockIn()
+            // here would call the plain, override-unaware
+            // ClockInVisitUseCase, which unconditionally re-validates
+            // that same distance and rejects it — the override would
+            // never actually take effect. GeofenceOverrideRequestScreen
+            // already has the correct, fully working override-aware
+            // clock-in call (clockInWithOverride, which skips the
+            // distance check); route there instead of duplicating that
+            // logic here.
             ClockInButton(
-              onPressed: canClockIn ? () => _clockIn(visit) : null,
+              onPressed: canClockIn
+                  ? () => isOverrideApproved
+                      ? context.push(
+                          '/daily-route/visit/${widget.visitLocalId}/override',
+                        )
+                      : _clockIn(visit)
+                  : null,
               isLoading: clockInState.isLoading,
               isEnabled: canClockIn,
               isClockIn: true,
@@ -406,14 +429,72 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
   Future<void> _clockIn(OutletVisit visit) async {
     // Reuse the live reading the continuous stream above is already
     // keeping current, rather than opening a second, independent
-    // Geolocator request here — while that stream is still subscribed
-    // (it isn't cancelled until dispose()), a concurrent getCurrentLocation()
-    // call is exactly the kind of conflict pauseForegroundAnchor() above
-    // exists to avoid. canClockIn already requires _currentAccuracy != null
-    // before this button is even tappable, so _lastLocation is guaranteed
-    // set by the time this runs.
+    // Geolocator request here — the plugin's own engine doesn't have the
+    // multi-stream contention problem the old geolocator-based anchor did
+    // (see git history). canClockIn already requires _currentAccuracy !=
+    // null before this button is even tappable, so _lastLocation is
+    // guaranteed set by the time this runs.
     final location = _lastLocation!;
 
+    // Fresh status decides whether verification is required for this
+    // employee at all — a fetch failure fails OPEN (treats as not
+    // required): the backend's own clock-in-side rejection is the real
+    // security backstop if that guess is wrong. See the "Phase 5" plan's
+    // "Fail-open design principle".
+    final statusResult = await ref.read(getBiometricStatusUseCaseProvider).call();
+    if (!mounted) return;
+    final requiresVerification = statusResult.fold(
+      (failure) => false,
+      (status) => status.clockInVerificationRequired,
+    );
+
+    String? verificationId;
+    String? deviceId;
+
+    if (requiresVerification) {
+      // canClockIn already means we're within the geofence (or have an
+      // approved override) before this button is even tappable — no
+      // separate pre-check needed here. Verify identity before the actual
+      // clock-in call, not after: never make the agent pass facial
+      // verification only to then discover a geofence/state problem.
+      final outcome = await verifyBiometric(context, purpose: BiometricPurpose.clockIn);
+      debugPrint(
+        '[DIAG] verifyBiometric returned: outcome=$outcome '
+        'verified=${outcome?.verified} verificationId=${outcome?.verificationId} '
+        'mounted=$mounted',
+      );
+      if (outcome == null || !outcome.verified || outcome.verificationId == null) {
+        debugPrint('[DIAG] _clockIn bailing out after verifyBiometric — no valid outcome');
+        return;
+      }
+      verificationId = outcome.verificationId;
+      deviceId = await DeviceFingerprint.getOrCreate();
+    }
+
+    debugPrint('[DIAG] _clockIn calling _attemptClockIn verificationId=$verificationId');
+    await _attemptClockIn(
+      visit: visit,
+      location: location,
+      verificationId: verificationId,
+      deviceId: deviceId,
+      allowRetry: true,
+    );
+  }
+
+  /// [allowRetry] bounds the stale-token recovery to a single resend —
+  /// confirmed decision (automatic, not a manual "tap to retry"), see the
+  /// "Phase 5" plan's section D.
+  Future<void> _attemptClockIn({
+    required OutletVisit visit,
+    required LocationData location,
+    required String? verificationId,
+    required String? deviceId,
+    required bool allowRetry,
+  }) async {
+    debugPrint(
+      '[DIAG] _attemptClockIn starting: visitLocalId=${visit.localId} '
+      'verificationId=$verificationId deviceId=$deviceId allowRetry=$allowRetry',
+    );
     await ref
         .read(clockInNotifierProvider.notifier)
         .clockIn(
@@ -421,12 +502,65 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
           latitude: location.latitude,
           longitude: location.longitude,
           accuracyMeters: location.accuracy,
+          verificationId: verificationId,
+          deviceId: deviceId,
         );
 
-    // Check result
     final state = ref.read(clockInNotifierProvider);
-    if (state.hasValue && state.value != null && mounted) {
-      context.go('/daily-route/visit/${visit.localId}/active');
+    debugPrint(
+      '[DIAG] _attemptClockIn result: hasValue=${state.hasValue} '
+      'value=${state.value} hasError=${state.hasError} error=${state.error}',
+    );
+
+    if (state.hasValue && state.value != null) {
+      if (mounted) context.go('/daily-route/visit/${visit.localId}/active');
+      return;
+    }
+
+    if (!allowRetry || !state.hasError || !mounted) return;
+
+    final error = state.error;
+    if (error is! BiometricVerificationFailure) return;
+
+    final reason = error.mapOrNull(clockInRejected: (f) => f.reason);
+
+    if (reason == BiometricClockInRejectionReason.verificationExpired ||
+        reason == BiometricClockInRejectionReason.verificationInvalid) {
+      // Stale/expired token — re-verify once with a fresh challenge and
+      // retry the clock-in once with the new token; a second failure
+      // surfaces as a normal error, no further looping.
+      final outcome = await verifyBiometric(context, purpose: BiometricPurpose.clockIn);
+      if (outcome == null || !outcome.verified || outcome.verificationId == null) {
+        return;
+      }
+      await _attemptClockIn(
+        visit: visit,
+        location: location,
+        verificationId: outcome.verificationId,
+        deviceId: await DeviceFingerprint.getOrCreate(),
+        allowRetry: false,
+      );
+      return;
+    }
+
+    if (reason == BiometricClockInRejectionReason.verificationAlreadyUsed) {
+      // Reuses the existing today's-route refresh rather than a dedicated
+      // single-visit GET endpoint (none confirmed to exist) — confirmed
+      // decision. If the refreshed visit shows in_progress, this was
+      // already a successful clock-in server-side; treat it as such
+      // rather than erroring.
+      ref.invalidate(todaysRouteProvider);
+      ref.invalidate(dayStatusPollProvider);
+      final refreshed = await ref
+          .read(outletVisitRepositoryProvider)
+          .getVisitByLocalId(visit.localId);
+      final alreadyInProgress = refreshed.fold(
+        (failure) => false,
+        (v) => v?.status == VisitStatus.inProgress,
+      );
+      if (alreadyInProgress && mounted) {
+        context.go('/daily-route/visit/${visit.localId}/active');
+      }
     }
   }
 

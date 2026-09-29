@@ -1348,7 +1348,7 @@ final paginatedCatalogueControllerProvider =
 typedef _$PaginatedCatalogueController =
     AutoDisposeNotifier<PaginatedCatalogueState>;
 String _$stockTakeSessionControllerHash() =>
-    r'f4b5d509165f9a0e58bf580811fca0a61b2a0ec7';
+    r'5bd7bd7a7caf79cfa9256204cd1f1ab8b3e73029';
 
 /// Main controller for stock take session management
 ///

@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import '../location/location.dart';
 import 'location_tracking_providers.dart';
 import '../../features/auth/auth.dart';
+import '../../features/biometric_verification/biometric_verification.dart';
 import '../../features/clock_in/clock_in.dart';
 import '../../features/daily_route/daily_route.dart';
 import '../../features/screens/screens.dart';
@@ -21,21 +22,32 @@ import '../../features/shelf_share/shelf_share.dart';
 import '../../features/facings_count/facings_count.dart';
 import '../../features/visit_schedules/visit_schedules.dart';
 
-/// Lets [GoRouter] re-run its `redirect` callback whenever
-/// [locationPermissionStatusProvider] emits, without rebuilding the whole
-/// [GoRouter] instance (go_router removed its built-in
-/// `GoRouterRefreshStream` helper in newer versions).
+/// Lets [GoRouter] re-run its `redirect` callback whenever any of the
+/// three mandatory login-time gates' providers emit — location permission,
+/// full-screen-intent permission, and biometric enrollment status —
+/// without rebuilding the whole [GoRouter] instance (go_router removed its
+/// built-in `GoRouterRefreshStream` helper in newer versions).
 ///
-/// Without this, `redirect` only reads that provider via `ref.read`
-/// (intentionally, to avoid recreating the router on every 5-second
-/// permission poll). That means the very first check — which is always
-/// `AsyncLoading` for one tick — leaves the user stranded on `/splash`:
-/// nothing tells GoRouter to look again once the real status arrives.
-/// Notifying on every emission fixes that stranding while still avoiding a
-/// full router rebuild.
+/// Without this, `redirect` only reads these providers via `ref.read`
+/// (intentionally, to avoid recreating the router on every emission —
+/// notably the two 5-second permission polls). That means the very first
+/// check — which is always `AsyncLoading` for one tick — leaves the user
+/// stranded on `/splash`: nothing tells GoRouter to look again once the
+/// real status arrives. Notifying on every emission fixes that stranding
+/// while still avoiding a full router rebuild.
 class _LocationPermissionRefreshListenable extends ChangeNotifier {
   _LocationPermissionRefreshListenable(Ref ref) {
     ref.listen(locationPermissionStatusProvider, (previous, next) {
+      notifyListeners();
+    });
+    ref.listen(fullScreenIntentPermissionGrantedProvider, (previous, next) {
+      notifyListeners();
+    });
+    // biometricStatusProvider is a plain (non-polling) FutureProvider —
+    // see its doc comment — so this listen only fires on an explicit
+    // ref.invalidate (registration success, a status-relevant 409, fresh
+    // login), not on a timer.
+    ref.listen(biometricStatusProvider, (previous, next) {
       notifyListeners();
     });
     // Also refresh on auth changes. Auth state must NOT be `ref.watch`ed at
@@ -73,6 +85,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isSplash = state.matchedLocation == '/splash';
       final isLocationPermission =
           state.matchedLocation == '/location-permission';
+      final isFullScreenIntentPermission =
+          state.matchedLocation == '/full-screen-intent-permission';
       final isForgotPassword = state.matchedLocation.startsWith(
         '/forgot-password',
       );
@@ -85,13 +99,26 @@ final routerProvider = Provider<GoRouter>((ref) {
         name: 'Router',
       );
 
-      // Allow splash screen during initial/authenticating states
+      // Allow splash screen during initial/authenticating states — but
+      // NOT when `Authenticating` was triggered by an active login attempt
+      // from the login screen itself (login() sets this as its first
+      // line). Since authControllerProvider is wired into this router's
+      // refresh listenable, that state change re-runs this redirect
+      // immediately, while the user is still on /login. Without the
+      // isLoggingIn exemption here, every login attempt force-navigated
+      // to /splash mid-typing — disposing LoginScreen's State (wiping the
+      // typed email/password) and, on failure, losing the AuthError
+      // transition the login screen's ref.listen needed to show its
+      // SnackBar (a fresh State re-attaches too late to see a transition
+      // that already happened). AuthInitial only ever occurs at cold
+      // start, where matchedLocation already starts at /splash regardless
+      // — this exemption only changes behavior for the login-attempt case.
       if (authState is AuthInitial || authState is Authenticating) {
         developer.log(
           '📱 Auth initializing, staying on splash',
           name: 'Router',
         );
-        return isSplash ? null : '/splash';
+        return (isSplash || isLoggingIn) ? null : '/splash';
       }
 
       // Redirect to login if not authenticated (unless on login or forgot password)
@@ -158,9 +185,108 @@ final routerProvider = Provider<GoRouter>((ref) {
           return isLocationPermission ? null : '/location-permission';
         }
 
-        // Permission granted - if on login/splash, go to home
-        if (isSplash || isLoggingIn) {
-          developer.log('✅ Permission granted, going to home', name: 'Router');
+        // Location permission granted — now the "Full screen intents" gate
+        // (Android 14+ only; the provider always reports `true` elsewhere,
+        // so this never blocks on older Android or iOS). See
+        // FullScreenIntentPermissionScreen's doc comment for why this is
+        // mandatory rather than a soft, skippable prompt.
+        final fullScreenIntentGranted = ref
+            .read(fullScreenIntentPermissionGrantedProvider)
+            .whenOrNull(data: (granted) => granted);
+
+        if (fullScreenIntentGranted == null) {
+          developer.log(
+            '⏳ Full-screen-intent permission not checked yet, staying',
+            name: 'Router',
+          );
+          return (isSplash || isLoggingIn || isLocationPermission)
+              ? null
+              : '/splash';
+        }
+
+        if (!fullScreenIntentGranted) {
+          // LocationPermissionScreen already requests full-screen-intent
+          // permission itself as the last step of its own internal
+          // sequential chain (background location -> battery exemption ->
+          // full-screen-intent) before calling context.go('/'). Redirecting
+          // out from under it here — while it's still mid-chain, since
+          // basic location permission (which this whole gate is keyed off)
+          // is granted early in that sequence — would fire this screen's
+          // own request on top of whatever system dialog it's currently
+          // waiting on. Let it finish and navigate away itself.
+          if (isLocationPermission) {
+            return null;
+          }
+          developer.log(
+            '🔔 Full-screen-intent permission not granted, going to '
+            'permission screen',
+            name: 'Router',
+          );
+          return isFullScreenIntentPermission
+              ? null
+              : '/full-screen-intent-permission';
+        }
+
+        // Both permissions granted — third and final mandatory gate:
+        // biometric enrollment, but ONLY when the contract says this
+        // employee is actually enforced (clock_in_verification_required
+        // && requires_enrollment — never on requires_enrollment alone, per
+        // the confirmed "contract-faithful" decision). A user not yet in
+        // the enforcement rollout is never interrupted here, even if
+        // unenrolled.
+        final isBiometricRegistration =
+            state.matchedLocation == '/biometrics/register';
+        // NOTE: there is deliberately no isBiometricVerification check
+        // here — '/biometrics/verify' is not a GoRoute at all (see
+        // router_provider's route list and verifyBiometric()'s doc
+        // comment): that screen is pushed on the root Navigator directly,
+        // entirely outside this redirect/matchedLocation machinery, so it
+        // can never be the current location this callback sees.
+        final biometricStatus = ref.read(biometricStatusProvider);
+        final mustEnroll = biometricStatus.whenOrNull(
+          data: (either) => either.fold(
+            // Fail open on a fetch failure — the backend's own clock-in
+            // rejection is the real security backstop; see the "Phase 5"
+            // plan's "Fail-open design principle".
+            (failure) => false,
+            (status) => status.mustEnrollBeforeProceeding,
+          ),
+        );
+
+        if (mustEnroll == null) {
+          developer.log(
+            '⏳ Biometric status not checked yet, staying',
+            name: 'Router',
+          );
+          return (isSplash ||
+                  isLoggingIn ||
+                  isLocationPermission ||
+                  isFullScreenIntentPermission)
+              ? null
+              : '/splash';
+        }
+
+        if (mustEnroll) {
+          // Same reasoning as the full-screen-intent gate above: don't rip
+          // the user away from a permission screen that's still actively
+          // mid-sequence with its own system dialogs. Once that screen
+          // navigates itself away (to '/'), this gate re-evaluates cleanly.
+          if (isLocationPermission || isFullScreenIntentPermission) {
+            return null;
+          }
+          developer.log(
+            '🙂 Biometric enrollment required, going to registration',
+            name: 'Router',
+          );
+          return isBiometricRegistration ? null : '/biometrics/register';
+        }
+
+        // All three gates cleared - if on an entry screen, go to home
+        if (isSplash ||
+            isLoggingIn ||
+            isFullScreenIntentPermission ||
+            isBiometricRegistration) {
+          developer.log('✅ Gates cleared, going to home', name: 'Router');
           return '/';
         }
       }
@@ -202,6 +328,36 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/location-permission',
         builder: (context, state) => const LocationPermissionScreen(),
+      ),
+      GoRoute(
+        path: '/full-screen-intent-permission',
+        builder: (context, state) => const FullScreenIntentPermissionScreen(),
+      ),
+
+      // ===== Biometric Verification Feature Routes =====
+      // NOTE: no GoRoute for '/biometrics/verify' — verifyBiometric()
+      // (biometric_verification_gate.dart) deliberately pushes
+      // FaceVerificationScreen on the root Navigator directly instead of
+      // through this table. See that function's doc comment for why
+      // (GoRouter's own redirect/refreshListenable churn was silently
+      // orphaning its push() Completer, confirmed on-device).
+      GoRoute(
+        path: '/biometrics/register',
+        builder: (context, state) {
+          // Reflects the same gate condition the redirect above checks —
+          // self-consistent regardless of whether this route was reached
+          // via the mandatory login gate or (in the future) a voluntary
+          // "re-register" entry point, which would pass `extra: false`.
+          final mandatory = state.extra as bool? ??
+              ref.read(biometricStatusProvider).whenOrNull(
+                    data: (either) => either.fold(
+                      (failure) => false,
+                      (status) => status.mustEnrollBeforeProceeding,
+                    ),
+                  ) ??
+              false;
+          return FaceRegistrationScreen(mandatory: mandatory);
+        },
       ),
       GoRoute(path: '/', builder: (context, state) => const HomeScreen()),
       GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),

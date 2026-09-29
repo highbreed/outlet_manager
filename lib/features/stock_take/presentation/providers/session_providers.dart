@@ -919,6 +919,26 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     }, (orderDetail) => orderDetail);
   }
 
+  /// Checks whether a proposed order already exists for this visit, purely
+  /// to decide which card to show on the home screen — NOT via
+  /// [getProposedOrderDetail], which sets [StockTakeSessionState.errorMessage]
+  /// on every failure. A "not found" here is the normal, expected state any
+  /// time no order has been generated yet (including right after a session
+  /// completes, before generation), not something worth surfacing as an
+  /// error banner. Only a genuine failure (network/server error) is
+  /// reported, distinguished from [NotFoundFailure] specifically.
+  Future<bool> hasProposedOrder({required int visitId}) async {
+    final repository = await ref.read(stockTakeRepositoryProvider.future);
+    final result = await repository.getProposedOrderDetail(visitId: visitId);
+
+    return result.fold((failure) {
+      if (failure is! NotFoundFailure) {
+        state = state.copyWith(errorMessage: failure.message);
+      }
+      return false;
+    }, (orderDetail) => true);
+  }
+
   /// Generate PDF for a proposed order (background task)
   /// Returns the job response on success, null on failure
   Future<ProposedOrderJobResponse?> generateProposedOrderPdf({
@@ -956,6 +976,24 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     );
 
     return result.fold((failure) => null, (progress) => progress);
+  }
+
+  /// Convert a proposed order into a real sales order.
+  /// Returns null on failure (state.errorMessage explains why).
+  Future<ConvertToSalesOrderResult?> convertProposedOrderToSalesOrder({
+    required int orderId,
+    String? notes,
+  }) async {
+    final repository = await ref.read(stockTakeRepositoryProvider.future);
+    final result = await repository.convertProposedOrderToSalesOrder(
+      orderId: orderId,
+      notes: notes,
+    );
+
+    return result.fold((failure) {
+      state = state.copyWith(errorMessage: failure.message);
+      return null;
+    }, (conversionResult) => conversionResult);
   }
 
   /// Clear any error state

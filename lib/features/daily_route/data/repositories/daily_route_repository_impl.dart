@@ -3,8 +3,11 @@ import 'package:fpdart/fpdart.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/network/failures.dart';
+import '../../../outlet_mapping/domain/entities/mapping_enums.dart';
+import '../../../outlet_mapping/domain/entities/mapping_request.dart';
 import '../../domain/entities/daily_route.dart';
 import '../../domain/entities/outlet_visit.dart';
+import '../../domain/entities/lunch_break.dart';
 import '../../domain/repositories/daily_route_repository.dart';
 import '../datasources/daily_route_local_datasource.dart';
 import '../datasources/daily_route_remote_datasource.dart';
@@ -374,6 +377,46 @@ class DailyRouteRepositoryImpl implements DailyRouteRepository {
     }
   }
 
+  // === Lunch Break ===
+  //
+  // No local/offline handling by design — the spec is explicit that a
+  // failed Start must never be queued for later (a late start would run
+  // the break past when the agent actually came back), so this always
+  // hits the network directly, same live-only shape as the rest of this
+  // section.
+
+  @override
+  Future<Either<Failure, LunchBreak>> startLunchBreak({
+    double? latitude,
+    double? longitude,
+    double? accuracyMeters,
+  }) async {
+    try {
+      final response = await _remoteDataSource.startLunchBreak(
+        latitude: latitude,
+        longitude: longitude,
+        accuracyMeters: accuracyMeters,
+      );
+      return Right(response.toDomain());
+    } on DioException catch (e) {
+      return Left(_mapDioError(e));
+    } catch (e) {
+      return Left(UnknownFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, LunchBreak>> endLunchBreak() async {
+    try {
+      final response = await _remoteDataSource.endLunchBreak();
+      return Right(response.toDomain());
+    } on DioException catch (e) {
+      return Left(_mapDioError(e));
+    } catch (e) {
+      return Left(UnknownFailure(message: e.toString()));
+    }
+  }
+
   // === Mapper Helpers ===
 
   DailyRouteModel _toModel(DailyRoute route, {int? existingId}) {
@@ -477,6 +520,15 @@ class DailyRouteRepositoryImpl implements DailyRouteRepository {
       visitNotes: model.visitNotes,
       syncState: SyncState.synced,
       lastSyncedAt: model.lastSyncedAt,
+      mappingRequest: model.mappingRequestId == null
+          ? null
+          : MappingRequest(
+              requestId: model.mappingRequestId!,
+              footprintId: model.mappingFootprintId,
+              footprintStatus: model.mappingFootprintStatus == null
+                  ? null
+                  : MappingFootprintStatus.values.byName(model.mappingFootprintStatus!),
+            ),
     );
   }
 
@@ -645,6 +697,9 @@ class DailyRouteRepositoryImpl implements DailyRouteRepository {
       ..syncState = _mapSyncStateToVisitModel(visit.syncState)
       ..syncError = visit.syncError
       ..lastSyncedAt = visit.lastSyncedAt
+      ..mappingRequestId = visit.mappingRequest?.requestId
+      ..mappingFootprintId = visit.mappingRequest?.footprintId
+      ..mappingFootprintStatus = visit.mappingRequest?.footprintStatus?.name
       ..createdAt = DateTime.now()
       ..updatedAt = DateTime.now();
   }
@@ -682,6 +737,13 @@ class DailyRouteRepositoryImpl implements DailyRouteRepository {
         return InvalidRouteStateFailure(
           currentStatus: currentState ?? 'unknown',
           operation: 'perform this action',
+        );
+      }
+
+      if (_lunchBreakErrorCodes.contains(errorCode)) {
+        return LunchBreakFailure.actionRejected(
+          code: errorCode!,
+          message: _lunchErrorMessage(errorCode, message),
         );
       }
 
@@ -737,5 +799,34 @@ class DailyRouteRepositoryImpl implements DailyRouteRepository {
     }
 
     return UnknownFailure(message: e.message ?? 'Unknown error');
+  }
+
+  static const _lunchBreakErrorCodes = {
+    'LUNCH_ALREADY_TAKEN',
+    'NO_ROUTE_TODAY',
+    'ROUTE_CLOSED',
+    'NO_LUNCH_BREAK',
+    'NO_SALES_AGENT',
+  };
+
+  /// Copy taken verbatim from the lunch-break contract's error table.
+  /// Falls back to the server's own [serverMessage] for anything else
+  /// (defensive — should never actually hit the fallback given the
+  /// [_lunchBreakErrorCodes] membership check above).
+  String _lunchErrorMessage(String code, String? serverMessage) {
+    switch (code) {
+      case 'LUNCH_ALREADY_TAKEN':
+        return "You've already taken your lunch break today.";
+      case 'NO_ROUTE_TODAY':
+        return 'Start your day before taking lunch.';
+      case 'ROUTE_CLOSED':
+        return 'Your day is closed.';
+      case 'NO_LUNCH_BREAK':
+        return serverMessage ?? 'No lunch break to end.';
+      case 'NO_SALES_AGENT':
+        return "Your account isn't set up as a field agent. Contact your supervisor.";
+      default:
+        return serverMessage ?? 'Lunch break action could not be completed';
+    }
   }
 }

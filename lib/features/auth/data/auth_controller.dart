@@ -3,6 +3,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/database/isar_database.dart';
 import '../../../core/providers/notification_providers.dart';
+import '../../biometric_verification/providers/biometric_status_provider.dart';
+import '../../outlet_mapping/domain/entities/mapping_enums.dart';
+import '../../outlet_mapping/providers/mapping_session_notifier.dart';
 import 'auth_repository.dart';
 import 'auth_state.dart';
 import '../domain/user.dart';
@@ -29,28 +32,51 @@ class AuthController extends _$AuthController {
     return const AuthState.initial();
   }
 
+  // The router holds the user on /splash for exactly as long as `state`
+  // stays AuthInitial/Authenticating (see router_provider's redirect) — so
+  // this method must be guaranteed to resolve. `hasTokens()` reads through
+  // flutter_secure_storage's EncryptedSharedPreferences (Android Keystore
+  // backed), which has documented real-world hangs on some devices/Keystore
+  // states; `getCurrentUser()` only catches DioException, not e.g. a
+  // malformed-response parse error. Neither had a timeout before, and
+  // nothing in this function caught anything, so either one hanging or
+  // throwing an unexpected type left `state` stuck forever — the same
+  // class of bug as the pre-fix Isar database hang.
+  static const _restoreSessionTimeout = Duration(seconds: 15);
+
   /// Attempt to restore session from stored tokens
   Future<void> _restoreSession() async {
-    final hasTokens = await _repository.hasTokens();
-    
-    if (!hasTokens) {
-      state = const AuthState.unauthenticated();
-      return;
-    }
+    try {
+      final hasTokens = await _repository.hasTokens().timeout(
+        _restoreSessionTimeout,
+      );
 
-    state = const AuthState.authenticating();
-
-    final result = await _repository.getCurrentUser();
-    
-    result.fold(
-      (failure) {
-        // Token invalid or expired, go to unauthenticated
+      if (!hasTokens) {
         state = const AuthState.unauthenticated();
-      },
-      (user) {
-        state = AuthState.authenticated(user: user);
-      },
-    );
+        return;
+      }
+
+      state = const AuthState.authenticating();
+
+      final result = await _repository.getCurrentUser().timeout(
+        _restoreSessionTimeout,
+      );
+
+      result.fold(
+        (failure) {
+          // Token invalid or expired, go to unauthenticated
+          state = const AuthState.unauthenticated();
+        },
+        (user) {
+          state = AuthState.authenticated(user: user);
+        },
+      );
+    } catch (e) {
+      // Fail safe to unauthenticated rather than leave state stuck: worst
+      // case a legitimately-logged-in user sees one extra login prompt,
+      // instead of the app being dead on the splash screen.
+      state = const AuthState.unauthenticated();
+    }
   }
 
   /// Login with email and password
@@ -70,6 +96,10 @@ class AuthController extends _$AuthController {
         state = AuthState.error(message: failure.displayMessage);
       },
       (user) {
+        // Per-employee, not device-level — a stale cached value from a
+        // previous session on this device must never leak into this
+        // login. See the "Phase 5" plan's section A.3.
+        ref.invalidate(biometricStatusProvider);
         state = AuthState.authenticated(user: user);
       },
     );
@@ -79,6 +109,7 @@ class AuthController extends _$AuthController {
   Future<void> logout({String reason = 'user_initiated'}) async {
     state = AuthState.loggingOut(reason: reason);
 
+    await _handleMappingSessionOnLogout();
     await ref.read(deviceRegistrationRepositoryProvider).deregisterDevice();
     await _repository.logout();
     await IsarDatabase.clearStockTakeCache();
@@ -89,6 +120,15 @@ class AuthController extends _$AuthController {
   /// Force logout (e.g., from interceptor on 401)
   void forceLogout({required String reason}) {
     state = AuthState.loggingOut(reason: reason);
+    // Best-effort, bounded — a forced logout (e.g. a rejected token) must
+    // not hang waiting on a network call the very token loss may have
+    // already broken (spec §64). Local safety (stop high-frequency GPS,
+    // never claim /abandon succeeded) still happens; the network part is
+    // opportunistic only.
+    _handleMappingSessionOnLogout().timeout(
+      const Duration(seconds: 3),
+      onTimeout: () {},
+    );
     ref.read(deviceRegistrationRepositoryProvider).deregisterDevice().then((_) {
       _repository.logout().then((_) {
         IsarDatabase.clearStockTakeCache().then((_) {
@@ -96,6 +136,28 @@ class AuthController extends _$AuthController {
         });
       });
     });
+  }
+
+  /// Spec §62/§63/§64 — logout must never silently leave high-frequency
+  /// mapping GPS configuration enabled, and must never let a DIFFERENT
+  /// user's later login accidentally act on this session (ownership stays
+  /// tagged to this user's id regardless of what happens here — see
+  /// `MappingSession.ownerUserId`'s doc comment).
+  ///
+  /// Only a session still `capturing` (actively being walked) is abandoned
+  /// here — `MappingSessionNotifier.stopMapping()` already does exactly
+  /// spec §62's sequence (stop collection, restore normal GPS config,
+  /// discard unsent samples, best-effort `POST /abandon`, never block on
+  /// the network result). A session that already finished walking
+  /// (`captureFinishedLocal`/`uploadPending`/`submitting`/
+  /// `finishResultUnknown`) is deliberately left untouched (spec §63) —
+  /// the employee's work is done; it stays queued, tagged to this user,
+  /// and resumes draining the next time they log back in.
+  Future<void> _handleMappingSessionOnLogout() async {
+    final mapping = ref.read(mappingSessionNotifierProvider);
+    if (mapping.session?.localState == MappingLocalState.capturing) {
+      await ref.read(mappingSessionNotifierProvider.notifier).stopMapping();
+    }
   }
 
   /// Clear error and return to unauthenticated

@@ -3,6 +3,7 @@ import 'dart:developer' as developer;
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart' show MethodChannel;
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
 import 'package:geolocator/geolocator.dart' show Geolocator;
@@ -17,6 +18,8 @@ import '../../features/location_tracking/data/datasources/location_ping_local_da
 import '../../features/location_tracking/data/datasources/location_ping_remote_datasource.dart';
 import '../../features/location_tracking/data/repositories/location_ping_repository_impl.dart';
 import '../../features/location_tracking/domain/entities/location_ping.dart';
+import '../../features/outlet_mapping/data/datasources/mapping_sample_local_datasource.dart';
+import '../../features/outlet_mapping/domain/entities/mapping_sample.dart';
 
 /// Snapshot of the plugin's tracking state — same shape as the old native
 /// engine's `BackgroundTrackingStatus` so callers (the debug screen,
@@ -51,6 +54,24 @@ class GeofenceTransition {
     required this.visitId,
     required this.outletName,
     required this.distanceMeters,
+  });
+}
+
+/// Fired by [BackgroundGeolocationService.mappingSampleCapturedEvents]
+/// every time a mapping observation is actually persisted (after the
+/// density gate) — a lightweight UI-refresh signal, not the sample data
+/// itself (the Isar row is already the source of truth).
+class MappingSampleCapturedEvent {
+  final int footprintId;
+  final int sequence;
+  final int totalLocalCount;
+  final DateTime recordedAt;
+
+  const MappingSampleCapturedEvent({
+    required this.footprintId,
+    required this.sequence,
+    required this.totalLocalCount,
+    required this.recordedAt,
   });
 }
 
@@ -99,8 +120,18 @@ class BackgroundGeolocationService {
   static const _outletRadiusBufferMeters = 10.0;
   static const _notificationChannelId = 'outlet_manager_tracking';
 
+  /// Backs [TrackingReminderScheduler] (native Kotlin) — told whether a
+  /// visit is active so it knows whether to remind the user to reopen the
+  /// app after a reboot. See that class's doc comment for why this has to
+  /// be native, not Dart.
+  static const _trackingReminderChannel = MethodChannel(
+    'outlet_manager/tracking_reminder',
+  );
+
   final LocationPingLocalDataSource _localDataSource =
       LocationPingLocalDataSource();
+  final MappingSampleLocalDataSource _mappingLocalDataSource =
+      MappingSampleLocalDataSource();
   final Connectivity _connectivity = Connectivity();
   final DeviceLocationTokenStorage _deviceLocationTokenStorage =
       DeviceLocationTokenStorage();
@@ -111,6 +142,30 @@ class BackgroundGeolocationService {
   double? _outletLatitude;
   double? _outletLongitude;
 
+  // === Outlet Mapping — second logical consumer of the same fixes ===
+  //
+  // Deliberately owned here, not by a separate service: there is exactly
+  // ONE flutter_background_geolocation engine (see this class's own doc
+  // comment above), and these fields are the whole of what "a second
+  // consumer" needs — a footprint to write samples against, its own
+  // density gate, and the snapshot to restore on exit. Nothing below
+  // touches `_localDataSource`, `_visitId`, or any attendance field; the
+  // attendance path (`_handleLocation`) is untouched code, called
+  // unconditionally for every fix regardless of `_mappingActive` — see
+  // `_handleNativeLocation`.
+  bool _mappingActive = false;
+  int? _mappingFootprintId;
+  int _mappingNextSequence = 0;
+  int _mappingMinSampleIntervalMs = 2000;
+  double _mappingDuplicateSuppressionMeters = 1.0;
+  int _mappingMaxSamples = 2000;
+  int _mappingSampleCount = 0;
+  DateTime? _mappingLastSampleAt;
+  double? _mappingLastLatitude;
+  double? _mappingLastLongitude;
+  double? _preMappingDistanceFilter;
+  double? _preMappingHeartbeatInterval;
+
   final _geofenceTransitionController =
       StreamController<GeofenceTransition>.broadcast();
 
@@ -118,6 +173,16 @@ class BackgroundGeolocationService {
   /// exit or re-entry for the currently-tracked visit's outlet geofence.
   Stream<GeofenceTransition> get geofenceTransitionEvents =>
       _geofenceTransitionController.stream;
+
+  final _mappingSampleCapturedController =
+      StreamController<MappingSampleCapturedEvent>.broadcast();
+
+  /// Fires every time a mapping sample is actually persisted (after the
+  /// density gate — not every native fix). Purely a UI-refresh signal for
+  /// the capture screen/`MappingSessionNotifier`; the Isar row is already
+  /// the source of truth by the time this fires.
+  Stream<MappingSampleCapturedEvent> get mappingSampleCapturedEvents =>
+      _mappingSampleCapturedController.stream;
 
   /// Configures the plugin and wires its event listeners. Call once at app
   /// startup, before `startTracking()`. Idempotent.
@@ -142,7 +207,7 @@ class BackgroundGeolocationService {
       bg.Config(
         geolocation: const bg.GeoConfig(
           desiredAccuracy: bg.DesiredAccuracy.high,
-          distanceFilter: 50.0,
+          distanceFilter: 10.0,
           // The team's original ask: a periodic ping regardless of
           // movement, not just a movement-triggered one. See
           // AppConfig.heartbeatInterval below — this is the field that
@@ -152,11 +217,10 @@ class BackgroundGeolocationService {
           geofenceProximityRadius: 1000,
         ),
         app: bg.AppConfig(
-          // TEMPORARY — 60s (Android's hard floor; the plugin docs say a
-          // faster interval is "impossible" on Android) for testing the
-          // onHeartbeat fix; revert to 300 (5 minutes, matches the old
-          // engine's default cadence) once confirmed working.
-          heartbeatInterval: 60,
+          // 300s (5 minutes) — matches the old engine's default cadence.
+          // Was temporarily set to 60 to field-test the onHeartbeat fix
+          // (confirmed working); reverted back to the intended interval.
+          heartbeatInterval: 300,
           stopOnTerminate: false,
           startOnBoot: true,
           // EXPERIMENT — re-enabling headless, scoped to HEARTBEAT only
@@ -249,6 +313,8 @@ class BackgroundGeolocationService {
       );
     }
 
+    await _setTrackingReminderActive(true);
+
     try {
       await bg.BackgroundGeolocation.addGeofence(
         bg.Geofence(
@@ -298,6 +364,7 @@ class BackgroundGeolocationService {
         );
       }
     }
+    await _setTrackingReminderActive(false);
     _visitId = null;
     _outletName = null;
     _outletLatitude = null;
@@ -313,6 +380,227 @@ class BackgroundGeolocationService {
       );
     }
   });
+
+  /// Enters mapping-capture mode (spec §5/§36): snapshots the exact
+  /// current `distanceFilter`/`heartbeatInterval` (never a hardcoded
+  /// assumption — read live off `bg.BackgroundGeolocation.state`) then
+  /// tightens `distanceFilter` for denser fixes while walking. Does NOT
+  /// touch `http`/`autoSync` config at all — native attendance device-ping
+  /// delivery (`_configureDeviceAutoSync`) is completely unaffected, per
+  /// spec §37's "avoid modifying extras entirely unless genuinely
+  /// necessary." Serialized through the same queue as
+  /// `startTracking`/`stopTracking` (spec §66/§Q) so a concurrent
+  /// clock-in/out can't race a mapping start/stop.
+  ///
+  /// [startSequence] is the session's already-recovered `nextSequence`
+  /// (spec §24 — this class never invents its own sequence baseline);
+  /// [currentSampleCount] is the session's already-known synced+local
+  /// count, so the local `max_samples` guard (spec §28/§77) is accurate
+  /// even resuming a session that already has samples.
+  Future<void> startMappingCapture({
+    required int footprintId,
+    required int startSequence,
+    required int currentSampleCount,
+    required int maxSamples,
+    int minSampleIntervalMs = 2000,
+    double mappingDistanceFilterMeters = 3.0,
+    double duplicateSuppressionMeters = 1.0,
+  }) => _serialize(() async {
+    await configure();
+    if (_mappingActive && _mappingFootprintId == footprintId) {
+      // Idempotent resume of the SAME footprint — don't re-snapshot over
+      // an already-mapping-mode config (spec §16's start-idempotency
+      // principle applies equally here).
+      return;
+    }
+
+    final state = await bg.BackgroundGeolocation.state;
+    _preMappingDistanceFilter = state.geolocation.distanceFilter;
+    _preMappingHeartbeatInterval = state.app.heartbeatInterval;
+
+    _mappingFootprintId = footprintId;
+    _mappingNextSequence = startSequence;
+    _mappingSampleCount = currentSampleCount;
+    _mappingMaxSamples = maxSamples;
+    _mappingMinSampleIntervalMs = minSampleIntervalMs;
+    _mappingDuplicateSuppressionMeters = duplicateSuppressionMeters;
+    _mappingLastSampleAt = null;
+    _mappingLastLatitude = null;
+    _mappingLastLongitude = null;
+
+    try {
+      await bg.BackgroundGeolocation.setConfig(
+        bg.Config(
+          geolocation: bg.GeoConfig(distanceFilter: mappingDistanceFilterMeters),
+        ),
+      );
+      _mappingActive = true;
+      developer.log(
+        '[BackgroundGeolocationService] mapping capture started footprint=$footprintId '
+        'preDistanceFilter=$_preMappingDistanceFilter preHeartbeat=$_preMappingHeartbeatInterval',
+        name: 'BackgroundGeolocationService',
+      );
+    } catch (e, st) {
+      developer.log(
+        '[BackgroundGeolocationService] startMappingCapture setConfig failed: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+      // Config change didn't take — don't claim mapping mode is active.
+      _mappingFootprintId = null;
+    }
+  });
+
+  /// Exits mapping-capture mode: restores the EXACT snapshotted config
+  /// (never a hardcoded default, spec §5/§6) and clears mapping state.
+  /// Idempotent and safe to call from any exit path (Finish, Stop/abandon,
+  /// server-side CAPTURE_ABANDONED, forced logout, recovery finding a
+  /// server-terminal state, spec §97) — a call with no active mapping
+  /// session is a no-op, not an error.
+  Future<void> stopMappingCapture() => _serialize(() async {
+    if (!_mappingActive) return;
+    _mappingActive = false;
+    final footprintId = _mappingFootprintId;
+    _mappingFootprintId = null;
+
+    try {
+      final restoreFilter = _preMappingDistanceFilter;
+      final restoreHeartbeat = _preMappingHeartbeatInterval;
+      if (restoreFilter != null || restoreHeartbeat != null) {
+        await bg.BackgroundGeolocation.setConfig(
+          bg.Config(
+            geolocation: bg.GeoConfig(
+              distanceFilter: restoreFilter ?? 50.0,
+            ),
+          ),
+        );
+      }
+      developer.log(
+        '[BackgroundGeolocationService] mapping capture stopped footprint=$footprintId, '
+        'config restored to distanceFilter=$restoreFilter',
+        name: 'BackgroundGeolocationService',
+      );
+    } catch (e, st) {
+      developer.log(
+        '[BackgroundGeolocationService] stopMappingCapture setConfig restore failed: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+    } finally {
+      _preMappingDistanceFilter = null;
+      _preMappingHeartbeatInterval = null;
+    }
+  });
+
+  bool get isMappingActive => _mappingActive;
+
+  /// Density gate (spec §33/§34): a native fix becomes a stored mapping
+  /// sample only if enough time has passed since the last STORED sample
+  /// (not the last native callback) and it isn't a near-duplicate of it.
+  /// Never rejects on accuracy (spec §35) — quality is display-only
+  /// guidance, decided authoritatively by the backend at `/finish`.
+  Future<void> _handleMappingSample(bg.Location location) async {
+    final footprintId = _mappingFootprintId;
+    if (footprintId == null) return;
+
+    if (_mappingSampleCount >= _mappingMaxSamples) {
+      // Locally stop accepting new samples the moment the backend-provided
+      // ceiling is reached — spec §28/§77 — without waiting for a 413.
+      // Attendance is completely unaffected: this only returns from the
+      // MAPPING half of the dispatcher.
+      return;
+    }
+
+    final now = DateTime.now();
+    if (_mappingLastSampleAt != null) {
+      final elapsedMs = now.difference(_mappingLastSampleAt!).inMilliseconds;
+      if (elapsedMs < _mappingMinSampleIntervalMs) return;
+    }
+
+    // Duplicate suppression — same cell (radius set by
+    // _mappingDuplicateSuppressionMeters) as the last STORED sample and
+    // still inside the interval gate above having just passed only because
+    // of elapsed time, not real movement (spec §33's "optional duplicate
+    // suppression"). Same flat degree-threshold approximation this check
+    // has always used, not a real distance calculation — fine at this
+    // scale, kept as-is rather than switching to Geolocator.distanceBetween
+    // to avoid changing anything beyond the configured threshold.
+    if (_mappingLastLatitude != null && _mappingLastLongitude != null) {
+      final degreeThreshold = _mappingDuplicateSuppressionMeters / 111320.0;
+      final sameSpot =
+          (location.coords.latitude - _mappingLastLatitude!).abs() < degreeThreshold &&
+              (location.coords.longitude - _mappingLastLongitude!).abs() < degreeThreshold;
+      if (sameSpot) return;
+    }
+
+    final sequence = _mappingNextSequence;
+    _mappingNextSequence += 1;
+    _mappingSampleCount += 1;
+    _mappingLastSampleAt = now;
+    _mappingLastLatitude = location.coords.latitude;
+    _mappingLastLongitude = location.coords.longitude;
+
+    final sample = _toMappingSample(location, footprintId: footprintId, sequence: sequence);
+
+    try {
+      // Persist-before-network invariant (spec §10/§67) — this call is the
+      // ONLY thing that happens here; upload is entirely the
+      // MappingUploader's job, triggered separately.
+      await _mappingLocalDataSource.save(sample);
+      _mappingSampleCapturedController.add(
+        MappingSampleCapturedEvent(
+          footprintId: footprintId,
+          sequence: sequence,
+          totalLocalCount: _mappingSampleCount,
+          recordedAt: sample.recordedAt,
+        ),
+      );
+    } catch (e, st) {
+      developer.log(
+        '[BackgroundGeolocationService] mapping sample persist failed: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
+
+  MappingSample _toMappingSample(
+    bg.Location location, {
+    required int footprintId,
+    required int sequence,
+  }) {
+    return MappingSample(
+      localId: const Uuid().v4(),
+      footprintId: footprintId,
+      clientSampleId: const Uuid().v4(),
+      sequence: sequence,
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      accuracyM: location.coords.accuracy,
+      recordedAt: DateTime.now(),
+      // Diagnostic-only fields — only populated when the plugin actually
+      // supplied a real value, never synthesized (spec §26/§6). Confirmed
+      // via the installed plugin source: `Coords.altitude` itself has NO
+      // "unavailable" sentinel — it silently defaults to 0.0, which would
+      // be indistinguishable from a real ground-floor reading if sent
+      // unconditionally. `altitudeAccuracy` DOES have one (-1 when
+      // absent), so it's used here as the gate for BOTH fields — when the
+      // device couldn't determine altitude accuracy, the co-reported
+      // altitude value is not trustworthy either and both are omitted
+      // rather than risk sending a fabricated 0.
+      altitudeM: location.coords.altitudeAccuracy >= 0 ? location.coords.altitude : null,
+      verticalAccuracyM:
+          location.coords.altitudeAccuracy >= 0 ? location.coords.altitudeAccuracy : null,
+      speedMps: location.coords.speed >= 0 ? location.coords.speed : null,
+      headingDeg: location.coords.heading >= 0 ? location.coords.heading : null,
+      provider: 'fused',
+      isMock: location.mock,
+      createdAt: DateTime.now(),
+    );
+  }
 
   /// Points the plugin's native `autoSync` HTTP layer at the device-ping
   /// endpoint with a fresh `device_location` token, so terminated-app
@@ -555,6 +843,63 @@ class BackgroundGeolocationService {
     }
   }
 
+  /// Tells the native reboot-reminder (see TrackingReminderScheduler's doc
+  /// comment) whether a visit is currently being tracked, so it knows
+  /// whether to nag the user to reopen the app after a reboot. Best-effort
+  /// — a failure here should never block a real clock-in/out.
+  Future<void> _setTrackingReminderActive(bool active) async {
+    try {
+      await _trackingReminderChannel.invokeMethod('setActive', {
+        'active': active,
+      });
+    } catch (e, st) {
+      developer.log(
+        '[BackgroundGeolocationService] setTrackingReminderActive failed: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
+
+  /// Android 14+ only (always `true` on older versions): whether the user
+  /// has granted "Full screen intents" access. Without it, the reboot
+  /// reminder's alarm-style notification silently downgrades to a normal
+  /// heads-up one instead of taking over the screen.
+  Future<bool> isFullScreenIntentPermissionGranted() async {
+    try {
+      final granted = await _trackingReminderChannel.invokeMethod<bool>(
+        'isFullScreenIntentPermissionGranted',
+      );
+      return granted ?? true;
+    } catch (e, st) {
+      developer.log(
+        '[BackgroundGeolocationService] isFullScreenIntentPermissionGranted failed: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+      return true;
+    }
+  }
+
+  /// Opens the system screen for granting "Full screen intents" access —
+  /// same best-effort pattern as [requestBatteryOptimizationExemption].
+  Future<void> requestFullScreenIntentPermission() async {
+    try {
+      await _trackingReminderChannel.invokeMethod(
+        'requestFullScreenIntentPermission',
+      );
+    } catch (e, st) {
+      developer.log(
+        '[BackgroundGeolocationService] requestFullScreenIntentPermission failed: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+    }
+  }
+
   /// Starts a lightweight, tracking-independent continuous position watch —
   /// for live-distance UI (e.g. visit_detail_screen.dart's pre-clock-in
   /// proximity check), not persisted, not posted anywhere. Needs no active
@@ -616,7 +961,7 @@ class BackgroundGeolocationService {
   }
 
   void _onLocation(bg.Location location) {
-    unawaited(_handleLocation(location, pingSource: PingSource.background));
+    unawaited(_handleNativeLocation(location));
   }
 
   void _onLocationError(bg.LocationError error) {
@@ -627,7 +972,23 @@ class BackgroundGeolocationService {
   }
 
   void _onMotionChange(bg.Location location) {
-    unawaited(_handleLocation(location, pingSource: PingSource.background));
+    unawaited(_handleNativeLocation(location));
+  }
+
+  /// The dispatcher every native fix passes through (spec §4/§39). The
+  /// attendance branch is UNCONDITIONAL — every fix reaches
+  /// `_handleLocation` exactly as it always has, regardless of whether
+  /// mapping is active. The mapping branch only runs additionally, when
+  /// `_mappingActive`. This ordering (attendance first, always; mapping
+  /// second, conditionally) is itself the guarantee that outlet mapping
+  /// can never replace or suppress an attendance observation — there is
+  /// no code path in this class where `_handleLocation` is skipped
+  /// because mapping is running.
+  Future<void> _handleNativeLocation(bg.Location location) async {
+    await _handleLocation(location, pingSource: PingSource.background);
+    if (_mappingActive) {
+      await _handleMappingSample(location);
+    }
   }
 
   /// [bg.HeartbeatEvent.location] is only the *last known* position — the
@@ -645,7 +1006,7 @@ class BackgroundGeolocationService {
         persist: true,
         desiredAccuracy: 200,
       );
-      await _handleLocation(location, pingSource: PingSource.background);
+      await _handleNativeLocation(location);
     } catch (e, st) {
       developer.log(
         '[BackgroundGeolocationService] onHeartbeat failed: $e',

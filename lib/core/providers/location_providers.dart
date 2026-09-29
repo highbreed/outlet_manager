@@ -16,9 +16,3 @@ final backgroundGeolocationServiceProvider =
     Provider<BackgroundGeolocationService>((ref) {
       return BackgroundGeolocationService();
     });
-
-/// Stream of current location (when tracking is active)
-final locationStreamProvider = StreamProvider.autoDispose((ref) {
-  final locationService = ref.watch(locationServiceProvider);
-  return locationService.locationStream; // Returns LocationData
-});

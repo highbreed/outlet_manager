@@ -3,7 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/core.dart';
+import '../../../daily_route/domain/entities/outlet_visit.dart';
 import '../../../daily_route/presentation/widgets/widgets.dart';
+import '../../../daily_route/providers/daily_route_providers.dart';
+import '../../../outlet_mapping/domain/entities/mapping_enums.dart';
+import '../../../outlet_mapping/outlet_mapping_gate.dart';
 import '../../domain/entities/entities.dart';
 import '../providers/session_providers.dart';
 
@@ -38,11 +42,44 @@ class _StartSessionScreenState extends ConsumerState<StartSessionScreen> {
     super.dispose();
   }
 
+  /// The visit this stock take is attached to, if resolvable — same dual
+  /// localId/serverId match `ActiveVisitScreen._getVisit()` uses, since
+  /// `widget.visitLocalId`/`visitServerId` may come from either id space
+  /// depending on the caller.
+  OutletVisit? _resolveVisit(WidgetRef ref) {
+    if (widget.visitLocalId == null && widget.visitServerId == null) return null;
+    // read, not watch — this is called from both build() and the
+    // _startSession() event handler, and the visit list isn't expected to
+    // change during this screen's short warehouse-selection lifetime.
+    final visits = ref.read(visitListProvider);
+    return visits
+        .where(
+          (v) =>
+              (widget.visitLocalId != null && v.localId == widget.visitLocalId) ||
+              (widget.visitServerId != null &&
+                  v.serverId == widget.visitServerId.toString()),
+        )
+        .firstOrNull;
+  }
+
+  /// Blocks starting a stock take until this outlet's mapping is at least
+  /// submitted for review (or already approved) — an outlet that hasn't
+  /// been mapped, is still being walked, or had its capture fail/get
+  /// abandoned doesn't yet have a usable working-area footprint.
+  bool _mappingBlocksStockTake(OutletVisit? visit) {
+    final request = visit?.mappingRequest;
+    if (request == null) return false;
+    return request.footprintStatus != MappingFootprintStatus.pendingReview &&
+        request.footprintStatus != MappingFootprintStatus.active;
+  }
+
   @override
   Widget build(BuildContext context) {
     final warehousesAsync = ref.watch(
       customerWarehousesProvider(widget.customerId),
     );
+    final visit = _resolveVisit(ref);
+    final mappingBlocksStockTake = _mappingBlocksStockTake(visit);
 
     return Scaffold(
       backgroundColor: kBackground,
@@ -79,7 +116,12 @@ class _StartSessionScreenState extends ConsumerState<StartSessionScreen> {
                     ],
                   ),
                 ),
-                data: (warehouses) => _buildContent(context, warehouses),
+                data: (warehouses) => _buildContent(
+                  context,
+                  warehouses,
+                  visit: visit,
+                  mappingBlocksStockTake: mappingBlocksStockTake,
+                ),
               ),
             ),
           ],
@@ -88,7 +130,12 @@ class _StartSessionScreenState extends ConsumerState<StartSessionScreen> {
     );
   }
 
-  Widget _buildContent(BuildContext context, List<Warehouse> warehouses) {
+  Widget _buildContent(
+    BuildContext context,
+    List<Warehouse> warehouses, {
+    required OutletVisit? visit,
+    required bool mappingBlocksStockTake,
+  }) {
     if (_isStarting) {
       return const Center(
         child: Column(
@@ -129,6 +176,41 @@ class _StartSessionScreenState extends ConsumerState<StartSessionScreen> {
                   IconButton(
                     icon: const Icon(Icons.close, size: 20, color: kRedColor),
                     onPressed: () => setState(() => _error = null),
+                  ),
+                ],
+              ),
+            ),
+
+          // Outlet-mapping gate — a stock take needs a submitted/approved
+          // working-area footprint for this outlet before it can start.
+          if (mappingBlocksStockTake && visit != null)
+            Container(
+              margin: const EdgeInsets.only(bottom: 16),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: kWarningBg,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.location_searching, color: kWarningText, size: 20),
+                      const SizedBox(width: 8),
+                      const Expanded(
+                        child: Text(
+                          'This outlet needs to be mapped before a stock take can start.',
+                          style: TextStyle(color: kWarningText, fontSize: 13),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  SecondaryButton(
+                    label: 'Map Outlet',
+                    expand: false,
+                    onPressed: () => startOutletMapping(context, visit),
                   ),
                 ],
               ),
@@ -206,7 +288,9 @@ class _StartSessionScreenState extends ConsumerState<StartSessionScreen> {
 
           PrimaryButton(
             label: 'Start Session',
-            onPressed: _selectedWarehouse == null ? null : _startSession,
+            onPressed: (_selectedWarehouse == null || mappingBlocksStockTake)
+                ? null
+                : _startSession,
           ),
         ],
       ),
@@ -224,6 +308,15 @@ class _StartSessionScreenState extends ConsumerState<StartSessionScreen> {
       setState(() {
         _error =
             'Cannot start stock take - no active visit found. Please ensure you are clocked in.';
+      });
+      return;
+    }
+
+    // Defensive re-check — the button is already disabled while this is
+    // true, but guards against a race between build and tap.
+    if (_mappingBlocksStockTake(_resolveVisit(ref))) {
+      setState(() {
+        _error = 'This outlet needs to be mapped before a stock take can start.';
       });
       return;
     }

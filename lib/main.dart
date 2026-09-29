@@ -22,6 +22,7 @@ import 'features/app_update/presentation/providers/app_update_providers.dart';
 import 'features/app_update/presentation/screens/update_required_screen.dart';
 import 'features/app_update/presentation/widgets/update_recommended_banner.dart';
 import 'features/connectivity/connectivity.dart';
+import 'features/outlet_mapping/providers/mapping_session_notifier.dart';
 import 'features/stock_take/presentation/providers/stock_take_providers.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -120,9 +121,11 @@ class OutletManagerApp extends ConsumerWidget {
                   routerConfig: router,
                   builder: (context, child) {
                     // return DebugRegionBanner(
-                    return UpdateRecommendedBanner(
-                      child: ConnectivityBanner(
-                        child: child ?? const SizedBox.shrink(),
+                    return _AuthSnackbarCleaner(
+                      child: UpdateRecommendedBanner(
+                        child: ConnectivityBanner(
+                          child: child ?? const SizedBox.shrink(),
+                        ),
                       ),
                     );
                     // );
@@ -173,24 +176,61 @@ class ConnectivityBanner extends ConsumerWidget {
   }
 }
 
-/// Loading screen shown during initialization
-class InitializationLoadingScreen extends StatelessWidget {
+/// Guarantees a login-error SnackBar never survives into the authenticated
+/// app. LoginScreen already tries to clear this itself on a successful
+/// login (`next is Authenticated -> clearSnackBars()`), but that depends
+/// on LoginScreen's own State still being mounted at the exact moment
+/// that transition's listeners run — not guaranteed, since the router's
+/// own listener (registered once, near app startup, well before
+/// LoginScreen is ever built) may run first and navigate away from
+/// /login before LoginScreen's listener gets its turn, silently skipping
+/// its `if (mounted)`-guarded clear. Reported symptom this fixes: a
+/// failed-login SnackBar surviving all the way into Home, visible until
+/// the app is force-closed and reopened.
+///
+/// Placed inside MaterialApp.router's `builder:` (below MaterialApp, so
+/// ScaffoldMessenger.of(context) resolves) rather than wrapping it —
+/// outlives every individual screen for the authenticated app's whole
+/// lifetime, making it a reliable backstop regardless of which screen
+/// triggered the auth state change.
+class _AuthSnackbarCleaner extends ConsumerWidget {
+  final Widget child;
+
+  const _AuthSnackbarCleaner({required this.child});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.listen<AuthState>(authControllerProvider, (previous, next) {
+      if (next is Authenticated) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+      }
+    });
+    return child;
+  }
+}
+
+/// Loading screen shown during initialization. Shows the live current
+/// phase (see [initializationPhaseProvider]) rather than a static message,
+/// so a startup hang is diagnosable — whichever phase text it's frozen on
+/// is the one that's stuck — instead of an unexplained spinner.
+class InitializationLoadingScreen extends ConsumerWidget {
   const InitializationLoadingScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final phase = ref.watch(initializationPhaseProvider);
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircularProgressIndicator(),
-              SizedBox(height: 24),
+              const CircularProgressIndicator(),
+              const SizedBox(height: 24),
               Text(
-                'Initializing Outlet Manager...',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                phase,
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
             ],
           ),
@@ -200,8 +240,15 @@ class InitializationLoadingScreen extends StatelessWidget {
   }
 }
 
-/// Error screen shown if initialization fails
-class InitializationErrorScreen extends StatelessWidget {
+/// Error screen shown if initialization fails.
+///
+/// Previously a dead end with no way forward short of force-closing the
+/// app — a device that hit the database-open timeout would be stuck here
+/// permanently. The retry button re-runs [appInitializationProvider];
+/// [IsarDatabase]'s in-flight-open cache (see its own doc comment) makes
+/// this safe even if the previous attempt's native open call is still
+/// running in the background rather than truly dead.
+class InitializationErrorScreen extends ConsumerWidget {
   final String? errorMessage;
   final Map<String, bool> serviceStatus;
 
@@ -212,7 +259,7 @@ class InitializationErrorScreen extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -258,7 +305,13 @@ class InitializationErrorScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 8),
                 ],
+                const SizedBox(height: 16),
+                ElevatedButton(
+                  onPressed: () => ref.invalidate(appInitializationProvider),
+                  child: const Text('Retry'),
+                ),
               ],
             ),
           ),
@@ -330,6 +383,8 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
         ref.read(backgroundGeolocationServiceProvider).syncPendingPings();
         // Sync any pending stock take operations
         _syncPendingStockTakeOperations();
+        // Resume any pending mapping upload/finish (spec §31/§65).
+        ref.read(mappingSessionNotifierProvider.notifier).retryUpload();
         break;
       case AppLifecycleState.paused:
       case AppLifecycleState.inactive:
@@ -409,6 +464,7 @@ class _BackgroundSyncListenerState
       );
 
       ref.read(backgroundGeolocationServiceProvider).syncPendingPings();
+      ref.read(mappingSessionNotifierProvider.notifier).retryUpload();
 
       final handler = await ref.read(stockTakeSyncHandlerProvider.future);
       final count = await handler.processAllPending();
@@ -459,6 +515,10 @@ class _DeviceRegistrationListenerState
       if (next is Authenticated) {
         _registerFcmToken();
         ref.read(backgroundGeolocationServiceProvider).ensureDeviceLocationToken();
+        // Spec §88 — after Isar init + authentication resolved, recover
+        // any non-terminal mapping session for this user. Bounded/best-
+        // effort: never blocks app startup on this.
+        ref.read(mappingSessionNotifierProvider.notifier).recoverForCurrentUser();
       }
     });
     return widget.child;

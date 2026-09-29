@@ -6,6 +6,7 @@ export 'coming_soon/coming_soon.dart';
 export 'forgot_password/forgot_password_screen.dart';
 export 'forgot_password/reset_password_screen.dart';
 export 'forgot_password/verify_otp_screen.dart';
+export 'full_screen_intent_permission/full_screen_intent_permission.dart';
 export 'help/help_center_screen.dart';
 export 'home/home.dart';
 export 'location_permission/location_permission.dart';

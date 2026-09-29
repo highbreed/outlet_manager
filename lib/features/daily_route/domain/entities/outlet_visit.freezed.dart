@@ -138,7 +138,16 @@ mixin _$OutletVisit {
   String? get syncError => throw _privateConstructorUsedError;
 
   /// Timestamp of last successful sync
-  DateTime? get lastSyncedAt => throw _privateConstructorUsedError;
+  DateTime? get lastSyncedAt =>
+      throw _privateConstructorUsedError; // === Outlet Mapping ===
+  /// Null when this outlet doesn't currently need mapping. Parsed from
+  /// the visit/route response's `mapping_request` field, never from
+  /// `OutletVisit.fromJson` directly (excluded from json_serializable —
+  /// the real parsing path is `OutletVisitResponse.toDomain()`, a
+  /// hand-written mapper, matching how every other field on this entity
+  /// is already sourced).
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  MappingRequest? get mappingRequest => throw _privateConstructorUsedError;
 
   /// Serializes this OutletVisit to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -198,6 +207,8 @@ abstract class $OutletVisitCopyWith<$Res> {
     SyncState syncState,
     String? syncError,
     DateTime? lastSyncedAt,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    MappingRequest? mappingRequest,
   });
 }
 
@@ -256,6 +267,7 @@ class _$OutletVisitCopyWithImpl<$Res, $Val extends OutletVisit>
     Object? syncState = null,
     Object? syncError = freezed,
     Object? lastSyncedAt = freezed,
+    Object? mappingRequest = freezed,
   }) {
     return _then(
       _value.copyWith(
@@ -419,6 +431,10 @@ class _$OutletVisitCopyWithImpl<$Res, $Val extends OutletVisit>
                 ? _value.lastSyncedAt
                 : lastSyncedAt // ignore: cast_nullable_to_non_nullable
                       as DateTime?,
+            mappingRequest: freezed == mappingRequest
+                ? _value.mappingRequest
+                : mappingRequest // ignore: cast_nullable_to_non_nullable
+                      as MappingRequest?,
           )
           as $Val,
     );
@@ -475,6 +491,8 @@ abstract class _$$OutletVisitImplCopyWith<$Res>
     SyncState syncState,
     String? syncError,
     DateTime? lastSyncedAt,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    MappingRequest? mappingRequest,
   });
 }
 
@@ -532,6 +550,7 @@ class __$$OutletVisitImplCopyWithImpl<$Res>
     Object? syncState = null,
     Object? syncError = freezed,
     Object? lastSyncedAt = freezed,
+    Object? mappingRequest = freezed,
   }) {
     return _then(
       _$OutletVisitImpl(
@@ -695,6 +714,10 @@ class __$$OutletVisitImplCopyWithImpl<$Res>
             ? _value.lastSyncedAt
             : lastSyncedAt // ignore: cast_nullable_to_non_nullable
                   as DateTime?,
+        mappingRequest: freezed == mappingRequest
+            ? _value.mappingRequest
+            : mappingRequest // ignore: cast_nullable_to_non_nullable
+                  as MappingRequest?,
       ),
     );
   }
@@ -744,6 +767,7 @@ class _$OutletVisitImpl implements _OutletVisit {
     this.syncState = SyncState.localOnly,
     this.syncError,
     this.lastSyncedAt,
+    @JsonKey(includeFromJson: false, includeToJson: false) this.mappingRequest,
   });
 
   factory _$OutletVisitImpl.fromJson(Map<String, dynamic> json) =>
@@ -912,10 +936,20 @@ class _$OutletVisitImpl implements _OutletVisit {
   /// Timestamp of last successful sync
   @override
   final DateTime? lastSyncedAt;
+  // === Outlet Mapping ===
+  /// Null when this outlet doesn't currently need mapping. Parsed from
+  /// the visit/route response's `mapping_request` field, never from
+  /// `OutletVisit.fromJson` directly (excluded from json_serializable —
+  /// the real parsing path is `OutletVisitResponse.toDomain()`, a
+  /// hand-written mapper, matching how every other field on this entity
+  /// is already sourced).
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final MappingRequest? mappingRequest;
 
   @override
   String toString() {
-    return 'OutletVisit(localId: $localId, serverId: $serverId, dailyRouteLocalId: $dailyRouteLocalId, dailyRouteServerId: $dailyRouteServerId, outletId: $outletId, outletCode: $outletCode, outletName: $outletName, outletLatitude: $outletLatitude, outletLongitude: $outletLongitude, geofenceRadiusMeters: $geofenceRadiusMeters, scheduleServerId: $scheduleServerId, visitOrder: $visitOrder, scheduledClockIn: $scheduledClockIn, scheduledClockOut: $scheduledClockOut, allocatedMinutes: $allocatedMinutes, visitPriority: $visitPriority, visitType: $visitType, status: $status, actualClockIn: $actualClockIn, actualClockOut: $actualClockOut, visitDurationMins: $visitDurationMins, clockInLatitude: $clockInLatitude, clockInLongitude: $clockInLongitude, clockInAccuracyMeters: $clockInAccuracyMeters, clockInDistanceMeters: $clockInDistanceMeters, clockOutLatitude: $clockOutLatitude, clockOutLongitude: $clockOutLongitude, clockOutAccuracyMeters: $clockOutAccuracyMeters, clockOutDistanceMeters: $clockOutDistanceMeters, geofenceOverride: $geofenceOverride, overrideRequestId: $overrideRequestId, skipReasonId: $skipReasonId, skipReasonCode: $skipReasonCode, skipNotes: $skipNotes, clockInNotes: $clockInNotes, clockOutNotes: $clockOutNotes, visitNotes: $visitNotes, syncState: $syncState, syncError: $syncError, lastSyncedAt: $lastSyncedAt)';
+    return 'OutletVisit(localId: $localId, serverId: $serverId, dailyRouteLocalId: $dailyRouteLocalId, dailyRouteServerId: $dailyRouteServerId, outletId: $outletId, outletCode: $outletCode, outletName: $outletName, outletLatitude: $outletLatitude, outletLongitude: $outletLongitude, geofenceRadiusMeters: $geofenceRadiusMeters, scheduleServerId: $scheduleServerId, visitOrder: $visitOrder, scheduledClockIn: $scheduledClockIn, scheduledClockOut: $scheduledClockOut, allocatedMinutes: $allocatedMinutes, visitPriority: $visitPriority, visitType: $visitType, status: $status, actualClockIn: $actualClockIn, actualClockOut: $actualClockOut, visitDurationMins: $visitDurationMins, clockInLatitude: $clockInLatitude, clockInLongitude: $clockInLongitude, clockInAccuracyMeters: $clockInAccuracyMeters, clockInDistanceMeters: $clockInDistanceMeters, clockOutLatitude: $clockOutLatitude, clockOutLongitude: $clockOutLongitude, clockOutAccuracyMeters: $clockOutAccuracyMeters, clockOutDistanceMeters: $clockOutDistanceMeters, geofenceOverride: $geofenceOverride, overrideRequestId: $overrideRequestId, skipReasonId: $skipReasonId, skipReasonCode: $skipReasonCode, skipNotes: $skipNotes, clockInNotes: $clockInNotes, clockOutNotes: $clockOutNotes, visitNotes: $visitNotes, syncState: $syncState, syncError: $syncError, lastSyncedAt: $lastSyncedAt, mappingRequest: $mappingRequest)';
   }
 
   @override
@@ -1000,7 +1034,9 @@ class _$OutletVisitImpl implements _OutletVisit {
             (identical(other.syncError, syncError) ||
                 other.syncError == syncError) &&
             (identical(other.lastSyncedAt, lastSyncedAt) ||
-                other.lastSyncedAt == lastSyncedAt));
+                other.lastSyncedAt == lastSyncedAt) &&
+            (identical(other.mappingRequest, mappingRequest) ||
+                other.mappingRequest == mappingRequest));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1047,6 +1083,7 @@ class _$OutletVisitImpl implements _OutletVisit {
     syncState,
     syncError,
     lastSyncedAt,
+    mappingRequest,
   ]);
 
   /// Create a copy of OutletVisit
@@ -1105,6 +1142,8 @@ abstract class _OutletVisit implements OutletVisit {
     final SyncState syncState,
     final String? syncError,
     final DateTime? lastSyncedAt,
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    final MappingRequest? mappingRequest,
   }) = _$OutletVisitImpl;
 
   factory _OutletVisit.fromJson(Map<String, dynamic> json) =
@@ -1258,7 +1297,16 @@ abstract class _OutletVisit implements OutletVisit {
 
   /// Timestamp of last successful sync
   @override
-  DateTime? get lastSyncedAt;
+  DateTime? get lastSyncedAt; // === Outlet Mapping ===
+  /// Null when this outlet doesn't currently need mapping. Parsed from
+  /// the visit/route response's `mapping_request` field, never from
+  /// `OutletVisit.fromJson` directly (excluded from json_serializable —
+  /// the real parsing path is `OutletVisitResponse.toDomain()`, a
+  /// hand-written mapper, matching how every other field on this entity
+  /// is already sourced).
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  MappingRequest? get mappingRequest;
 
   /// Create a copy of OutletVisit
   /// with the given fields replaced by the non-null parameter values.

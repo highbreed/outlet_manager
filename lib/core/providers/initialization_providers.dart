@@ -9,6 +9,16 @@ final appInitializationServiceProvider = Provider<AppInitializationService>((
   return AppInitializationService();
 });
 
+/// Which startup phase is currently running, updated live by
+/// [AppInitializationService.initializeWithRef] as each phase begins —
+/// lets [InitializationLoadingScreen] show what's actually happening
+/// ("Starting database…") instead of a static message, so a phase that
+/// hangs is diagnosable (frozen on a specific phase name) rather than an
+/// unexplained infinite spinner.
+final initializationPhaseProvider = StateProvider<String>(
+  (ref) => 'Starting…',
+);
+
 /// FutureProvider that performs app initialization
 /// This should be watched on app startup
 final appInitializationProvider = FutureProvider<InitializationResult>((

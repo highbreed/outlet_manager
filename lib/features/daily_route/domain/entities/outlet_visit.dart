@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../../../outlet_mapping/domain/entities/mapping_request.dart';
 import 'daily_route.dart';
 
 part 'outlet_visit.freezed.dart';
@@ -164,6 +165,17 @@ class OutletVisit with _$OutletVisit {
 
     /// Timestamp of last successful sync
     DateTime? lastSyncedAt,
+
+    // === Outlet Mapping ===
+
+    /// Null when this outlet doesn't currently need mapping. Parsed from
+    /// the visit/route response's `mapping_request` field, never from
+    /// `OutletVisit.fromJson` directly (excluded from json_serializable —
+    /// the real parsing path is `OutletVisitResponse.toDomain()`, a
+    /// hand-written mapper, matching how every other field on this entity
+    /// is already sourced).
+    @JsonKey(includeFromJson: false, includeToJson: false)
+    MappingRequest? mappingRequest,
   }) = _OutletVisit;
 
   factory OutletVisit.fromJson(Map<String, dynamic> json) =>

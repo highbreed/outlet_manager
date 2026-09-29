@@ -31,6 +31,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return;
 
+    // Clear any SnackBar left over from a previous failed attempt before
+    // starting a new one — don't rely solely on the success-path listener
+    // below to catch up later (see its own comment for why that can miss).
+    if (mounted) {
+      ScaffoldMessenger.of(context).clearSnackBars();
+    }
+
     await ref
         .read(authControllerProvider.notifier)
         .login(

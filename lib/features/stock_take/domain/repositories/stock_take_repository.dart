@@ -11,7 +11,8 @@ export '../../data/models/proposed_order_model.dart'
         ProposedOrderProgressResponse,
         ProposedOrderDetail,
         ProposedOrderStatus,
-        ProposedOrderLineItem;
+        ProposedOrderLineItem,
+        ConvertToSalesOrderResult;
 
 /// Serial scan data for batch uploads
 class SerialScanData {
@@ -348,4 +349,9 @@ abstract class StockTakeRepository {
   /// GET /visits/{visit_id}/proposed-order/pdf-progress/{job_id}
   Future<Either<Failure, ProposedOrderProgressResponse>>
   getProposedOrderPdfProgress({required int visitId, required String jobId});
+
+  /// Convert a proposed order into a real sales order
+  /// POST /proposed-orders/{order_id}/convert-to-order
+  Future<Either<Failure, ConvertToSalesOrderResult>>
+  convertProposedOrderToSalesOrder({required int orderId, String? notes});
 }

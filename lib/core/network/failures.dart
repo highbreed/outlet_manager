@@ -385,3 +385,323 @@ abstract class InvalidRouteStateFailure
   @override
   String get message => displayMessage;
 }
+
+// ============================================================================
+// Domain-Specific Failures (Biometric Verification)
+// ============================================================================
+//
+// Deliberately NOT reusing AuthFailure.biometricFailed above — that's
+// grouped under the 401/"authentication failed" umbrella (session/token
+// problems), which is semantically wrong for a face-match result. A
+// failed verification is a business-logic outcome the backend returns on
+// POST /biometrics/verify, not an auth failure — AuthInterceptor's
+// proactive-refresh/force-logout handling has no bearing on it.
+//
+// Transport/server failures (timeout, 5xx, offline) are NOT modeled
+// here — they continue through the existing NetworkFailure/
+// ServerFailure/RateLimitFailure unchanged, which is what keeps "face
+// didn't match" structurally distinct from "couldn't reach the server."
+// Client-side pre-network states (noFace, multipleFaces, poorImageQuality,
+// etc.) are also not Failure subtypes — they live in
+// BiometricCaptureState.phase/BiometricErrorReason, converted to copy
+// only in the presentation layer.
+@freezed
+abstract class BiometricVerificationFailure
+    with _$BiometricVerificationFailure
+    implements Failure {
+  const BiometricVerificationFailure._();
+
+  /// Backend returned verified:false — a genuine, business-logic
+  /// non-match. Must never be conflated with a transport/server failure.
+  /// No verificationId here — per the proposed contract, that token is
+  /// only ever returned on a PASS.
+  const factory BiometricVerificationFailure.faceNotMatched({
+    @Default('We could not verify your face. Please try again.') String message,
+    String? requestId,
+  }) = FaceNotMatched;
+
+  const factory BiometricVerificationFailure.challengeExpired({
+    @Default('Liveness check expired. Please try again.') String message,
+    String? requestId,
+  }) = ChallengeExpired;
+
+  /// The person/account isn't enrolled — not the device. Device
+  /// registration and biometric enrollment are separate concepts; keep
+  /// this named accordingly (not e.g. "deviceNotEnrolled").
+  const factory BiometricVerificationFailure.notEnrolled({
+    @Default('Face not registered for this account') String message,
+    String? requestId,
+  }) = NotEnrolled;
+
+  // ── Identity/profile problems — no retry with the same
+  // challenge/request; reroute to registration or show non-retryable
+  // "contact supervisor" copy. Real backend codes: 409 NO_PROFILE,
+  // RE_ENROLLMENT_REQUIRED, PROFILE_REVOKED, NO_TEMPLATE,
+  // ENROLLMENT_NOT_ALLOWED, MODEL_VERSION_MISMATCH; 404 BIOMETRICS_DISABLED.
+
+  /// 409 `NO_PROFILE` — no enrolled profile exists for this employee at
+  /// all (distinct from [notEnrolled], which is the older/simpler
+  /// provisional-contract variant — this is the real contract's code).
+  /// Both map to "go to registration."
+  const factory BiometricVerificationFailure.noProfile({
+    @Default('Face not registered for this account') String message,
+    String? requestId,
+  }) = NoProfile;
+
+  /// 409 `RE_ENROLLMENT_REQUIRED`.
+  const factory BiometricVerificationFailure.reEnrollmentRequired({
+    @Default('Your face registration was reset — please register again')
+    String message,
+    String? requestId,
+  }) = ReEnrollmentRequired;
+
+  /// 409 `PROFILE_REVOKED` — the employee can't fix this themselves.
+  const factory BiometricVerificationFailure.profileRevoked({
+    @Default('Face verification disabled for your account — contact your supervisor')
+    String message,
+    String? requestId,
+  }) = ProfileRevoked;
+
+  /// 409 `NO_TEMPLATE` (verify only) — profile exists but has no usable
+  /// template; functionally the same recovery as [reEnrollmentRequired].
+  const factory BiometricVerificationFailure.noTemplate({
+    @Default('Face registration is incomplete — please register again')
+    String message,
+    String? requestId,
+  }) = NoTemplate;
+
+  /// 409 `ENROLLMENT_NOT_ALLOWED` (challenge/enroll, purpose=ENROLLMENT,
+  /// profile already ACTIVE).
+  const factory BiometricVerificationFailure.enrollmentNotAllowed({
+    @Default('Already registered. Ask your supervisor to reset.') String message,
+    String? requestId,
+  }) = EnrollmentNotAllowed;
+
+  /// 409 `MODEL_VERSION_MISMATCH` (verify) — needs a supervisor reset.
+  const factory BiometricVerificationFailure.modelVersionMismatch({
+    @Default('Face registration needs to be renewed — contact your supervisor')
+    String message,
+    String? requestId,
+  }) = ModelVersionMismatch;
+
+  /// 404 `BIOMETRICS_DISABLED` — biometrics not enabled on this server at
+  /// all; hide biometric UI entirely, fall back to legacy clock-in.
+  const factory BiometricVerificationFailure.biometricsDisabled({
+    @Default('Face verification is not available') String message,
+    String? requestId,
+  }) = BiometricsDisabled;
+
+  // ── Challenge/request problems — recoverable by starting over: a new
+  // challenge, and (for verify) a new verification_request_id. Real
+  // backend codes: 409 CHALLENGE_INVALID, CHALLENGE_EXPIRED (already
+  // above), CHALLENGE_USED, ENROLLMENT_CONFLICT,
+  // VERIFICATION_REQUEST_CONFLICT.
+
+  /// 409 `CHALLENGE_INVALID` — from another user/device/purpose, or
+  /// simply unknown to the server.
+  const factory BiometricVerificationFailure.challengeInvalid({
+    @Default('Something went wrong. Please try again.') String message,
+    String? requestId,
+  }) = ChallengeInvalid;
+
+  /// 409 `CHALLENGE_USED` — a different request already consumed this
+  /// challenge.
+  const factory BiometricVerificationFailure.challengeUsed({
+    @Default('Please try again.') String message,
+    String? requestId,
+  }) = ChallengeUsed;
+
+  /// 409 `ENROLLMENT_CONFLICT` (enroll only) — another enrollment attempt
+  /// finished first; refresh status rather than blindly retrying.
+  const factory BiometricVerificationFailure.enrollmentConflict({
+    @Default('Registration already completed on another device') String message,
+    String? requestId,
+  }) = EnrollmentConflict;
+
+  /// 409 `VERIFICATION_REQUEST_CONFLICT` (verify only) — the app reused a
+  /// request id with a different challenge; an app-side bug signal, not a
+  /// user-facing distinction from [challengeInvalid].
+  const factory BiometricVerificationFailure.verificationRequestConflict({
+    @Default('Something went wrong. Please try again.') String message,
+    String? requestId,
+  }) = VerificationRequestConflict;
+
+  // ── Image/encoding problems — real backend codes: 400 INVALID_IMAGE,
+  // 413 IMAGE_TOO_LARGE.
+
+  const factory BiometricVerificationFailure.invalidImage({
+    @Default('Something went wrong capturing your photo. Please try again.')
+    String message,
+    String? requestId,
+  }) = InvalidImage;
+
+  const factory BiometricVerificationFailure.imageTooLarge({
+    @Default('Something went wrong capturing your photo. Please try again.')
+    String message,
+    String? requestId,
+  }) = ImageTooLarge;
+
+  // ── Technical/retry problems — transient, never an identity failure.
+  // The real contract treats MODEL_UNAVAILABLE / BIOMETRIC_BUSY /
+  // BIOMETRIC_UNAVAILABLE / PROCESSING_ERROR identically (503, "technical,
+  // retry after Retry-After"), so one variant with a sub-reason covers
+  // all four rather than 4 near-identical factories.
+
+  const factory BiometricVerificationFailure.technicallyUnavailable({
+    required BiometricTechnicalUnavailableReason reason,
+    Duration? retryAfter,
+    @Default('Face verification temporarily unavailable') String message,
+    String? requestId,
+  }) = TechnicallyUnavailable;
+
+  /// 403 `DEVICE_NOT_REGISTERED` — distinct handling from the generic
+  /// technical-retry bucket: re-register the device, retry once.
+  const factory BiometricVerificationFailure.deviceNotRegistered({
+    @Default('Device not registered. Please try again.') String message,
+    String? requestId,
+  }) = DeviceNotRegistered;
+
+  /// 429 `BIOMETRIC_RATE_LIMITED` — distinct from the generic
+  /// [RateLimitFailure] so the UI can show biometric-specific copy.
+  const factory BiometricVerificationFailure.biometricRateLimited({
+    required Duration retryAfter,
+    @Default('Too many attempts. Please try again shortly.') String message,
+    String? requestId,
+  }) = BiometricRateLimited;
+
+  /// Returned when the *clock-in* endpoint (not /biometrics/verify)
+  /// rejects a verification_id — see [BiometricClockInRejectionReason]
+  /// for the 4 backend codes this maps from. Kept in this same failure
+  /// group since all four are "why didn't clock-in succeed, biometrics-
+  /// wise" — not a daily-route/location failure like
+  /// GeofenceViolationFailure.
+  const factory BiometricVerificationFailure.clockInRejected({
+    required BiometricClockInRejectionReason reason,
+    @Default('Verification could not be completed. Please try again.')
+    String message,
+    String? requestId,
+  }) = ClockInRejected;
+
+  @override
+  bool get isRetryable =>
+      this is TechnicallyUnavailable ||
+      this is BiometricRateLimited ||
+      this is DeviceNotRegistered;
+
+  @override
+  String get displayMessage => message;
+}
+
+/// The 4 codes the real contract treats identically ("technical, not an
+/// identity failure" — 503 MODEL_UNAVAILABLE / BIOMETRIC_BUSY /
+/// BIOMETRIC_UNAVAILABLE / PROCESSING_ERROR), kept as one Failure variant
+/// with a sub-reason rather than 4 near-identical factories.
+enum BiometricTechnicalUnavailableReason {
+  modelUnavailable,
+  biometricBusy,
+  biometricUnavailable,
+  processingError,
+}
+
+/// Reasons the *clock-in* endpoint can reject a `verification_id` — see
+/// the "Phase 4" plan's "Backend coordination" section for the exact
+/// backend codes these map from (BIOMETRIC_VERIFICATION_REQUIRED /
+/// _EXPIRED / _INVALID / _ALREADY_USED).
+enum BiometricClockInRejectionReason {
+  /// Clock-in attempted with no verification_id at all — e.g. an old
+  /// mobile build that predates this feature.
+  verificationRequired,
+
+  /// Valid at verify time, expired before clock-in consumed it (see
+  /// BiometricConfig.verificationTokenValidity).
+  verificationExpired,
+
+  /// Doesn't exist, or doesn't match this user/purpose/device.
+  verificationInvalid,
+
+  /// Replay of a previously-consumed verification_id.
+  verificationAlreadyUsed,
+}
+
+// ============================================================================
+// Domain-Specific Failures (Outlet Mapping)
+// ============================================================================
+//
+// Transport/server failures (timeout, 5xx, offline) continue through the
+// existing NetworkFailure/ServerFailure/RateLimitFailure unchanged — same
+// principle as BiometricVerificationFailure above.
+@freezed
+abstract class OutletMappingFailure
+    with _$OutletMappingFailure
+    implements Failure {
+  const OutletMappingFailure._();
+
+  /// 404 — request or visit not found.
+  const factory OutletMappingFailure.notFound({
+    @Default('Mapping request not found') String message,
+    String? requestId,
+  }) = OutletMappingNotFound;
+
+  /// 403 — wrong owner, or missing `outlet:mapping:capture` permission.
+  const factory OutletMappingFailure.forbidden({
+    @Default('You are not authorized to map this outlet') String message,
+    String? requestId,
+  }) = OutletMappingForbidden;
+
+  /// 409 `WRONG_OUTLET` / `VISIT_NOT_IN_PROGRESS` / `REQUEST_NOT_OPEN` /
+  /// `AWAITING_REVIEW` / `CAPTURE_IN_PROGRESS` (start) and
+  /// `CAPTURE_ABANDONED` / `CAPTURE_NOT_OPEN` / `VISIT_NOT_IN_PROGRESS`
+  /// (sample upload) — kept as one variant with a code string rather than
+  /// ~8 near-identical factories; callers branch on [code] only where the
+  /// spec calls for different handling (see the notifier/uploader).
+  const factory OutletMappingFailure.conflict({
+    required String code,
+    @Default('This mapping session cannot continue right now') String message,
+    String? requestId,
+  }) = OutletMappingConflict;
+
+  /// 413 `TOO_MANY_SAMPLES`.
+  const factory OutletMappingFailure.tooManySamples({
+    @Default('Maximum mapping readings reached') String message,
+    String? requestId,
+  }) = OutletMappingTooManySamples;
+
+  /// 422 — validation error on the request body itself (a client bug, not
+  /// a user-facing scenario the spec calls out copy for).
+  const factory OutletMappingFailure.validation({
+    @Default('Invalid mapping request') String message,
+    String? requestId,
+  }) = OutletMappingValidation;
+
+  @override
+  bool get isRetryable => false;
+
+  @override
+  String get displayMessage => message;
+}
+
+/// Lunch-break start/end rejected by the backend — always a 404/409 with a
+/// specific `error` code from `{"detail":{"error":CODE,"message":...}}`.
+/// One variant with a [code] field rather than 5 near-identical factories
+/// (`LUNCH_ALREADY_TAKEN` / `NO_ROUTE_TODAY` / `ROUTE_CLOSED` /
+/// `NO_LUNCH_BREAK` / `NO_SALES_AGENT`) — same shape as
+/// [OutletMappingFailure.conflict]. The lunch break state itself is never
+/// decided from this Failure; callers reconcile against a fresh
+/// `dayStatusPollProvider` read regardless of whether this fires (see
+/// `LunchBreakNotifier`).
+@freezed
+abstract class LunchBreakFailure with _$LunchBreakFailure implements Failure {
+  const LunchBreakFailure._();
+
+  const factory LunchBreakFailure.actionRejected({
+    required String code,
+    @Default('Lunch break action could not be completed') String message,
+    String? requestId,
+  }) = LunchBreakActionRejected;
+
+  @override
+  bool get isRetryable => false;
+
+  @override
+  String get displayMessage => message;
+}

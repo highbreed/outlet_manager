@@ -131,4 +131,24 @@ abstract class ApiEndpoints {
   // staff-facing request/poll endpoints are backend/web-console only.
   static String deviceCacheReport(String requestId) =>
       '/device-cache/requests/$requestId/report';
+
+  // Biometric verification (facial registration + liveness-verified
+  // clock-in) — provisional, per the "Phase 4" plan's "Backend
+  // coordination" section; confirm exact paths once backend ships these.
+  static const String biometricStatus = '/biometrics/status';
+  static const String biometricChallenge = '/biometrics/challenge';
+  static const String biometricVerify = '/biometrics/verify';
+  static const String biometricEnroll = '/biometrics/enroll';
+
+  // Outlet Mapping — mobile API contract frozen per the backend team.
+  static String outletMappingCaptures(int requestId) =>
+      '/outlet-mapping/requests/$requestId/captures';
+  static String outletFootprintSamples(int footprintId) =>
+      '/outlet-footprints/$footprintId/samples';
+  static String outletFootprintFinish(int footprintId) =>
+      '/outlet-footprints/$footprintId/finish';
+  static String outletFootprintCaptureStatus(int footprintId) =>
+      '/outlet-footprints/$footprintId/capture-status';
+  static String outletFootprintAbandon(int footprintId) =>
+      '/outlet-footprints/$footprintId/abandon';
 }

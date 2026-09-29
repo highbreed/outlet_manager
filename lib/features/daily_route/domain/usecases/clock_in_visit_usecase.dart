@@ -31,12 +31,20 @@ class ClockInVisitUseCase {
   /// [latitude] - Current GPS latitude
   /// [longitude] - Current GPS longitude
   /// [accuracyMeters] - GPS accuracy in meters
+  /// [verificationId] - Biometric verification token from a successful
+  ///   `verifyBiometric` call. Null for a legacy clock-in when the backend
+  ///   reports `clock_in_verification_required: false` for this employee
+  ///   — see the "Phase 5" plan's section D.
+  /// [deviceId] - This device's stable fingerprint, forwarded alongside a
+  ///   verification for the backend's device-match check.
   /// [notes] - Optional notes for clock-in
   Future<Either<Failure, OutletVisit>> call({
     required String visitLocalId,
     required double latitude,
     required double longitude,
     required double accuracyMeters,
+    String? verificationId,
+    String? deviceId,
     String? notes,
   }) async {
     // Validate GPS accuracy (must be ≤ 200m)
@@ -120,6 +128,8 @@ class ClockInVisitUseCase {
         latitude: latitude,
         longitude: longitude,
         accuracyMeters: accuracyMeters,
+        verificationId: verificationId,
+        deviceId: deviceId,
         notes: notes,
       );
     });

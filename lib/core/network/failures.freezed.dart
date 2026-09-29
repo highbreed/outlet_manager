@@ -5870,3 +5870,8279 @@ abstract class _InvalidRouteStateFailure extends InvalidRouteStateFailure {
   _$$InvalidRouteStateFailureImplCopyWith<_$InvalidRouteStateFailureImpl>
   get copyWith => throw _privateConstructorUsedError;
 }
+
+/// @nodoc
+mixin _$BiometricVerificationFailure {
+  String get message => throw _privateConstructorUsedError;
+  String? get requestId => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) => throw _privateConstructorUsedError;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $BiometricVerificationFailureCopyWith<BiometricVerificationFailure>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $BiometricVerificationFailureCopyWith<$Res> {
+  factory $BiometricVerificationFailureCopyWith(
+    BiometricVerificationFailure value,
+    $Res Function(BiometricVerificationFailure) then,
+  ) =
+      _$BiometricVerificationFailureCopyWithImpl<
+        $Res,
+        BiometricVerificationFailure
+      >;
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class _$BiometricVerificationFailureCopyWithImpl<
+  $Res,
+  $Val extends BiometricVerificationFailure
+>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  _$BiometricVerificationFailureCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _value.copyWith(
+            message: null == message
+                ? _value.message
+                : message // ignore: cast_nullable_to_non_nullable
+                      as String,
+            requestId: freezed == requestId
+                ? _value.requestId
+                : requestId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$FaceNotMatchedImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$FaceNotMatchedImplCopyWith(
+    _$FaceNotMatchedImpl value,
+    $Res Function(_$FaceNotMatchedImpl) then,
+  ) = __$$FaceNotMatchedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$FaceNotMatchedImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<$Res, _$FaceNotMatchedImpl>
+    implements _$$FaceNotMatchedImplCopyWith<$Res> {
+  __$$FaceNotMatchedImplCopyWithImpl(
+    _$FaceNotMatchedImpl _value,
+    $Res Function(_$FaceNotMatchedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$FaceNotMatchedImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$FaceNotMatchedImpl extends FaceNotMatched {
+  const _$FaceNotMatchedImpl({
+    this.message = 'We could not verify your face. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.faceNotMatched(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FaceNotMatchedImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$FaceNotMatchedImplCopyWith<_$FaceNotMatchedImpl> get copyWith =>
+      __$$FaceNotMatchedImplCopyWithImpl<_$FaceNotMatchedImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return faceNotMatched(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return faceNotMatched?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (faceNotMatched != null) {
+      return faceNotMatched(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return faceNotMatched(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return faceNotMatched?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (faceNotMatched != null) {
+      return faceNotMatched(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class FaceNotMatched extends BiometricVerificationFailure {
+  const factory FaceNotMatched({
+    final String message,
+    final String? requestId,
+  }) = _$FaceNotMatchedImpl;
+  const FaceNotMatched._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FaceNotMatchedImplCopyWith<_$FaceNotMatchedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ChallengeExpiredImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ChallengeExpiredImplCopyWith(
+    _$ChallengeExpiredImpl value,
+    $Res Function(_$ChallengeExpiredImpl) then,
+  ) = __$$ChallengeExpiredImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$ChallengeExpiredImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<$Res, _$ChallengeExpiredImpl>
+    implements _$$ChallengeExpiredImplCopyWith<$Res> {
+  __$$ChallengeExpiredImplCopyWithImpl(
+    _$ChallengeExpiredImpl _value,
+    $Res Function(_$ChallengeExpiredImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$ChallengeExpiredImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ChallengeExpiredImpl extends ChallengeExpired {
+  const _$ChallengeExpiredImpl({
+    this.message = 'Liveness check expired. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.challengeExpired(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChallengeExpiredImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChallengeExpiredImplCopyWith<_$ChallengeExpiredImpl> get copyWith =>
+      __$$ChallengeExpiredImplCopyWithImpl<_$ChallengeExpiredImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return challengeExpired(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return challengeExpired?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (challengeExpired != null) {
+      return challengeExpired(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return challengeExpired(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return challengeExpired?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (challengeExpired != null) {
+      return challengeExpired(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChallengeExpired extends BiometricVerificationFailure {
+  const factory ChallengeExpired({
+    final String message,
+    final String? requestId,
+  }) = _$ChallengeExpiredImpl;
+  const ChallengeExpired._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChallengeExpiredImplCopyWith<_$ChallengeExpiredImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NotEnrolledImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$NotEnrolledImplCopyWith(
+    _$NotEnrolledImpl value,
+    $Res Function(_$NotEnrolledImpl) then,
+  ) = __$$NotEnrolledImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$NotEnrolledImplCopyWithImpl<$Res>
+    extends _$BiometricVerificationFailureCopyWithImpl<$Res, _$NotEnrolledImpl>
+    implements _$$NotEnrolledImplCopyWith<$Res> {
+  __$$NotEnrolledImplCopyWithImpl(
+    _$NotEnrolledImpl _value,
+    $Res Function(_$NotEnrolledImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$NotEnrolledImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$NotEnrolledImpl extends NotEnrolled {
+  const _$NotEnrolledImpl({
+    this.message = 'Face not registered for this account',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.notEnrolled(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NotEnrolledImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NotEnrolledImplCopyWith<_$NotEnrolledImpl> get copyWith =>
+      __$$NotEnrolledImplCopyWithImpl<_$NotEnrolledImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return notEnrolled(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return notEnrolled?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (notEnrolled != null) {
+      return notEnrolled(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return notEnrolled(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return notEnrolled?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (notEnrolled != null) {
+      return notEnrolled(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NotEnrolled extends BiometricVerificationFailure {
+  const factory NotEnrolled({final String message, final String? requestId}) =
+      _$NotEnrolledImpl;
+  const NotEnrolled._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NotEnrolledImplCopyWith<_$NotEnrolledImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NoProfileImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$NoProfileImplCopyWith(
+    _$NoProfileImpl value,
+    $Res Function(_$NoProfileImpl) then,
+  ) = __$$NoProfileImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$NoProfileImplCopyWithImpl<$Res>
+    extends _$BiometricVerificationFailureCopyWithImpl<$Res, _$NoProfileImpl>
+    implements _$$NoProfileImplCopyWith<$Res> {
+  __$$NoProfileImplCopyWithImpl(
+    _$NoProfileImpl _value,
+    $Res Function(_$NoProfileImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$NoProfileImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$NoProfileImpl extends NoProfile {
+  const _$NoProfileImpl({
+    this.message = 'Face not registered for this account',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.noProfile(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NoProfileImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NoProfileImplCopyWith<_$NoProfileImpl> get copyWith =>
+      __$$NoProfileImplCopyWithImpl<_$NoProfileImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return noProfile(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return noProfile?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (noProfile != null) {
+      return noProfile(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return noProfile(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return noProfile?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (noProfile != null) {
+      return noProfile(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NoProfile extends BiometricVerificationFailure {
+  const factory NoProfile({final String message, final String? requestId}) =
+      _$NoProfileImpl;
+  const NoProfile._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NoProfileImplCopyWith<_$NoProfileImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ReEnrollmentRequiredImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ReEnrollmentRequiredImplCopyWith(
+    _$ReEnrollmentRequiredImpl value,
+    $Res Function(_$ReEnrollmentRequiredImpl) then,
+  ) = __$$ReEnrollmentRequiredImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$ReEnrollmentRequiredImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$ReEnrollmentRequiredImpl
+        >
+    implements _$$ReEnrollmentRequiredImplCopyWith<$Res> {
+  __$$ReEnrollmentRequiredImplCopyWithImpl(
+    _$ReEnrollmentRequiredImpl _value,
+    $Res Function(_$ReEnrollmentRequiredImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$ReEnrollmentRequiredImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ReEnrollmentRequiredImpl extends ReEnrollmentRequired {
+  const _$ReEnrollmentRequiredImpl({
+    this.message = 'Your face registration was reset — please register again',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.reEnrollmentRequired(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ReEnrollmentRequiredImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ReEnrollmentRequiredImplCopyWith<_$ReEnrollmentRequiredImpl>
+  get copyWith =>
+      __$$ReEnrollmentRequiredImplCopyWithImpl<_$ReEnrollmentRequiredImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return reEnrollmentRequired(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return reEnrollmentRequired?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (reEnrollmentRequired != null) {
+      return reEnrollmentRequired(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return reEnrollmentRequired(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return reEnrollmentRequired?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (reEnrollmentRequired != null) {
+      return reEnrollmentRequired(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ReEnrollmentRequired extends BiometricVerificationFailure {
+  const factory ReEnrollmentRequired({
+    final String message,
+    final String? requestId,
+  }) = _$ReEnrollmentRequiredImpl;
+  const ReEnrollmentRequired._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ReEnrollmentRequiredImplCopyWith<_$ReEnrollmentRequiredImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ProfileRevokedImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ProfileRevokedImplCopyWith(
+    _$ProfileRevokedImpl value,
+    $Res Function(_$ProfileRevokedImpl) then,
+  ) = __$$ProfileRevokedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$ProfileRevokedImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<$Res, _$ProfileRevokedImpl>
+    implements _$$ProfileRevokedImplCopyWith<$Res> {
+  __$$ProfileRevokedImplCopyWithImpl(
+    _$ProfileRevokedImpl _value,
+    $Res Function(_$ProfileRevokedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$ProfileRevokedImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ProfileRevokedImpl extends ProfileRevoked {
+  const _$ProfileRevokedImpl({
+    this.message =
+        'Face verification disabled for your account — contact your supervisor',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.profileRevoked(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ProfileRevokedImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ProfileRevokedImplCopyWith<_$ProfileRevokedImpl> get copyWith =>
+      __$$ProfileRevokedImplCopyWithImpl<_$ProfileRevokedImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return profileRevoked(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return profileRevoked?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (profileRevoked != null) {
+      return profileRevoked(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return profileRevoked(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return profileRevoked?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (profileRevoked != null) {
+      return profileRevoked(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ProfileRevoked extends BiometricVerificationFailure {
+  const factory ProfileRevoked({
+    final String message,
+    final String? requestId,
+  }) = _$ProfileRevokedImpl;
+  const ProfileRevoked._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ProfileRevokedImplCopyWith<_$ProfileRevokedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$NoTemplateImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$NoTemplateImplCopyWith(
+    _$NoTemplateImpl value,
+    $Res Function(_$NoTemplateImpl) then,
+  ) = __$$NoTemplateImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$NoTemplateImplCopyWithImpl<$Res>
+    extends _$BiometricVerificationFailureCopyWithImpl<$Res, _$NoTemplateImpl>
+    implements _$$NoTemplateImplCopyWith<$Res> {
+  __$$NoTemplateImplCopyWithImpl(
+    _$NoTemplateImpl _value,
+    $Res Function(_$NoTemplateImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$NoTemplateImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$NoTemplateImpl extends NoTemplate {
+  const _$NoTemplateImpl({
+    this.message = 'Face registration is incomplete — please register again',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.noTemplate(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$NoTemplateImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$NoTemplateImplCopyWith<_$NoTemplateImpl> get copyWith =>
+      __$$NoTemplateImplCopyWithImpl<_$NoTemplateImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return noTemplate(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return noTemplate?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (noTemplate != null) {
+      return noTemplate(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return noTemplate(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return noTemplate?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (noTemplate != null) {
+      return noTemplate(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class NoTemplate extends BiometricVerificationFailure {
+  const factory NoTemplate({final String message, final String? requestId}) =
+      _$NoTemplateImpl;
+  const NoTemplate._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$NoTemplateImplCopyWith<_$NoTemplateImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$EnrollmentNotAllowedImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$EnrollmentNotAllowedImplCopyWith(
+    _$EnrollmentNotAllowedImpl value,
+    $Res Function(_$EnrollmentNotAllowedImpl) then,
+  ) = __$$EnrollmentNotAllowedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$EnrollmentNotAllowedImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$EnrollmentNotAllowedImpl
+        >
+    implements _$$EnrollmentNotAllowedImplCopyWith<$Res> {
+  __$$EnrollmentNotAllowedImplCopyWithImpl(
+    _$EnrollmentNotAllowedImpl _value,
+    $Res Function(_$EnrollmentNotAllowedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$EnrollmentNotAllowedImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$EnrollmentNotAllowedImpl extends EnrollmentNotAllowed {
+  const _$EnrollmentNotAllowedImpl({
+    this.message = 'Already registered. Ask your supervisor to reset.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.enrollmentNotAllowed(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EnrollmentNotAllowedImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EnrollmentNotAllowedImplCopyWith<_$EnrollmentNotAllowedImpl>
+  get copyWith =>
+      __$$EnrollmentNotAllowedImplCopyWithImpl<_$EnrollmentNotAllowedImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return enrollmentNotAllowed(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return enrollmentNotAllowed?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (enrollmentNotAllowed != null) {
+      return enrollmentNotAllowed(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return enrollmentNotAllowed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return enrollmentNotAllowed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (enrollmentNotAllowed != null) {
+      return enrollmentNotAllowed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EnrollmentNotAllowed extends BiometricVerificationFailure {
+  const factory EnrollmentNotAllowed({
+    final String message,
+    final String? requestId,
+  }) = _$EnrollmentNotAllowedImpl;
+  const EnrollmentNotAllowed._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EnrollmentNotAllowedImplCopyWith<_$EnrollmentNotAllowedImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ModelVersionMismatchImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ModelVersionMismatchImplCopyWith(
+    _$ModelVersionMismatchImpl value,
+    $Res Function(_$ModelVersionMismatchImpl) then,
+  ) = __$$ModelVersionMismatchImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$ModelVersionMismatchImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$ModelVersionMismatchImpl
+        >
+    implements _$$ModelVersionMismatchImplCopyWith<$Res> {
+  __$$ModelVersionMismatchImplCopyWithImpl(
+    _$ModelVersionMismatchImpl _value,
+    $Res Function(_$ModelVersionMismatchImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$ModelVersionMismatchImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ModelVersionMismatchImpl extends ModelVersionMismatch {
+  const _$ModelVersionMismatchImpl({
+    this.message =
+        'Face registration needs to be renewed — contact your supervisor',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.modelVersionMismatch(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ModelVersionMismatchImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ModelVersionMismatchImplCopyWith<_$ModelVersionMismatchImpl>
+  get copyWith =>
+      __$$ModelVersionMismatchImplCopyWithImpl<_$ModelVersionMismatchImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return modelVersionMismatch(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return modelVersionMismatch?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (modelVersionMismatch != null) {
+      return modelVersionMismatch(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return modelVersionMismatch(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return modelVersionMismatch?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (modelVersionMismatch != null) {
+      return modelVersionMismatch(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ModelVersionMismatch extends BiometricVerificationFailure {
+  const factory ModelVersionMismatch({
+    final String message,
+    final String? requestId,
+  }) = _$ModelVersionMismatchImpl;
+  const ModelVersionMismatch._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ModelVersionMismatchImplCopyWith<_$ModelVersionMismatchImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$BiometricsDisabledImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$BiometricsDisabledImplCopyWith(
+    _$BiometricsDisabledImpl value,
+    $Res Function(_$BiometricsDisabledImpl) then,
+  ) = __$$BiometricsDisabledImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$BiometricsDisabledImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$BiometricsDisabledImpl
+        >
+    implements _$$BiometricsDisabledImplCopyWith<$Res> {
+  __$$BiometricsDisabledImplCopyWithImpl(
+    _$BiometricsDisabledImpl _value,
+    $Res Function(_$BiometricsDisabledImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$BiometricsDisabledImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$BiometricsDisabledImpl extends BiometricsDisabled {
+  const _$BiometricsDisabledImpl({
+    this.message = 'Face verification is not available',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.biometricsDisabled(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BiometricsDisabledImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$BiometricsDisabledImplCopyWith<_$BiometricsDisabledImpl> get copyWith =>
+      __$$BiometricsDisabledImplCopyWithImpl<_$BiometricsDisabledImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return biometricsDisabled(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return biometricsDisabled?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (biometricsDisabled != null) {
+      return biometricsDisabled(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return biometricsDisabled(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return biometricsDisabled?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (biometricsDisabled != null) {
+      return biometricsDisabled(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class BiometricsDisabled extends BiometricVerificationFailure {
+  const factory BiometricsDisabled({
+    final String message,
+    final String? requestId,
+  }) = _$BiometricsDisabledImpl;
+  const BiometricsDisabled._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$BiometricsDisabledImplCopyWith<_$BiometricsDisabledImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ChallengeInvalidImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ChallengeInvalidImplCopyWith(
+    _$ChallengeInvalidImpl value,
+    $Res Function(_$ChallengeInvalidImpl) then,
+  ) = __$$ChallengeInvalidImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$ChallengeInvalidImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<$Res, _$ChallengeInvalidImpl>
+    implements _$$ChallengeInvalidImplCopyWith<$Res> {
+  __$$ChallengeInvalidImplCopyWithImpl(
+    _$ChallengeInvalidImpl _value,
+    $Res Function(_$ChallengeInvalidImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$ChallengeInvalidImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ChallengeInvalidImpl extends ChallengeInvalid {
+  const _$ChallengeInvalidImpl({
+    this.message = 'Something went wrong. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.challengeInvalid(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChallengeInvalidImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChallengeInvalidImplCopyWith<_$ChallengeInvalidImpl> get copyWith =>
+      __$$ChallengeInvalidImplCopyWithImpl<_$ChallengeInvalidImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return challengeInvalid(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return challengeInvalid?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (challengeInvalid != null) {
+      return challengeInvalid(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return challengeInvalid(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return challengeInvalid?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (challengeInvalid != null) {
+      return challengeInvalid(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChallengeInvalid extends BiometricVerificationFailure {
+  const factory ChallengeInvalid({
+    final String message,
+    final String? requestId,
+  }) = _$ChallengeInvalidImpl;
+  const ChallengeInvalid._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChallengeInvalidImplCopyWith<_$ChallengeInvalidImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ChallengeUsedImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ChallengeUsedImplCopyWith(
+    _$ChallengeUsedImpl value,
+    $Res Function(_$ChallengeUsedImpl) then,
+  ) = __$$ChallengeUsedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$ChallengeUsedImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<$Res, _$ChallengeUsedImpl>
+    implements _$$ChallengeUsedImplCopyWith<$Res> {
+  __$$ChallengeUsedImplCopyWithImpl(
+    _$ChallengeUsedImpl _value,
+    $Res Function(_$ChallengeUsedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$ChallengeUsedImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ChallengeUsedImpl extends ChallengeUsed {
+  const _$ChallengeUsedImpl({
+    this.message = 'Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.challengeUsed(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChallengeUsedImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChallengeUsedImplCopyWith<_$ChallengeUsedImpl> get copyWith =>
+      __$$ChallengeUsedImplCopyWithImpl<_$ChallengeUsedImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return challengeUsed(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return challengeUsed?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (challengeUsed != null) {
+      return challengeUsed(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return challengeUsed(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return challengeUsed?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (challengeUsed != null) {
+      return challengeUsed(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ChallengeUsed extends BiometricVerificationFailure {
+  const factory ChallengeUsed({final String message, final String? requestId}) =
+      _$ChallengeUsedImpl;
+  const ChallengeUsed._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChallengeUsedImplCopyWith<_$ChallengeUsedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$EnrollmentConflictImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$EnrollmentConflictImplCopyWith(
+    _$EnrollmentConflictImpl value,
+    $Res Function(_$EnrollmentConflictImpl) then,
+  ) = __$$EnrollmentConflictImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$EnrollmentConflictImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$EnrollmentConflictImpl
+        >
+    implements _$$EnrollmentConflictImplCopyWith<$Res> {
+  __$$EnrollmentConflictImplCopyWithImpl(
+    _$EnrollmentConflictImpl _value,
+    $Res Function(_$EnrollmentConflictImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$EnrollmentConflictImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$EnrollmentConflictImpl extends EnrollmentConflict {
+  const _$EnrollmentConflictImpl({
+    this.message = 'Registration already completed on another device',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.enrollmentConflict(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$EnrollmentConflictImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$EnrollmentConflictImplCopyWith<_$EnrollmentConflictImpl> get copyWith =>
+      __$$EnrollmentConflictImplCopyWithImpl<_$EnrollmentConflictImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return enrollmentConflict(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return enrollmentConflict?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (enrollmentConflict != null) {
+      return enrollmentConflict(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return enrollmentConflict(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return enrollmentConflict?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (enrollmentConflict != null) {
+      return enrollmentConflict(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class EnrollmentConflict extends BiometricVerificationFailure {
+  const factory EnrollmentConflict({
+    final String message,
+    final String? requestId,
+  }) = _$EnrollmentConflictImpl;
+  const EnrollmentConflict._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$EnrollmentConflictImplCopyWith<_$EnrollmentConflictImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$VerificationRequestConflictImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$VerificationRequestConflictImplCopyWith(
+    _$VerificationRequestConflictImpl value,
+    $Res Function(_$VerificationRequestConflictImpl) then,
+  ) = __$$VerificationRequestConflictImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$VerificationRequestConflictImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$VerificationRequestConflictImpl
+        >
+    implements _$$VerificationRequestConflictImplCopyWith<$Res> {
+  __$$VerificationRequestConflictImplCopyWithImpl(
+    _$VerificationRequestConflictImpl _value,
+    $Res Function(_$VerificationRequestConflictImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$VerificationRequestConflictImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$VerificationRequestConflictImpl extends VerificationRequestConflict {
+  const _$VerificationRequestConflictImpl({
+    this.message = 'Something went wrong. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.verificationRequestConflict(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$VerificationRequestConflictImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$VerificationRequestConflictImplCopyWith<_$VerificationRequestConflictImpl>
+  get copyWith =>
+      __$$VerificationRequestConflictImplCopyWithImpl<
+        _$VerificationRequestConflictImpl
+      >(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return verificationRequestConflict(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return verificationRequestConflict?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (verificationRequestConflict != null) {
+      return verificationRequestConflict(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return verificationRequestConflict(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return verificationRequestConflict?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (verificationRequestConflict != null) {
+      return verificationRequestConflict(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class VerificationRequestConflict
+    extends BiometricVerificationFailure {
+  const factory VerificationRequestConflict({
+    final String message,
+    final String? requestId,
+  }) = _$VerificationRequestConflictImpl;
+  const VerificationRequestConflict._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$VerificationRequestConflictImplCopyWith<_$VerificationRequestConflictImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$InvalidImageImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$InvalidImageImplCopyWith(
+    _$InvalidImageImpl value,
+    $Res Function(_$InvalidImageImpl) then,
+  ) = __$$InvalidImageImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$InvalidImageImplCopyWithImpl<$Res>
+    extends _$BiometricVerificationFailureCopyWithImpl<$Res, _$InvalidImageImpl>
+    implements _$$InvalidImageImplCopyWith<$Res> {
+  __$$InvalidImageImplCopyWithImpl(
+    _$InvalidImageImpl _value,
+    $Res Function(_$InvalidImageImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$InvalidImageImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$InvalidImageImpl extends InvalidImage {
+  const _$InvalidImageImpl({
+    this.message =
+        'Something went wrong capturing your photo. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.invalidImage(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$InvalidImageImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$InvalidImageImplCopyWith<_$InvalidImageImpl> get copyWith =>
+      __$$InvalidImageImplCopyWithImpl<_$InvalidImageImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return invalidImage(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return invalidImage?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (invalidImage != null) {
+      return invalidImage(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return invalidImage(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return invalidImage?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (invalidImage != null) {
+      return invalidImage(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class InvalidImage extends BiometricVerificationFailure {
+  const factory InvalidImage({final String message, final String? requestId}) =
+      _$InvalidImageImpl;
+  const InvalidImage._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$InvalidImageImplCopyWith<_$InvalidImageImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ImageTooLargeImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ImageTooLargeImplCopyWith(
+    _$ImageTooLargeImpl value,
+    $Res Function(_$ImageTooLargeImpl) then,
+  ) = __$$ImageTooLargeImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$ImageTooLargeImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<$Res, _$ImageTooLargeImpl>
+    implements _$$ImageTooLargeImplCopyWith<$Res> {
+  __$$ImageTooLargeImplCopyWithImpl(
+    _$ImageTooLargeImpl _value,
+    $Res Function(_$ImageTooLargeImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$ImageTooLargeImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ImageTooLargeImpl extends ImageTooLarge {
+  const _$ImageTooLargeImpl({
+    this.message =
+        'Something went wrong capturing your photo. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.imageTooLarge(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ImageTooLargeImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ImageTooLargeImplCopyWith<_$ImageTooLargeImpl> get copyWith =>
+      __$$ImageTooLargeImplCopyWithImpl<_$ImageTooLargeImpl>(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return imageTooLarge(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return imageTooLarge?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (imageTooLarge != null) {
+      return imageTooLarge(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return imageTooLarge(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return imageTooLarge?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (imageTooLarge != null) {
+      return imageTooLarge(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ImageTooLarge extends BiometricVerificationFailure {
+  const factory ImageTooLarge({final String message, final String? requestId}) =
+      _$ImageTooLargeImpl;
+  const ImageTooLarge._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ImageTooLargeImplCopyWith<_$ImageTooLargeImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$TechnicallyUnavailableImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$TechnicallyUnavailableImplCopyWith(
+    _$TechnicallyUnavailableImpl value,
+    $Res Function(_$TechnicallyUnavailableImpl) then,
+  ) = __$$TechnicallyUnavailableImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    BiometricTechnicalUnavailableReason reason,
+    Duration? retryAfter,
+    String message,
+    String? requestId,
+  });
+}
+
+/// @nodoc
+class __$$TechnicallyUnavailableImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$TechnicallyUnavailableImpl
+        >
+    implements _$$TechnicallyUnavailableImplCopyWith<$Res> {
+  __$$TechnicallyUnavailableImplCopyWithImpl(
+    _$TechnicallyUnavailableImpl _value,
+    $Res Function(_$TechnicallyUnavailableImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? reason = null,
+    Object? retryAfter = freezed,
+    Object? message = null,
+    Object? requestId = freezed,
+  }) {
+    return _then(
+      _$TechnicallyUnavailableImpl(
+        reason: null == reason
+            ? _value.reason
+            : reason // ignore: cast_nullable_to_non_nullable
+                  as BiometricTechnicalUnavailableReason,
+        retryAfter: freezed == retryAfter
+            ? _value.retryAfter
+            : retryAfter // ignore: cast_nullable_to_non_nullable
+                  as Duration?,
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$TechnicallyUnavailableImpl extends TechnicallyUnavailable {
+  const _$TechnicallyUnavailableImpl({
+    required this.reason,
+    this.retryAfter,
+    this.message = 'Face verification temporarily unavailable',
+    this.requestId,
+  }) : super._();
+
+  @override
+  final BiometricTechnicalUnavailableReason reason;
+  @override
+  final Duration? retryAfter;
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.technicallyUnavailable(reason: $reason, retryAfter: $retryAfter, message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TechnicallyUnavailableImpl &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.retryAfter, retryAfter) ||
+                other.retryAfter == retryAfter) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode =>
+      Object.hash(runtimeType, reason, retryAfter, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TechnicallyUnavailableImplCopyWith<_$TechnicallyUnavailableImpl>
+  get copyWith =>
+      __$$TechnicallyUnavailableImplCopyWithImpl<_$TechnicallyUnavailableImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return technicallyUnavailable(reason, retryAfter, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return technicallyUnavailable?.call(reason, retryAfter, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (technicallyUnavailable != null) {
+      return technicallyUnavailable(reason, retryAfter, message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return technicallyUnavailable(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return technicallyUnavailable?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (technicallyUnavailable != null) {
+      return technicallyUnavailable(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class TechnicallyUnavailable extends BiometricVerificationFailure {
+  const factory TechnicallyUnavailable({
+    required final BiometricTechnicalUnavailableReason reason,
+    final Duration? retryAfter,
+    final String message,
+    final String? requestId,
+  }) = _$TechnicallyUnavailableImpl;
+  const TechnicallyUnavailable._() : super._();
+
+  BiometricTechnicalUnavailableReason get reason;
+  Duration? get retryAfter;
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TechnicallyUnavailableImplCopyWith<_$TechnicallyUnavailableImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$DeviceNotRegisteredImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$DeviceNotRegisteredImplCopyWith(
+    _$DeviceNotRegisteredImpl value,
+    $Res Function(_$DeviceNotRegisteredImpl) then,
+  ) = __$$DeviceNotRegisteredImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$DeviceNotRegisteredImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$DeviceNotRegisteredImpl
+        >
+    implements _$$DeviceNotRegisteredImplCopyWith<$Res> {
+  __$$DeviceNotRegisteredImplCopyWithImpl(
+    _$DeviceNotRegisteredImpl _value,
+    $Res Function(_$DeviceNotRegisteredImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$DeviceNotRegisteredImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$DeviceNotRegisteredImpl extends DeviceNotRegistered {
+  const _$DeviceNotRegisteredImpl({
+    this.message = 'Device not registered. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.deviceNotRegistered(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$DeviceNotRegisteredImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$DeviceNotRegisteredImplCopyWith<_$DeviceNotRegisteredImpl> get copyWith =>
+      __$$DeviceNotRegisteredImplCopyWithImpl<_$DeviceNotRegisteredImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return deviceNotRegistered(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return deviceNotRegistered?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (deviceNotRegistered != null) {
+      return deviceNotRegistered(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return deviceNotRegistered(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return deviceNotRegistered?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (deviceNotRegistered != null) {
+      return deviceNotRegistered(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class DeviceNotRegistered extends BiometricVerificationFailure {
+  const factory DeviceNotRegistered({
+    final String message,
+    final String? requestId,
+  }) = _$DeviceNotRegisteredImpl;
+  const DeviceNotRegistered._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$DeviceNotRegisteredImplCopyWith<_$DeviceNotRegisteredImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$BiometricRateLimitedImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$BiometricRateLimitedImplCopyWith(
+    _$BiometricRateLimitedImpl value,
+    $Res Function(_$BiometricRateLimitedImpl) then,
+  ) = __$$BiometricRateLimitedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({Duration retryAfter, String message, String? requestId});
+}
+
+/// @nodoc
+class __$$BiometricRateLimitedImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<
+          $Res,
+          _$BiometricRateLimitedImpl
+        >
+    implements _$$BiometricRateLimitedImplCopyWith<$Res> {
+  __$$BiometricRateLimitedImplCopyWithImpl(
+    _$BiometricRateLimitedImpl _value,
+    $Res Function(_$BiometricRateLimitedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? retryAfter = null,
+    Object? message = null,
+    Object? requestId = freezed,
+  }) {
+    return _then(
+      _$BiometricRateLimitedImpl(
+        retryAfter: null == retryAfter
+            ? _value.retryAfter
+            : retryAfter // ignore: cast_nullable_to_non_nullable
+                  as Duration,
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$BiometricRateLimitedImpl extends BiometricRateLimited {
+  const _$BiometricRateLimitedImpl({
+    required this.retryAfter,
+    this.message = 'Too many attempts. Please try again shortly.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  final Duration retryAfter;
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.biometricRateLimited(retryAfter: $retryAfter, message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$BiometricRateLimitedImpl &&
+            (identical(other.retryAfter, retryAfter) ||
+                other.retryAfter == retryAfter) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, retryAfter, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$BiometricRateLimitedImplCopyWith<_$BiometricRateLimitedImpl>
+  get copyWith =>
+      __$$BiometricRateLimitedImplCopyWithImpl<_$BiometricRateLimitedImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return biometricRateLimited(retryAfter, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return biometricRateLimited?.call(retryAfter, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (biometricRateLimited != null) {
+      return biometricRateLimited(retryAfter, message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return biometricRateLimited(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return biometricRateLimited?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (biometricRateLimited != null) {
+      return biometricRateLimited(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class BiometricRateLimited extends BiometricVerificationFailure {
+  const factory BiometricRateLimited({
+    required final Duration retryAfter,
+    final String message,
+    final String? requestId,
+  }) = _$BiometricRateLimitedImpl;
+  const BiometricRateLimited._() : super._();
+
+  Duration get retryAfter;
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$BiometricRateLimitedImplCopyWith<_$BiometricRateLimitedImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$ClockInRejectedImplCopyWith<$Res>
+    implements $BiometricVerificationFailureCopyWith<$Res> {
+  factory _$$ClockInRejectedImplCopyWith(
+    _$ClockInRejectedImpl value,
+    $Res Function(_$ClockInRejectedImpl) then,
+  ) = __$$ClockInRejectedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    BiometricClockInRejectionReason reason,
+    String message,
+    String? requestId,
+  });
+}
+
+/// @nodoc
+class __$$ClockInRejectedImplCopyWithImpl<$Res>
+    extends
+        _$BiometricVerificationFailureCopyWithImpl<$Res, _$ClockInRejectedImpl>
+    implements _$$ClockInRejectedImplCopyWith<$Res> {
+  __$$ClockInRejectedImplCopyWithImpl(
+    _$ClockInRejectedImpl _value,
+    $Res Function(_$ClockInRejectedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? reason = null,
+    Object? message = null,
+    Object? requestId = freezed,
+  }) {
+    return _then(
+      _$ClockInRejectedImpl(
+        reason: null == reason
+            ? _value.reason
+            : reason // ignore: cast_nullable_to_non_nullable
+                  as BiometricClockInRejectionReason,
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$ClockInRejectedImpl extends ClockInRejected {
+  const _$ClockInRejectedImpl({
+    required this.reason,
+    this.message = 'Verification could not be completed. Please try again.',
+    this.requestId,
+  }) : super._();
+
+  @override
+  final BiometricClockInRejectionReason reason;
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'BiometricVerificationFailure.clockInRejected(reason: $reason, message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ClockInRejectedImpl &&
+            (identical(other.reason, reason) || other.reason == reason) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, reason, message, requestId);
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ClockInRejectedImplCopyWith<_$ClockInRejectedImpl> get copyWith =>
+      __$$ClockInRejectedImplCopyWithImpl<_$ClockInRejectedImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) faceNotMatched,
+    required TResult Function(String message, String? requestId)
+    challengeExpired,
+    required TResult Function(String message, String? requestId) notEnrolled,
+    required TResult Function(String message, String? requestId) noProfile,
+    required TResult Function(String message, String? requestId)
+    reEnrollmentRequired,
+    required TResult Function(String message, String? requestId) profileRevoked,
+    required TResult Function(String message, String? requestId) noTemplate,
+    required TResult Function(String message, String? requestId)
+    enrollmentNotAllowed,
+    required TResult Function(String message, String? requestId)
+    modelVersionMismatch,
+    required TResult Function(String message, String? requestId)
+    biometricsDisabled,
+    required TResult Function(String message, String? requestId)
+    challengeInvalid,
+    required TResult Function(String message, String? requestId) challengeUsed,
+    required TResult Function(String message, String? requestId)
+    enrollmentConflict,
+    required TResult Function(String message, String? requestId)
+    verificationRequestConflict,
+    required TResult Function(String message, String? requestId) invalidImage,
+    required TResult Function(String message, String? requestId) imageTooLarge,
+    required TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )
+    technicallyUnavailable,
+    required TResult Function(String message, String? requestId)
+    deviceNotRegistered,
+    required TResult Function(
+      Duration retryAfter,
+      String message,
+      String? requestId,
+    )
+    biometricRateLimited,
+    required TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )
+    clockInRejected,
+  }) {
+    return clockInRejected(reason, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? faceNotMatched,
+    TResult? Function(String message, String? requestId)? challengeExpired,
+    TResult? Function(String message, String? requestId)? notEnrolled,
+    TResult? Function(String message, String? requestId)? noProfile,
+    TResult? Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult? Function(String message, String? requestId)? profileRevoked,
+    TResult? Function(String message, String? requestId)? noTemplate,
+    TResult? Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult? Function(String message, String? requestId)? modelVersionMismatch,
+    TResult? Function(String message, String? requestId)? biometricsDisabled,
+    TResult? Function(String message, String? requestId)? challengeInvalid,
+    TResult? Function(String message, String? requestId)? challengeUsed,
+    TResult? Function(String message, String? requestId)? enrollmentConflict,
+    TResult? Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult? Function(String message, String? requestId)? invalidImage,
+    TResult? Function(String message, String? requestId)? imageTooLarge,
+    TResult? Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult? Function(String message, String? requestId)? deviceNotRegistered,
+    TResult? Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult? Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+  }) {
+    return clockInRejected?.call(reason, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? faceNotMatched,
+    TResult Function(String message, String? requestId)? challengeExpired,
+    TResult Function(String message, String? requestId)? notEnrolled,
+    TResult Function(String message, String? requestId)? noProfile,
+    TResult Function(String message, String? requestId)? reEnrollmentRequired,
+    TResult Function(String message, String? requestId)? profileRevoked,
+    TResult Function(String message, String? requestId)? noTemplate,
+    TResult Function(String message, String? requestId)? enrollmentNotAllowed,
+    TResult Function(String message, String? requestId)? modelVersionMismatch,
+    TResult Function(String message, String? requestId)? biometricsDisabled,
+    TResult Function(String message, String? requestId)? challengeInvalid,
+    TResult Function(String message, String? requestId)? challengeUsed,
+    TResult Function(String message, String? requestId)? enrollmentConflict,
+    TResult Function(String message, String? requestId)?
+    verificationRequestConflict,
+    TResult Function(String message, String? requestId)? invalidImage,
+    TResult Function(String message, String? requestId)? imageTooLarge,
+    TResult Function(
+      BiometricTechnicalUnavailableReason reason,
+      Duration? retryAfter,
+      String message,
+      String? requestId,
+    )?
+    technicallyUnavailable,
+    TResult Function(String message, String? requestId)? deviceNotRegistered,
+    TResult Function(Duration retryAfter, String message, String? requestId)?
+    biometricRateLimited,
+    TResult Function(
+      BiometricClockInRejectionReason reason,
+      String message,
+      String? requestId,
+    )?
+    clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (clockInRejected != null) {
+      return clockInRejected(reason, message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(FaceNotMatched value) faceNotMatched,
+    required TResult Function(ChallengeExpired value) challengeExpired,
+    required TResult Function(NotEnrolled value) notEnrolled,
+    required TResult Function(NoProfile value) noProfile,
+    required TResult Function(ReEnrollmentRequired value) reEnrollmentRequired,
+    required TResult Function(ProfileRevoked value) profileRevoked,
+    required TResult Function(NoTemplate value) noTemplate,
+    required TResult Function(EnrollmentNotAllowed value) enrollmentNotAllowed,
+    required TResult Function(ModelVersionMismatch value) modelVersionMismatch,
+    required TResult Function(BiometricsDisabled value) biometricsDisabled,
+    required TResult Function(ChallengeInvalid value) challengeInvalid,
+    required TResult Function(ChallengeUsed value) challengeUsed,
+    required TResult Function(EnrollmentConflict value) enrollmentConflict,
+    required TResult Function(VerificationRequestConflict value)
+    verificationRequestConflict,
+    required TResult Function(InvalidImage value) invalidImage,
+    required TResult Function(ImageTooLarge value) imageTooLarge,
+    required TResult Function(TechnicallyUnavailable value)
+    technicallyUnavailable,
+    required TResult Function(DeviceNotRegistered value) deviceNotRegistered,
+    required TResult Function(BiometricRateLimited value) biometricRateLimited,
+    required TResult Function(ClockInRejected value) clockInRejected,
+  }) {
+    return clockInRejected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(FaceNotMatched value)? faceNotMatched,
+    TResult? Function(ChallengeExpired value)? challengeExpired,
+    TResult? Function(NotEnrolled value)? notEnrolled,
+    TResult? Function(NoProfile value)? noProfile,
+    TResult? Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult? Function(ProfileRevoked value)? profileRevoked,
+    TResult? Function(NoTemplate value)? noTemplate,
+    TResult? Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult? Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult? Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult? Function(ChallengeInvalid value)? challengeInvalid,
+    TResult? Function(ChallengeUsed value)? challengeUsed,
+    TResult? Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult? Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult? Function(InvalidImage value)? invalidImage,
+    TResult? Function(ImageTooLarge value)? imageTooLarge,
+    TResult? Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult? Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult? Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult? Function(ClockInRejected value)? clockInRejected,
+  }) {
+    return clockInRejected?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(FaceNotMatched value)? faceNotMatched,
+    TResult Function(ChallengeExpired value)? challengeExpired,
+    TResult Function(NotEnrolled value)? notEnrolled,
+    TResult Function(NoProfile value)? noProfile,
+    TResult Function(ReEnrollmentRequired value)? reEnrollmentRequired,
+    TResult Function(ProfileRevoked value)? profileRevoked,
+    TResult Function(NoTemplate value)? noTemplate,
+    TResult Function(EnrollmentNotAllowed value)? enrollmentNotAllowed,
+    TResult Function(ModelVersionMismatch value)? modelVersionMismatch,
+    TResult Function(BiometricsDisabled value)? biometricsDisabled,
+    TResult Function(ChallengeInvalid value)? challengeInvalid,
+    TResult Function(ChallengeUsed value)? challengeUsed,
+    TResult Function(EnrollmentConflict value)? enrollmentConflict,
+    TResult Function(VerificationRequestConflict value)?
+    verificationRequestConflict,
+    TResult Function(InvalidImage value)? invalidImage,
+    TResult Function(ImageTooLarge value)? imageTooLarge,
+    TResult Function(TechnicallyUnavailable value)? technicallyUnavailable,
+    TResult Function(DeviceNotRegistered value)? deviceNotRegistered,
+    TResult Function(BiometricRateLimited value)? biometricRateLimited,
+    TResult Function(ClockInRejected value)? clockInRejected,
+    required TResult orElse(),
+  }) {
+    if (clockInRejected != null) {
+      return clockInRejected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class ClockInRejected extends BiometricVerificationFailure {
+  const factory ClockInRejected({
+    required final BiometricClockInRejectionReason reason,
+    final String message,
+    final String? requestId,
+  }) = _$ClockInRejectedImpl;
+  const ClockInRejected._() : super._();
+
+  BiometricClockInRejectionReason get reason;
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of BiometricVerificationFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ClockInRejectedImplCopyWith<_$ClockInRejectedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$OutletMappingFailure {
+  String get message => throw _privateConstructorUsedError;
+  String? get requestId => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) notFound,
+    required TResult Function(String message, String? requestId) forbidden,
+    required TResult Function(String code, String message, String? requestId)
+    conflict,
+    required TResult Function(String message, String? requestId) tooManySamples,
+    required TResult Function(String message, String? requestId) validation,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? notFound,
+    TResult? Function(String message, String? requestId)? forbidden,
+    TResult? Function(String code, String message, String? requestId)? conflict,
+    TResult? Function(String message, String? requestId)? tooManySamples,
+    TResult? Function(String message, String? requestId)? validation,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? notFound,
+    TResult Function(String message, String? requestId)? forbidden,
+    TResult Function(String code, String message, String? requestId)? conflict,
+    TResult Function(String message, String? requestId)? tooManySamples,
+    TResult Function(String message, String? requestId)? validation,
+    required TResult orElse(),
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OutletMappingNotFound value) notFound,
+    required TResult Function(OutletMappingForbidden value) forbidden,
+    required TResult Function(OutletMappingConflict value) conflict,
+    required TResult Function(OutletMappingTooManySamples value) tooManySamples,
+    required TResult Function(OutletMappingValidation value) validation,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OutletMappingNotFound value)? notFound,
+    TResult? Function(OutletMappingForbidden value)? forbidden,
+    TResult? Function(OutletMappingConflict value)? conflict,
+    TResult? Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult? Function(OutletMappingValidation value)? validation,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OutletMappingNotFound value)? notFound,
+    TResult Function(OutletMappingForbidden value)? forbidden,
+    TResult Function(OutletMappingConflict value)? conflict,
+    TResult Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult Function(OutletMappingValidation value)? validation,
+    required TResult orElse(),
+  }) => throw _privateConstructorUsedError;
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $OutletMappingFailureCopyWith<OutletMappingFailure> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $OutletMappingFailureCopyWith<$Res> {
+  factory $OutletMappingFailureCopyWith(
+    OutletMappingFailure value,
+    $Res Function(OutletMappingFailure) then,
+  ) = _$OutletMappingFailureCopyWithImpl<$Res, OutletMappingFailure>;
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class _$OutletMappingFailureCopyWithImpl<
+  $Res,
+  $Val extends OutletMappingFailure
+>
+    implements $OutletMappingFailureCopyWith<$Res> {
+  _$OutletMappingFailureCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _value.copyWith(
+            message: null == message
+                ? _value.message
+                : message // ignore: cast_nullable_to_non_nullable
+                      as String,
+            requestId: freezed == requestId
+                ? _value.requestId
+                : requestId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$OutletMappingNotFoundImplCopyWith<$Res>
+    implements $OutletMappingFailureCopyWith<$Res> {
+  factory _$$OutletMappingNotFoundImplCopyWith(
+    _$OutletMappingNotFoundImpl value,
+    $Res Function(_$OutletMappingNotFoundImpl) then,
+  ) = __$$OutletMappingNotFoundImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$OutletMappingNotFoundImplCopyWithImpl<$Res>
+    extends
+        _$OutletMappingFailureCopyWithImpl<$Res, _$OutletMappingNotFoundImpl>
+    implements _$$OutletMappingNotFoundImplCopyWith<$Res> {
+  __$$OutletMappingNotFoundImplCopyWithImpl(
+    _$OutletMappingNotFoundImpl _value,
+    $Res Function(_$OutletMappingNotFoundImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$OutletMappingNotFoundImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$OutletMappingNotFoundImpl extends OutletMappingNotFound {
+  const _$OutletMappingNotFoundImpl({
+    this.message = 'Mapping request not found',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'OutletMappingFailure.notFound(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OutletMappingNotFoundImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OutletMappingNotFoundImplCopyWith<_$OutletMappingNotFoundImpl>
+  get copyWith =>
+      __$$OutletMappingNotFoundImplCopyWithImpl<_$OutletMappingNotFoundImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) notFound,
+    required TResult Function(String message, String? requestId) forbidden,
+    required TResult Function(String code, String message, String? requestId)
+    conflict,
+    required TResult Function(String message, String? requestId) tooManySamples,
+    required TResult Function(String message, String? requestId) validation,
+  }) {
+    return notFound(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? notFound,
+    TResult? Function(String message, String? requestId)? forbidden,
+    TResult? Function(String code, String message, String? requestId)? conflict,
+    TResult? Function(String message, String? requestId)? tooManySamples,
+    TResult? Function(String message, String? requestId)? validation,
+  }) {
+    return notFound?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? notFound,
+    TResult Function(String message, String? requestId)? forbidden,
+    TResult Function(String code, String message, String? requestId)? conflict,
+    TResult Function(String message, String? requestId)? tooManySamples,
+    TResult Function(String message, String? requestId)? validation,
+    required TResult orElse(),
+  }) {
+    if (notFound != null) {
+      return notFound(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OutletMappingNotFound value) notFound,
+    required TResult Function(OutletMappingForbidden value) forbidden,
+    required TResult Function(OutletMappingConflict value) conflict,
+    required TResult Function(OutletMappingTooManySamples value) tooManySamples,
+    required TResult Function(OutletMappingValidation value) validation,
+  }) {
+    return notFound(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OutletMappingNotFound value)? notFound,
+    TResult? Function(OutletMappingForbidden value)? forbidden,
+    TResult? Function(OutletMappingConflict value)? conflict,
+    TResult? Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult? Function(OutletMappingValidation value)? validation,
+  }) {
+    return notFound?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OutletMappingNotFound value)? notFound,
+    TResult Function(OutletMappingForbidden value)? forbidden,
+    TResult Function(OutletMappingConflict value)? conflict,
+    TResult Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult Function(OutletMappingValidation value)? validation,
+    required TResult orElse(),
+  }) {
+    if (notFound != null) {
+      return notFound(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OutletMappingNotFound extends OutletMappingFailure {
+  const factory OutletMappingNotFound({
+    final String message,
+    final String? requestId,
+  }) = _$OutletMappingNotFoundImpl;
+  const OutletMappingNotFound._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$OutletMappingNotFoundImplCopyWith<_$OutletMappingNotFoundImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OutletMappingForbiddenImplCopyWith<$Res>
+    implements $OutletMappingFailureCopyWith<$Res> {
+  factory _$$OutletMappingForbiddenImplCopyWith(
+    _$OutletMappingForbiddenImpl value,
+    $Res Function(_$OutletMappingForbiddenImpl) then,
+  ) = __$$OutletMappingForbiddenImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$OutletMappingForbiddenImplCopyWithImpl<$Res>
+    extends
+        _$OutletMappingFailureCopyWithImpl<$Res, _$OutletMappingForbiddenImpl>
+    implements _$$OutletMappingForbiddenImplCopyWith<$Res> {
+  __$$OutletMappingForbiddenImplCopyWithImpl(
+    _$OutletMappingForbiddenImpl _value,
+    $Res Function(_$OutletMappingForbiddenImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$OutletMappingForbiddenImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$OutletMappingForbiddenImpl extends OutletMappingForbidden {
+  const _$OutletMappingForbiddenImpl({
+    this.message = 'You are not authorized to map this outlet',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'OutletMappingFailure.forbidden(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OutletMappingForbiddenImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OutletMappingForbiddenImplCopyWith<_$OutletMappingForbiddenImpl>
+  get copyWith =>
+      __$$OutletMappingForbiddenImplCopyWithImpl<_$OutletMappingForbiddenImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) notFound,
+    required TResult Function(String message, String? requestId) forbidden,
+    required TResult Function(String code, String message, String? requestId)
+    conflict,
+    required TResult Function(String message, String? requestId) tooManySamples,
+    required TResult Function(String message, String? requestId) validation,
+  }) {
+    return forbidden(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? notFound,
+    TResult? Function(String message, String? requestId)? forbidden,
+    TResult? Function(String code, String message, String? requestId)? conflict,
+    TResult? Function(String message, String? requestId)? tooManySamples,
+    TResult? Function(String message, String? requestId)? validation,
+  }) {
+    return forbidden?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? notFound,
+    TResult Function(String message, String? requestId)? forbidden,
+    TResult Function(String code, String message, String? requestId)? conflict,
+    TResult Function(String message, String? requestId)? tooManySamples,
+    TResult Function(String message, String? requestId)? validation,
+    required TResult orElse(),
+  }) {
+    if (forbidden != null) {
+      return forbidden(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OutletMappingNotFound value) notFound,
+    required TResult Function(OutletMappingForbidden value) forbidden,
+    required TResult Function(OutletMappingConflict value) conflict,
+    required TResult Function(OutletMappingTooManySamples value) tooManySamples,
+    required TResult Function(OutletMappingValidation value) validation,
+  }) {
+    return forbidden(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OutletMappingNotFound value)? notFound,
+    TResult? Function(OutletMappingForbidden value)? forbidden,
+    TResult? Function(OutletMappingConflict value)? conflict,
+    TResult? Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult? Function(OutletMappingValidation value)? validation,
+  }) {
+    return forbidden?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OutletMappingNotFound value)? notFound,
+    TResult Function(OutletMappingForbidden value)? forbidden,
+    TResult Function(OutletMappingConflict value)? conflict,
+    TResult Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult Function(OutletMappingValidation value)? validation,
+    required TResult orElse(),
+  }) {
+    if (forbidden != null) {
+      return forbidden(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OutletMappingForbidden extends OutletMappingFailure {
+  const factory OutletMappingForbidden({
+    final String message,
+    final String? requestId,
+  }) = _$OutletMappingForbiddenImpl;
+  const OutletMappingForbidden._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$OutletMappingForbiddenImplCopyWith<_$OutletMappingForbiddenImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OutletMappingConflictImplCopyWith<$Res>
+    implements $OutletMappingFailureCopyWith<$Res> {
+  factory _$$OutletMappingConflictImplCopyWith(
+    _$OutletMappingConflictImpl value,
+    $Res Function(_$OutletMappingConflictImpl) then,
+  ) = __$$OutletMappingConflictImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String code, String message, String? requestId});
+}
+
+/// @nodoc
+class __$$OutletMappingConflictImplCopyWithImpl<$Res>
+    extends
+        _$OutletMappingFailureCopyWithImpl<$Res, _$OutletMappingConflictImpl>
+    implements _$$OutletMappingConflictImplCopyWith<$Res> {
+  __$$OutletMappingConflictImplCopyWithImpl(
+    _$OutletMappingConflictImpl _value,
+    $Res Function(_$OutletMappingConflictImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? code = null,
+    Object? message = null,
+    Object? requestId = freezed,
+  }) {
+    return _then(
+      _$OutletMappingConflictImpl(
+        code: null == code
+            ? _value.code
+            : code // ignore: cast_nullable_to_non_nullable
+                  as String,
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$OutletMappingConflictImpl extends OutletMappingConflict {
+  const _$OutletMappingConflictImpl({
+    required this.code,
+    this.message = 'This mapping session cannot continue right now',
+    this.requestId,
+  }) : super._();
+
+  @override
+  final String code;
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'OutletMappingFailure.conflict(code: $code, message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OutletMappingConflictImpl &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, code, message, requestId);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OutletMappingConflictImplCopyWith<_$OutletMappingConflictImpl>
+  get copyWith =>
+      __$$OutletMappingConflictImplCopyWithImpl<_$OutletMappingConflictImpl>(
+        this,
+        _$identity,
+      );
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) notFound,
+    required TResult Function(String message, String? requestId) forbidden,
+    required TResult Function(String code, String message, String? requestId)
+    conflict,
+    required TResult Function(String message, String? requestId) tooManySamples,
+    required TResult Function(String message, String? requestId) validation,
+  }) {
+    return conflict(code, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? notFound,
+    TResult? Function(String message, String? requestId)? forbidden,
+    TResult? Function(String code, String message, String? requestId)? conflict,
+    TResult? Function(String message, String? requestId)? tooManySamples,
+    TResult? Function(String message, String? requestId)? validation,
+  }) {
+    return conflict?.call(code, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? notFound,
+    TResult Function(String message, String? requestId)? forbidden,
+    TResult Function(String code, String message, String? requestId)? conflict,
+    TResult Function(String message, String? requestId)? tooManySamples,
+    TResult Function(String message, String? requestId)? validation,
+    required TResult orElse(),
+  }) {
+    if (conflict != null) {
+      return conflict(code, message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OutletMappingNotFound value) notFound,
+    required TResult Function(OutletMappingForbidden value) forbidden,
+    required TResult Function(OutletMappingConflict value) conflict,
+    required TResult Function(OutletMappingTooManySamples value) tooManySamples,
+    required TResult Function(OutletMappingValidation value) validation,
+  }) {
+    return conflict(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OutletMappingNotFound value)? notFound,
+    TResult? Function(OutletMappingForbidden value)? forbidden,
+    TResult? Function(OutletMappingConflict value)? conflict,
+    TResult? Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult? Function(OutletMappingValidation value)? validation,
+  }) {
+    return conflict?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OutletMappingNotFound value)? notFound,
+    TResult Function(OutletMappingForbidden value)? forbidden,
+    TResult Function(OutletMappingConflict value)? conflict,
+    TResult Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult Function(OutletMappingValidation value)? validation,
+    required TResult orElse(),
+  }) {
+    if (conflict != null) {
+      return conflict(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OutletMappingConflict extends OutletMappingFailure {
+  const factory OutletMappingConflict({
+    required final String code,
+    final String message,
+    final String? requestId,
+  }) = _$OutletMappingConflictImpl;
+  const OutletMappingConflict._() : super._();
+
+  String get code;
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$OutletMappingConflictImplCopyWith<_$OutletMappingConflictImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OutletMappingTooManySamplesImplCopyWith<$Res>
+    implements $OutletMappingFailureCopyWith<$Res> {
+  factory _$$OutletMappingTooManySamplesImplCopyWith(
+    _$OutletMappingTooManySamplesImpl value,
+    $Res Function(_$OutletMappingTooManySamplesImpl) then,
+  ) = __$$OutletMappingTooManySamplesImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$OutletMappingTooManySamplesImplCopyWithImpl<$Res>
+    extends
+        _$OutletMappingFailureCopyWithImpl<
+          $Res,
+          _$OutletMappingTooManySamplesImpl
+        >
+    implements _$$OutletMappingTooManySamplesImplCopyWith<$Res> {
+  __$$OutletMappingTooManySamplesImplCopyWithImpl(
+    _$OutletMappingTooManySamplesImpl _value,
+    $Res Function(_$OutletMappingTooManySamplesImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$OutletMappingTooManySamplesImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$OutletMappingTooManySamplesImpl extends OutletMappingTooManySamples {
+  const _$OutletMappingTooManySamplesImpl({
+    this.message = 'Maximum mapping readings reached',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'OutletMappingFailure.tooManySamples(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OutletMappingTooManySamplesImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OutletMappingTooManySamplesImplCopyWith<_$OutletMappingTooManySamplesImpl>
+  get copyWith =>
+      __$$OutletMappingTooManySamplesImplCopyWithImpl<
+        _$OutletMappingTooManySamplesImpl
+      >(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) notFound,
+    required TResult Function(String message, String? requestId) forbidden,
+    required TResult Function(String code, String message, String? requestId)
+    conflict,
+    required TResult Function(String message, String? requestId) tooManySamples,
+    required TResult Function(String message, String? requestId) validation,
+  }) {
+    return tooManySamples(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? notFound,
+    TResult? Function(String message, String? requestId)? forbidden,
+    TResult? Function(String code, String message, String? requestId)? conflict,
+    TResult? Function(String message, String? requestId)? tooManySamples,
+    TResult? Function(String message, String? requestId)? validation,
+  }) {
+    return tooManySamples?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? notFound,
+    TResult Function(String message, String? requestId)? forbidden,
+    TResult Function(String code, String message, String? requestId)? conflict,
+    TResult Function(String message, String? requestId)? tooManySamples,
+    TResult Function(String message, String? requestId)? validation,
+    required TResult orElse(),
+  }) {
+    if (tooManySamples != null) {
+      return tooManySamples(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OutletMappingNotFound value) notFound,
+    required TResult Function(OutletMappingForbidden value) forbidden,
+    required TResult Function(OutletMappingConflict value) conflict,
+    required TResult Function(OutletMappingTooManySamples value) tooManySamples,
+    required TResult Function(OutletMappingValidation value) validation,
+  }) {
+    return tooManySamples(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OutletMappingNotFound value)? notFound,
+    TResult? Function(OutletMappingForbidden value)? forbidden,
+    TResult? Function(OutletMappingConflict value)? conflict,
+    TResult? Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult? Function(OutletMappingValidation value)? validation,
+  }) {
+    return tooManySamples?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OutletMappingNotFound value)? notFound,
+    TResult Function(OutletMappingForbidden value)? forbidden,
+    TResult Function(OutletMappingConflict value)? conflict,
+    TResult Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult Function(OutletMappingValidation value)? validation,
+    required TResult orElse(),
+  }) {
+    if (tooManySamples != null) {
+      return tooManySamples(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OutletMappingTooManySamples extends OutletMappingFailure {
+  const factory OutletMappingTooManySamples({
+    final String message,
+    final String? requestId,
+  }) = _$OutletMappingTooManySamplesImpl;
+  const OutletMappingTooManySamples._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$OutletMappingTooManySamplesImplCopyWith<_$OutletMappingTooManySamplesImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class _$$OutletMappingValidationImplCopyWith<$Res>
+    implements $OutletMappingFailureCopyWith<$Res> {
+  factory _$$OutletMappingValidationImplCopyWith(
+    _$OutletMappingValidationImpl value,
+    $Res Function(_$OutletMappingValidationImpl) then,
+  ) = __$$OutletMappingValidationImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String message, String? requestId});
+}
+
+/// @nodoc
+class __$$OutletMappingValidationImplCopyWithImpl<$Res>
+    extends
+        _$OutletMappingFailureCopyWithImpl<$Res, _$OutletMappingValidationImpl>
+    implements _$$OutletMappingValidationImplCopyWith<$Res> {
+  __$$OutletMappingValidationImplCopyWithImpl(
+    _$OutletMappingValidationImpl _value,
+    $Res Function(_$OutletMappingValidationImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({Object? message = null, Object? requestId = freezed}) {
+    return _then(
+      _$OutletMappingValidationImpl(
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$OutletMappingValidationImpl extends OutletMappingValidation {
+  const _$OutletMappingValidationImpl({
+    this.message = 'Invalid mapping request',
+    this.requestId,
+  }) : super._();
+
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'OutletMappingFailure.validation(message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$OutletMappingValidationImpl &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, message, requestId);
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$OutletMappingValidationImplCopyWith<_$OutletMappingValidationImpl>
+  get copyWith =>
+      __$$OutletMappingValidationImplCopyWithImpl<
+        _$OutletMappingValidationImpl
+      >(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String message, String? requestId) notFound,
+    required TResult Function(String message, String? requestId) forbidden,
+    required TResult Function(String code, String message, String? requestId)
+    conflict,
+    required TResult Function(String message, String? requestId) tooManySamples,
+    required TResult Function(String message, String? requestId) validation,
+  }) {
+    return validation(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String message, String? requestId)? notFound,
+    TResult? Function(String message, String? requestId)? forbidden,
+    TResult? Function(String code, String message, String? requestId)? conflict,
+    TResult? Function(String message, String? requestId)? tooManySamples,
+    TResult? Function(String message, String? requestId)? validation,
+  }) {
+    return validation?.call(message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String message, String? requestId)? notFound,
+    TResult Function(String message, String? requestId)? forbidden,
+    TResult Function(String code, String message, String? requestId)? conflict,
+    TResult Function(String message, String? requestId)? tooManySamples,
+    TResult Function(String message, String? requestId)? validation,
+    required TResult orElse(),
+  }) {
+    if (validation != null) {
+      return validation(message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(OutletMappingNotFound value) notFound,
+    required TResult Function(OutletMappingForbidden value) forbidden,
+    required TResult Function(OutletMappingConflict value) conflict,
+    required TResult Function(OutletMappingTooManySamples value) tooManySamples,
+    required TResult Function(OutletMappingValidation value) validation,
+  }) {
+    return validation(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(OutletMappingNotFound value)? notFound,
+    TResult? Function(OutletMappingForbidden value)? forbidden,
+    TResult? Function(OutletMappingConflict value)? conflict,
+    TResult? Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult? Function(OutletMappingValidation value)? validation,
+  }) {
+    return validation?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(OutletMappingNotFound value)? notFound,
+    TResult Function(OutletMappingForbidden value)? forbidden,
+    TResult Function(OutletMappingConflict value)? conflict,
+    TResult Function(OutletMappingTooManySamples value)? tooManySamples,
+    TResult Function(OutletMappingValidation value)? validation,
+    required TResult orElse(),
+  }) {
+    if (validation != null) {
+      return validation(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class OutletMappingValidation extends OutletMappingFailure {
+  const factory OutletMappingValidation({
+    final String message,
+    final String? requestId,
+  }) = _$OutletMappingValidationImpl;
+  const OutletMappingValidation._() : super._();
+
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of OutletMappingFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$OutletMappingValidationImplCopyWith<_$OutletMappingValidationImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+mixin _$LunchBreakFailure {
+  String get code => throw _privateConstructorUsedError;
+  String get message => throw _privateConstructorUsedError;
+  String? get requestId => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String code, String message, String? requestId)
+    actionRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String code, String message, String? requestId)?
+    actionRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String code, String message, String? requestId)?
+    actionRejected,
+    required TResult orElse(),
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LunchBreakActionRejected value) actionRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LunchBreakActionRejected value)? actionRejected,
+  }) => throw _privateConstructorUsedError;
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LunchBreakActionRejected value)? actionRejected,
+    required TResult orElse(),
+  }) => throw _privateConstructorUsedError;
+
+  /// Create a copy of LunchBreakFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $LunchBreakFailureCopyWith<LunchBreakFailure> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $LunchBreakFailureCopyWith<$Res> {
+  factory $LunchBreakFailureCopyWith(
+    LunchBreakFailure value,
+    $Res Function(LunchBreakFailure) then,
+  ) = _$LunchBreakFailureCopyWithImpl<$Res, LunchBreakFailure>;
+  @useResult
+  $Res call({String code, String message, String? requestId});
+}
+
+/// @nodoc
+class _$LunchBreakFailureCopyWithImpl<$Res, $Val extends LunchBreakFailure>
+    implements $LunchBreakFailureCopyWith<$Res> {
+  _$LunchBreakFailureCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of LunchBreakFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? code = null,
+    Object? message = null,
+    Object? requestId = freezed,
+  }) {
+    return _then(
+      _value.copyWith(
+            code: null == code
+                ? _value.code
+                : code // ignore: cast_nullable_to_non_nullable
+                      as String,
+            message: null == message
+                ? _value.message
+                : message // ignore: cast_nullable_to_non_nullable
+                      as String,
+            requestId: freezed == requestId
+                ? _value.requestId
+                : requestId // ignore: cast_nullable_to_non_nullable
+                      as String?,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$LunchBreakActionRejectedImplCopyWith<$Res>
+    implements $LunchBreakFailureCopyWith<$Res> {
+  factory _$$LunchBreakActionRejectedImplCopyWith(
+    _$LunchBreakActionRejectedImpl value,
+    $Res Function(_$LunchBreakActionRejectedImpl) then,
+  ) = __$$LunchBreakActionRejectedImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String code, String message, String? requestId});
+}
+
+/// @nodoc
+class __$$LunchBreakActionRejectedImplCopyWithImpl<$Res>
+    extends
+        _$LunchBreakFailureCopyWithImpl<$Res, _$LunchBreakActionRejectedImpl>
+    implements _$$LunchBreakActionRejectedImplCopyWith<$Res> {
+  __$$LunchBreakActionRejectedImplCopyWithImpl(
+    _$LunchBreakActionRejectedImpl _value,
+    $Res Function(_$LunchBreakActionRejectedImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of LunchBreakFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? code = null,
+    Object? message = null,
+    Object? requestId = freezed,
+  }) {
+    return _then(
+      _$LunchBreakActionRejectedImpl(
+        code: null == code
+            ? _value.code
+            : code // ignore: cast_nullable_to_non_nullable
+                  as String,
+        message: null == message
+            ? _value.message
+            : message // ignore: cast_nullable_to_non_nullable
+                  as String,
+        requestId: freezed == requestId
+            ? _value.requestId
+            : requestId // ignore: cast_nullable_to_non_nullable
+                  as String?,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$LunchBreakActionRejectedImpl extends LunchBreakActionRejected {
+  const _$LunchBreakActionRejectedImpl({
+    required this.code,
+    this.message = 'Lunch break action could not be completed',
+    this.requestId,
+  }) : super._();
+
+  @override
+  final String code;
+  @override
+  @JsonKey()
+  final String message;
+  @override
+  final String? requestId;
+
+  @override
+  String toString() {
+    return 'LunchBreakFailure.actionRejected(code: $code, message: $message, requestId: $requestId)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$LunchBreakActionRejectedImpl &&
+            (identical(other.code, code) || other.code == code) &&
+            (identical(other.message, message) || other.message == message) &&
+            (identical(other.requestId, requestId) ||
+                other.requestId == requestId));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, code, message, requestId);
+
+  /// Create a copy of LunchBreakFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$LunchBreakActionRejectedImplCopyWith<_$LunchBreakActionRejectedImpl>
+  get copyWith =>
+      __$$LunchBreakActionRejectedImplCopyWithImpl<
+        _$LunchBreakActionRejectedImpl
+      >(this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  TResult when<TResult extends Object?>({
+    required TResult Function(String code, String message, String? requestId)
+    actionRejected,
+  }) {
+    return actionRejected(code, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? whenOrNull<TResult extends Object?>({
+    TResult? Function(String code, String message, String? requestId)?
+    actionRejected,
+  }) {
+    return actionRejected?.call(code, message, requestId);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function(String code, String message, String? requestId)?
+    actionRejected,
+    required TResult orElse(),
+  }) {
+    if (actionRejected != null) {
+      return actionRejected(code, message, requestId);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult map<TResult extends Object?>({
+    required TResult Function(LunchBreakActionRejected value) actionRejected,
+  }) {
+    return actionRejected(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult? mapOrNull<TResult extends Object?>({
+    TResult? Function(LunchBreakActionRejected value)? actionRejected,
+  }) {
+    return actionRejected?.call(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(LunchBreakActionRejected value)? actionRejected,
+    required TResult orElse(),
+  }) {
+    if (actionRejected != null) {
+      return actionRejected(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class LunchBreakActionRejected extends LunchBreakFailure {
+  const factory LunchBreakActionRejected({
+    required final String code,
+    final String message,
+    final String? requestId,
+  }) = _$LunchBreakActionRejectedImpl;
+  const LunchBreakActionRejected._() : super._();
+
+  @override
+  String get code;
+  @override
+  String get message;
+  @override
+  String? get requestId;
+
+  /// Create a copy of LunchBreakFailure
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$LunchBreakActionRejectedImplCopyWith<_$LunchBreakActionRejectedImpl>
+  get copyWith => throw _privateConstructorUsedError;
+}

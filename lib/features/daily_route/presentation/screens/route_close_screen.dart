@@ -240,6 +240,7 @@ class _RouteCloseScreenState extends ConsumerState<RouteCloseScreen> {
                                     context,
                                     ref,
                                     activeVisit.localId,
+                                    routeServerId: route.serverId,
                                   ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: errorColor,
@@ -600,11 +601,50 @@ class _RouteCloseScreenState extends ConsumerState<RouteCloseScreen> {
   Future<void> _endActiveVisit(
     BuildContext context,
     WidgetRef ref,
-    String visitLocalId,
-  ) async {
+    String visitLocalId, {
+    String? routeServerId,
+  }) async {
     setState(() => _isEndingVisit = true);
 
     try {
+      // This screen exists specifically for previous-day routes, where
+      // the local cache is the exception's normal case, not the edge
+      // case — e.g. an earlier clock-out succeeded server-side but the
+      // response never made it back to save locally (crash, killed app,
+      // dropped connection right after the request landed). Without this
+      // reconciliation, a visit that's already completed server-side
+      // surfaces as a raw backend rejection ("Cannot clock out: visit is
+      // 'completed', must be 'in_progress'") instead of just... not
+      // needing to be ended. Best-effort: a refresh failure falls through
+      // to the normal attempt below, whose own error handling is the
+      // backstop.
+      if (routeServerId != null) {
+        final refreshResult = await ref
+            .read(dailyRouteRepositoryProvider)
+            .fetchAndSaveRouteById(routeServerId);
+        if (refreshResult.isRight()) {
+          final visitResult = await ref
+              .read(outletVisitRepositoryProvider)
+              .getVisitByLocalId(visitLocalId);
+          final stillInProgress = visitResult.fold(
+            (_) => true, // lookup failed — fall through to the real attempt
+            (visit) => visit?.canClockOut ?? true,
+          );
+          if (!stillInProgress) {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('This visit was already ended'),
+                  backgroundColor: Color(0xFF2E7D32),
+                ),
+              );
+            }
+            ref.invalidate(routeToCloseProvider);
+            return;
+          }
+        }
+      }
+
       // Get current location for clock-out
       Position? position;
       try {

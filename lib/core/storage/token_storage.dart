@@ -1,3 +1,5 @@
+import 'dart:developer' as developer;
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Secure storage for authentication tokens
@@ -5,6 +7,21 @@ class TokenStorage {
   static const _accessTokenKey = 'access_token';
   static const _refreshTokenKey = 'refresh_token';
   static const _accessExpiryKey = 'access_expiry';
+
+  // flutter_secure_storage's Android backend (EncryptedSharedPreferences,
+  // Keystore-backed) has documented real-world hangs on some devices. This
+  // bounds every read/write/delete against that risk — a device whose
+  // Keystore is genuinely broken (not just transiently slow) could hang
+  // on any of them, and getTokens() specifically is on the hot path for
+  // every outgoing request (AuthInterceptor) and every background isolate
+  // (resolveIsolateAccessToken, a fresh TokenStorage with an empty cache
+  // each time — FCM push, headless location pings), not just login/
+  // session-restore. Every existing caller already treats a null/failed
+  // result the same way ("not logged in" / "no valid token right now") —
+  // confirmed by reading each call site — so failing safe to null here is
+  // both centralized and consistent with established behavior, rather
+  // than requiring every caller to remember its own timeout.
+  static const _storageTimeout = Duration(seconds: 10);
 
   final FlutterSecureStorage _storage;
 
@@ -23,7 +40,13 @@ class TokenStorage {
           ),
         );
 
-  /// Get current tokens (uses cache if available)
+  /// Get current tokens (uses cache if available). Returns null both for
+  /// "no tokens stored" (the original meaning) and, now, "couldn't read
+  /// from secure storage within the timeout" — every caller already
+  /// treats null as "not currently logged in / no usable token", which is
+  /// the safe fallback for both cases: a genuine absence and an
+  /// unreadable store are indistinguishable from the caller's
+  /// perspective, and neither should hang the caller forever.
   Future<AuthTokens?> getTokens() async {
     if (_cache != null) {
       return AuthTokens(
@@ -33,9 +56,26 @@ class TokenStorage {
       );
     }
 
-    final accessToken = await _storage.read(key: _accessTokenKey);
-    final refreshToken = await _storage.read(key: _refreshTokenKey);
-    final expiryStr = await _storage.read(key: _accessExpiryKey);
+    final String? accessToken;
+    final String? refreshToken;
+    final String? expiryStr;
+    try {
+      final values = await Future.wait([
+        _storage.read(key: _accessTokenKey),
+        _storage.read(key: _refreshTokenKey),
+        _storage.read(key: _accessExpiryKey),
+      ]).timeout(_storageTimeout);
+      accessToken = values[0];
+      refreshToken = values[1];
+      expiryStr = values[2];
+    } catch (e) {
+      developer.log(
+        '⚠️ Failed to read auth tokens from secure storage — treating as '
+        'not logged in: $e',
+        name: 'TokenStorage',
+      );
+      return null;
+    }
 
     if (accessToken == null || refreshToken == null) {
       return null;
@@ -80,27 +120,58 @@ class TokenStorage {
   }) async {
     final expiresAt = DateTime.now().add(accessExpiresIn);
 
+    // Set synchronously, before the persistent write below: the auth
+    // interceptor's getAccessToken()/getRefreshToken() check this cache
+    // first, so the current session works from here regardless of
+    // whether the write below ever completes.
     _cache = _CachedTokens(
       accessToken: accessToken,
       refreshToken: refreshToken,
       accessExpiresAt: expiresAt,
     );
 
-    await Future.wait([
-      _storage.write(key: _accessTokenKey, value: accessToken),
-      _storage.write(key: _refreshTokenKey, value: refreshToken),
-      _storage.write(key: _accessExpiryKey, value: expiresAt.toIso8601String()),
-    ]);
+    // Best-effort persistence, bounded — must never block login() from
+    // completing. Worst case on a genuinely broken device: this session
+    // works fine (via the cache above), but doesn't survive an app
+    // restart, so the user has to log in again next time — degraded, not
+    // hung.
+    try {
+      await Future.wait([
+        _storage.write(key: _accessTokenKey, value: accessToken),
+        _storage.write(key: _refreshTokenKey, value: refreshToken),
+        _storage.write(
+          key: _accessExpiryKey,
+          value: expiresAt.toIso8601String(),
+        ),
+      ]).timeout(_storageTimeout);
+    } catch (e) {
+      developer.log(
+        '⚠️ Failed to persist auth tokens to secure storage (session still '
+        'works via in-memory cache, but will not survive an app restart): $e',
+        name: 'TokenStorage',
+      );
+    }
   }
 
   /// Clear all tokens (logout)
   Future<void> clearAll() async {
+    // Cleared synchronously first, same reasoning as saveTokens() above —
+    // the in-memory session state must reflect "logged out" immediately,
+    // regardless of whether the persistent delete below ever completes.
     _cache = null;
-    await Future.wait([
-      _storage.delete(key: _accessTokenKey),
-      _storage.delete(key: _refreshTokenKey),
-      _storage.delete(key: _accessExpiryKey),
-    ]);
+    try {
+      await Future.wait([
+        _storage.delete(key: _accessTokenKey),
+        _storage.delete(key: _refreshTokenKey),
+        _storage.delete(key: _accessExpiryKey),
+      ]).timeout(_storageTimeout);
+    } catch (e) {
+      developer.log(
+        '⚠️ Failed to clear persisted auth tokens from secure storage '
+        '(in-memory session is still cleared): $e',
+        name: 'TokenStorage',
+      );
+    }
   }
 }
 

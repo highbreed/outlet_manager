@@ -725,6 +725,22 @@ class StockTakeRemoteDataSource {
 
   /// Send quotation email
   /// POST /stock-counts/{session_id}/proposed-order/send-email
+  ///
+  /// Not currently reachable from the UI, and not a straightforward fit if
+  /// it were: it's scoped by stock-count `sessionId`, but the proposed
+  /// order screens/models are all visit-consolidated (`ProposedOrderDetail`
+  /// has no `sessionId` field — a visit's order can span several completed
+  /// sessions). This is almost certainly a leftover from an earlier,
+  /// single-session-per-order design that predates that consolidation.
+  /// There's no visit- or order-scoped email endpoint anywhere in this
+  /// datasource to resend/email a visit-level proposed order with — that
+  /// needs a real backend endpoint (e.g. `POST
+  /// /proposed-orders/{order_id}/send-email`) before an "Email"/"Resend"
+  /// action can be added to `ProposedOrderDetailScreen`. For now the
+  /// customer is already emailed automatically at proposed-order creation
+  /// time via `auto_send_email` (see generateProposedOrder /
+  /// generateVisitProposedOrder below), reflected in that screen's
+  /// customerEmail/emailSentAt "Sent" chip.
   Future<Map<String, dynamic>> sendQuotationEmail({
     required int sessionId,
     required String email,

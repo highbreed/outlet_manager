@@ -9,18 +9,33 @@ class SecondaryButton extends StatelessWidget {
   final IconData? leadingIcon;
   final bool expand;
 
+  /// Overrides for dark/non-default backgrounds (e.g. the outlet-mapping
+  /// capture screen's solid black scaffold) — the theme default is black
+  /// text/icon on a light background, invisible there otherwise. Left
+  /// null everywhere else, so every existing usage is unchanged.
+  final Color? foregroundColor;
+  final Color? borderColor;
+
   const SecondaryButton({
     super.key,
     required this.label,
     required this.onPressed,
     this.leadingIcon,
     this.expand = true,
+    this.foregroundColor,
+    this.borderColor,
   });
 
   @override
   Widget build(BuildContext context) {
     final button = OutlinedButton(
       onPressed: onPressed,
+      style: (foregroundColor != null || borderColor != null)
+          ? OutlinedButton.styleFrom(
+              foregroundColor: foregroundColor,
+              side: borderColor != null ? BorderSide(color: borderColor!) : null,
+            )
+          : null,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,

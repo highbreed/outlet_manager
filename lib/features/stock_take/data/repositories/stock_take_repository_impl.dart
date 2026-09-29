@@ -2011,4 +2011,32 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
       return left(UnknownFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, ConvertToSalesOrderResult>>
+  convertProposedOrderToSalesOrder({
+    required int orderId,
+    String? notes,
+  }) async {
+    try {
+      print('[StockTake] Converting proposed order $orderId to sales order');
+      final response = await _remoteDataSource.convertToSalesOrder(
+        orderId: orderId,
+        notes: notes,
+      );
+
+      final result = ConvertToSalesOrderResult.fromJson(response);
+      print(
+        '[StockTake] Convert to sales order result: success=${result.success}, '
+        'salesOrderNumber=${result.salesOrderNumber}',
+      );
+      return right(result);
+    } on NetworkException catch (e) {
+      print('[StockTake] Convert to sales order failed: ${e.message}');
+      return left(UnknownFailure(message: e.message));
+    } catch (e) {
+      print('[StockTake] Convert to sales order error: $e');
+      return left(UnknownFailure(message: e.toString()));
+    }
+  }
 }

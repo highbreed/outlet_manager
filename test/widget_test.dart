@@ -22,13 +22,16 @@ void main() {
     testWidgets('InitializationLoadingScreen displays correctly', (
       WidgetTester tester,
     ) async {
-      await tester.pumpWidget(const InitializationLoadingScreen());
+      await tester.pumpWidget(
+        const ProviderScope(child: InitializationLoadingScreen()),
+      );
 
       // Should show loading indicator
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
-      // Should show initialization message
-      expect(find.text('Initializing Outlet Manager...'), findsOneWidget);
+      // Should show the current phase — initializationPhaseProvider's
+      // default before any phase has started.
+      expect(find.text('Starting…'), findsOneWidget);
     });
 
     testWidgets('InitializationErrorScreen displays error message', (
@@ -62,6 +65,45 @@ void main() {
       expect(find.text('database'), findsOneWidget);
       expect(find.text('notifications'), findsOneWidget);
       expect(find.text('permissions'), findsOneWidget);
+    });
+
+    testWidgets('InitializationErrorScreen retry button re-invokes '
+        'appInitializationProvider', (WidgetTester tester) async {
+      var callCount = 0;
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            appInitializationProvider.overrideWith((ref) async {
+              callCount++;
+              return InitializationResult.failure('boom', {
+                'database': false,
+              });
+            }),
+          ],
+          // A bare Consumer watches the provider so it's actually alive —
+          // InitializationErrorScreen itself never watches it (only
+          // OutletManagerApp does in the real app), so without this the
+          // provider would never be constructed and invalidate() would be
+          // a no-op.
+          child: Consumer(
+            builder: (context, ref, _) {
+              ref.watch(appInitializationProvider);
+              return const InitializationErrorScreen(
+                errorMessage: 'boom',
+                serviceStatus: {'database': false},
+              );
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(callCount, 1);
+
+      await tester.tap(find.widgetWithText(ElevatedButton, 'Retry'));
+      await tester.pumpAndSettle();
+
+      expect(callCount, 2);
     });
   });
 

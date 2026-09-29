@@ -113,115 +113,130 @@ const OutletVisitModelSchema = CollectionSchema(
       type: IsarType.dateTime,
     ),
     r'localId': PropertySchema(id: 19, name: r'localId', type: IsarType.string),
-    r'outletCode': PropertySchema(
+    r'mappingFootprintId': PropertySchema(
       id: 20,
+      name: r'mappingFootprintId',
+      type: IsarType.long,
+    ),
+    r'mappingFootprintStatus': PropertySchema(
+      id: 21,
+      name: r'mappingFootprintStatus',
+      type: IsarType.string,
+    ),
+    r'mappingRequestId': PropertySchema(
+      id: 22,
+      name: r'mappingRequestId',
+      type: IsarType.long,
+    ),
+    r'outletCode': PropertySchema(
+      id: 23,
       name: r'outletCode',
       type: IsarType.string,
     ),
     r'outletId': PropertySchema(
-      id: 21,
+      id: 24,
       name: r'outletId',
       type: IsarType.string,
     ),
     r'outletLatitude': PropertySchema(
-      id: 22,
+      id: 25,
       name: r'outletLatitude',
       type: IsarType.double,
     ),
     r'outletLongitude': PropertySchema(
-      id: 23,
+      id: 26,
       name: r'outletLongitude',
       type: IsarType.double,
     ),
     r'outletName': PropertySchema(
-      id: 24,
+      id: 27,
       name: r'outletName',
       type: IsarType.string,
     ),
     r'overrideRequestId': PropertySchema(
-      id: 25,
+      id: 28,
       name: r'overrideRequestId',
       type: IsarType.string,
     ),
     r'scheduleServerId': PropertySchema(
-      id: 26,
+      id: 29,
       name: r'scheduleServerId',
       type: IsarType.string,
     ),
     r'scheduledClockIn': PropertySchema(
-      id: 27,
+      id: 30,
       name: r'scheduledClockIn',
       type: IsarType.string,
     ),
     r'scheduledClockOut': PropertySchema(
-      id: 28,
+      id: 31,
       name: r'scheduledClockOut',
       type: IsarType.string,
     ),
     r'serverId': PropertySchema(
-      id: 29,
+      id: 32,
       name: r'serverId',
       type: IsarType.string,
     ),
     r'skipNotes': PropertySchema(
-      id: 30,
+      id: 33,
       name: r'skipNotes',
       type: IsarType.string,
     ),
     r'skipReasonCode': PropertySchema(
-      id: 31,
+      id: 34,
       name: r'skipReasonCode',
       type: IsarType.string,
     ),
     r'skipReasonId': PropertySchema(
-      id: 32,
+      id: 35,
       name: r'skipReasonId',
       type: IsarType.long,
     ),
     r'status': PropertySchema(
-      id: 33,
+      id: 36,
       name: r'status',
       type: IsarType.string,
       enumMap: _OutletVisitModelstatusEnumValueMap,
     ),
     r'syncError': PropertySchema(
-      id: 34,
+      id: 37,
       name: r'syncError',
       type: IsarType.string,
     ),
     r'syncState': PropertySchema(
-      id: 35,
+      id: 38,
       name: r'syncState',
       type: IsarType.string,
       enumMap: _OutletVisitModelsyncStateEnumValueMap,
     ),
     r'updatedAt': PropertySchema(
-      id: 36,
+      id: 39,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
     r'visitDurationMins': PropertySchema(
-      id: 37,
+      id: 40,
       name: r'visitDurationMins',
       type: IsarType.long,
     ),
     r'visitNotes': PropertySchema(
-      id: 38,
+      id: 41,
       name: r'visitNotes',
       type: IsarType.string,
     ),
     r'visitOrder': PropertySchema(
-      id: 39,
+      id: 42,
       name: r'visitOrder',
       type: IsarType.long,
     ),
     r'visitPriority': PropertySchema(
-      id: 40,
+      id: 43,
       name: r'visitPriority',
       type: IsarType.long,
     ),
     r'visitType': PropertySchema(
-      id: 41,
+      id: 44,
       name: r'visitType',
       type: IsarType.string,
       enumMap: _OutletVisitModelvisitTypeEnumValueMap,
@@ -335,6 +350,12 @@ int _outletVisitModelEstimateSize(
     }
   }
   bytesCount += 3 + object.localId.length * 3;
+  {
+    final value = object.mappingFootprintStatus;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.outletCode.length * 3;
   bytesCount += 3 + object.outletId.length * 3;
   bytesCount += 3 + object.outletName.length * 3;
@@ -424,28 +445,31 @@ void _outletVisitModelSerialize(
   writer.writeDouble(offsets[17], object.geofenceRadiusMeters);
   writer.writeDateTime(offsets[18], object.lastSyncedAt);
   writer.writeString(offsets[19], object.localId);
-  writer.writeString(offsets[20], object.outletCode);
-  writer.writeString(offsets[21], object.outletId);
-  writer.writeDouble(offsets[22], object.outletLatitude);
-  writer.writeDouble(offsets[23], object.outletLongitude);
-  writer.writeString(offsets[24], object.outletName);
-  writer.writeString(offsets[25], object.overrideRequestId);
-  writer.writeString(offsets[26], object.scheduleServerId);
-  writer.writeString(offsets[27], object.scheduledClockIn);
-  writer.writeString(offsets[28], object.scheduledClockOut);
-  writer.writeString(offsets[29], object.serverId);
-  writer.writeString(offsets[30], object.skipNotes);
-  writer.writeString(offsets[31], object.skipReasonCode);
-  writer.writeLong(offsets[32], object.skipReasonId);
-  writer.writeString(offsets[33], object.status.name);
-  writer.writeString(offsets[34], object.syncError);
-  writer.writeString(offsets[35], object.syncState.name);
-  writer.writeDateTime(offsets[36], object.updatedAt);
-  writer.writeLong(offsets[37], object.visitDurationMins);
-  writer.writeString(offsets[38], object.visitNotes);
-  writer.writeLong(offsets[39], object.visitOrder);
-  writer.writeLong(offsets[40], object.visitPriority);
-  writer.writeString(offsets[41], object.visitType.name);
+  writer.writeLong(offsets[20], object.mappingFootprintId);
+  writer.writeString(offsets[21], object.mappingFootprintStatus);
+  writer.writeLong(offsets[22], object.mappingRequestId);
+  writer.writeString(offsets[23], object.outletCode);
+  writer.writeString(offsets[24], object.outletId);
+  writer.writeDouble(offsets[25], object.outletLatitude);
+  writer.writeDouble(offsets[26], object.outletLongitude);
+  writer.writeString(offsets[27], object.outletName);
+  writer.writeString(offsets[28], object.overrideRequestId);
+  writer.writeString(offsets[29], object.scheduleServerId);
+  writer.writeString(offsets[30], object.scheduledClockIn);
+  writer.writeString(offsets[31], object.scheduledClockOut);
+  writer.writeString(offsets[32], object.serverId);
+  writer.writeString(offsets[33], object.skipNotes);
+  writer.writeString(offsets[34], object.skipReasonCode);
+  writer.writeLong(offsets[35], object.skipReasonId);
+  writer.writeString(offsets[36], object.status.name);
+  writer.writeString(offsets[37], object.syncError);
+  writer.writeString(offsets[38], object.syncState.name);
+  writer.writeDateTime(offsets[39], object.updatedAt);
+  writer.writeLong(offsets[40], object.visitDurationMins);
+  writer.writeString(offsets[41], object.visitNotes);
+  writer.writeLong(offsets[42], object.visitOrder);
+  writer.writeLong(offsets[43], object.visitPriority);
+  writer.writeString(offsets[44], object.visitType.name);
 }
 
 OutletVisitModel _outletVisitModelDeserialize(
@@ -476,38 +500,41 @@ OutletVisitModel _outletVisitModelDeserialize(
   object.id = id;
   object.lastSyncedAt = reader.readDateTimeOrNull(offsets[18]);
   object.localId = reader.readString(offsets[19]);
-  object.outletCode = reader.readString(offsets[20]);
-  object.outletId = reader.readString(offsets[21]);
-  object.outletLatitude = reader.readDouble(offsets[22]);
-  object.outletLongitude = reader.readDouble(offsets[23]);
-  object.outletName = reader.readString(offsets[24]);
-  object.overrideRequestId = reader.readStringOrNull(offsets[25]);
-  object.scheduleServerId = reader.readStringOrNull(offsets[26]);
-  object.scheduledClockIn = reader.readStringOrNull(offsets[27]);
-  object.scheduledClockOut = reader.readStringOrNull(offsets[28]);
-  object.serverId = reader.readStringOrNull(offsets[29]);
-  object.skipNotes = reader.readStringOrNull(offsets[30]);
-  object.skipReasonCode = reader.readStringOrNull(offsets[31]);
-  object.skipReasonId = reader.readLongOrNull(offsets[32]);
+  object.mappingFootprintId = reader.readLongOrNull(offsets[20]);
+  object.mappingFootprintStatus = reader.readStringOrNull(offsets[21]);
+  object.mappingRequestId = reader.readLongOrNull(offsets[22]);
+  object.outletCode = reader.readString(offsets[23]);
+  object.outletId = reader.readString(offsets[24]);
+  object.outletLatitude = reader.readDouble(offsets[25]);
+  object.outletLongitude = reader.readDouble(offsets[26]);
+  object.outletName = reader.readString(offsets[27]);
+  object.overrideRequestId = reader.readStringOrNull(offsets[28]);
+  object.scheduleServerId = reader.readStringOrNull(offsets[29]);
+  object.scheduledClockIn = reader.readStringOrNull(offsets[30]);
+  object.scheduledClockOut = reader.readStringOrNull(offsets[31]);
+  object.serverId = reader.readStringOrNull(offsets[32]);
+  object.skipNotes = reader.readStringOrNull(offsets[33]);
+  object.skipReasonCode = reader.readStringOrNull(offsets[34]);
+  object.skipReasonId = reader.readLongOrNull(offsets[35]);
   object.status =
       _OutletVisitModelstatusValueEnumMap[reader.readStringOrNull(
-        offsets[33],
+        offsets[36],
       )] ??
       VisitStatusModel.pending;
-  object.syncError = reader.readStringOrNull(offsets[34]);
+  object.syncError = reader.readStringOrNull(offsets[37]);
   object.syncState =
       _OutletVisitModelsyncStateValueEnumMap[reader.readStringOrNull(
-        offsets[35],
+        offsets[38],
       )] ??
       SyncStateModel.localOnly;
-  object.updatedAt = reader.readDateTime(offsets[36]);
-  object.visitDurationMins = reader.readLongOrNull(offsets[37]);
-  object.visitNotes = reader.readStringOrNull(offsets[38]);
-  object.visitOrder = reader.readLong(offsets[39]);
-  object.visitPriority = reader.readLong(offsets[40]);
+  object.updatedAt = reader.readDateTime(offsets[39]);
+  object.visitDurationMins = reader.readLongOrNull(offsets[40]);
+  object.visitNotes = reader.readStringOrNull(offsets[41]);
+  object.visitOrder = reader.readLong(offsets[42]);
+  object.visitPriority = reader.readLong(offsets[43]);
   object.visitType =
       _OutletVisitModelvisitTypeValueEnumMap[reader.readStringOrNull(
-        offsets[41],
+        offsets[44],
       )] ??
       VisitTypeModel.scheduled;
   return object;
@@ -561,21 +588,21 @@ P _outletVisitModelDeserializeProp<P>(
     case 19:
       return (reader.readString(offset)) as P;
     case 20:
-      return (reader.readString(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 21:
-      return (reader.readString(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 22:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 23:
-      return (reader.readDouble(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 24:
       return (reader.readString(offset)) as P;
     case 25:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 26:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readDouble(offset)) as P;
     case 27:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 28:
       return (reader.readStringOrNull(offset)) as P;
     case 29:
@@ -585,32 +612,38 @@ P _outletVisitModelDeserializeProp<P>(
     case 31:
       return (reader.readStringOrNull(offset)) as P;
     case 32:
-      return (reader.readLongOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 33:
+      return (reader.readStringOrNull(offset)) as P;
+    case 34:
+      return (reader.readStringOrNull(offset)) as P;
+    case 35:
+      return (reader.readLongOrNull(offset)) as P;
+    case 36:
       return (_OutletVisitModelstatusValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
               VisitStatusModel.pending)
           as P;
-    case 34:
+    case 37:
       return (reader.readStringOrNull(offset)) as P;
-    case 35:
+    case 38:
       return (_OutletVisitModelsyncStateValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
               SyncStateModel.localOnly)
           as P;
-    case 36:
-      return (reader.readDateTime(offset)) as P;
-    case 37:
-      return (reader.readLongOrNull(offset)) as P;
-    case 38:
-      return (reader.readStringOrNull(offset)) as P;
     case 39:
-      return (reader.readLong(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 40:
-      return (reader.readLong(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 41:
+      return (reader.readStringOrNull(offset)) as P;
+    case 42:
+      return (reader.readLong(offset)) as P;
+    case 43:
+      return (reader.readLong(offset)) as P;
+    case 44:
       return (_OutletVisitModelvisitTypeValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
@@ -3093,6 +3126,314 @@ extension OutletVisitModelQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'localId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'mappingFootprintId'),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'mappingFootprintId'),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'mappingFootprintId', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintIdGreaterThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'mappingFootprintId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintIdLessThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'mappingFootprintId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'mappingFootprintId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'mappingFootprintStatus'),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'mappingFootprintStatus'),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'mappingFootprintStatus',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'mappingFootprintStatus',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'mappingFootprintStatus',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'mappingFootprintStatus',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'mappingFootprintStatus',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'mappingFootprintStatus',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'mappingFootprintStatus',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'mappingFootprintStatus',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'mappingFootprintStatus', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingFootprintStatusIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          property: r'mappingFootprintStatus',
+          value: '',
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingRequestIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'mappingRequestId'),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingRequestIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'mappingRequestId'),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingRequestIdEqualTo(int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'mappingRequestId', value: value),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingRequestIdGreaterThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'mappingRequestId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingRequestIdLessThan(int? value, {bool include = false}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'mappingRequestId',
+          value: value,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterFilterCondition>
+  mappingRequestIdBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'mappingRequestId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+        ),
       );
     });
   }
@@ -6125,6 +6466,48 @@ extension OutletVisitModelQuerySortBy
   }
 
   QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  sortByMappingFootprintId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  sortByMappingFootprintIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  sortByMappingFootprintStatus() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintStatus', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  sortByMappingFootprintStatusDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintStatus', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  sortByMappingRequestId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingRequestId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  sortByMappingRequestIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingRequestId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
   sortByOutletCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'outletCode', Sort.asc);
@@ -6729,6 +7112,48 @@ extension OutletVisitModelQuerySortThenBy
   }
 
   QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  thenByMappingFootprintId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  thenByMappingFootprintIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  thenByMappingFootprintStatus() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintStatus', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  thenByMappingFootprintStatusDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingFootprintStatus', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  thenByMappingRequestId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingRequestId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
+  thenByMappingRequestIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'mappingRequestId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QAfterSortBy>
   thenByOutletCode() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'outletCode', Sort.asc);
@@ -7189,6 +7614,30 @@ extension OutletVisitModelQueryWhereDistinct
   }
 
   QueryBuilder<OutletVisitModel, OutletVisitModel, QDistinct>
+  distinctByMappingFootprintId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'mappingFootprintId');
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QDistinct>
+  distinctByMappingFootprintStatus({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(
+        r'mappingFootprintStatus',
+        caseSensitive: caseSensitive,
+      );
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QDistinct>
+  distinctByMappingRequestId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'mappingRequestId');
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, OutletVisitModel, QDistinct>
   distinctByOutletCode({bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'outletCode', caseSensitive: caseSensitive);
@@ -7503,6 +7952,27 @@ extension OutletVisitModelQueryProperty
   QueryBuilder<OutletVisitModel, String, QQueryOperations> localIdProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'localId');
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, int?, QQueryOperations>
+  mappingFootprintIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'mappingFootprintId');
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, String?, QQueryOperations>
+  mappingFootprintStatusProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'mappingFootprintStatus');
+    });
+  }
+
+  QueryBuilder<OutletVisitModel, int?, QQueryOperations>
+  mappingRequestIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'mappingRequestId');
     });
   }
 

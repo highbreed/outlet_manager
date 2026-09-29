@@ -78,6 +78,7 @@ class NotificationIds {
   static const int timeExceeded = 9001;
   static const int breakReminder = 9002;
   static const int endOfDay = 9003;
+  static const int lunchOver = 9004;
 
   /// Get next available ID in a range
   static int getNextId(int baseId) => baseId + DateTime.now().millisecond % 100;

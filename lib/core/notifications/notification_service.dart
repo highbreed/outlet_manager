@@ -656,6 +656,24 @@ class NotificationService {
     );
   }
 
+  /// Show a foreground-only "lunch is over" nudge. Fired by the lunch
+  /// countdown widget once it reconciles with the server that the break
+  /// actually expired (never a blind local-timer guess) and only within a
+  /// short freshness window — see `LunchBreakBanner`. Not a scheduled
+  /// notification: it never fires while the app is backgrounded/killed.
+  Future<void> showLunchOver() async {
+    await _showNotification(
+      id: NotificationIds.lunchOver,
+      channelId: NotificationChannels.reminders,
+      title: 'Lunch is over',
+      body: 'Please return to your outlet.',
+      priority: Priority.defaultPriority,
+      importance: Importance.defaultImportance,
+      playSound: true,
+      payload: const NotificationPayload(type: NotificationTypes.home),
+    );
+  }
+
   /// Show break reminder
   Future<void> showBreakReminder() async {
     await _showNotification(

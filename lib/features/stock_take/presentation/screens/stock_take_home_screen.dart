@@ -39,28 +39,36 @@ class _StockTakeHomeScreenState extends ConsumerState<StockTakeHomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       final controller = ref.read(stockTakeSessionControllerProvider.notifier);
+      // Awaited (not fire-and-forget) so _checkProposedOrderExists can look
+      // at completedSessions afterward — checking it before this resolves
+      // would always see the initial empty state.
       if (widget.customerId > 0) {
-        controller.loadForCustomer(widget.customerId);
+        await controller.loadForCustomer(widget.customerId);
       } else {
-        controller.loadAllActiveSessions();
+        await controller.loadAllActiveSessions();
       }
+      if (!mounted) return;
       _checkProposedOrderExists();
     });
   }
 
+  /// Only worth asking the backend once there's actually a completed
+  /// session — a proposed order can't exist before one does. Previously
+  /// this ran unconditionally on every visit to this screen (even with
+  /// zero sessions), and the resulting "not found" response — the normal,
+  /// expected state, not a failure — surfaced as a visible error banner.
   Future<void> _checkProposedOrderExists() async {
     if (widget.visitServerId == null) return;
-    try {
-      final order = await ref
-          .read(stockTakeSessionControllerProvider.notifier)
-          .getProposedOrderDetail(visitId: widget.visitServerId!);
-      if (mounted && order != null) {
-        setState(() => _hasProposedOrder = true);
-      }
-    } catch (_) {
-      // No existing order — allow new sessions.
+    final sessionState = ref.read(stockTakeSessionControllerProvider);
+    if (sessionState.completedSessions.isEmpty) return;
+
+    final hasOrder = await ref
+        .read(stockTakeSessionControllerProvider.notifier)
+        .hasProposedOrder(visitId: widget.visitServerId!);
+    if (mounted && hasOrder) {
+      setState(() => _hasProposedOrder = true);
     }
   }
 

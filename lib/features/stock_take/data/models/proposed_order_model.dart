@@ -148,30 +148,40 @@ class ProposedOrderProgressResponse {
 // Proposed Order Detail Models
 // ============================================================================
 
-/// Status of a proposed order
+/// Status of a proposed order.
+///
+/// Matches the documented contract (docs/STOCK_TAKE_FEATURE.md:426:
+/// `enum ProposedOrderStatus { draft, quoted, sent, accepted, rejected,
+/// ordered }`) and a real observed `/visits/{id}/proposed-order` response
+/// (`status: sent`). The previous version of this enum
+/// (draft/pending/approved/converted/expired) didn't match either source —
+/// every real status past `draft`/`rejected` silently fell through to
+/// `unknown`, which is why a legitimately `sent` order showed an "Unknown"
+/// status chip and hid the "Convert to Sales Order" button (that button's
+/// visibility check excluded `unknown`).
 enum ProposedOrderStatus {
   draft,
-  pending,
-  approved,
+  quoted,
+  sent,
+  accepted,
   rejected,
-  converted,
-  expired,
+  ordered,
   unknown;
 
   static ProposedOrderStatus fromString(String status) {
     switch (status.toLowerCase()) {
       case 'draft':
         return ProposedOrderStatus.draft;
-      case 'pending':
-        return ProposedOrderStatus.pending;
-      case 'approved':
-        return ProposedOrderStatus.approved;
+      case 'quoted':
+        return ProposedOrderStatus.quoted;
+      case 'sent':
+        return ProposedOrderStatus.sent;
+      case 'accepted':
+        return ProposedOrderStatus.accepted;
       case 'rejected':
         return ProposedOrderStatus.rejected;
-      case 'converted':
-        return ProposedOrderStatus.converted;
-      case 'expired':
-        return ProposedOrderStatus.expired;
+      case 'ordered':
+        return ProposedOrderStatus.ordered;
       default:
         return ProposedOrderStatus.unknown;
     }
@@ -181,16 +191,16 @@ enum ProposedOrderStatus {
     switch (this) {
       case ProposedOrderStatus.draft:
         return 'Draft';
-      case ProposedOrderStatus.pending:
-        return 'Pending';
-      case ProposedOrderStatus.approved:
-        return 'Approved';
+      case ProposedOrderStatus.quoted:
+        return 'Quoted';
+      case ProposedOrderStatus.sent:
+        return 'Sent';
+      case ProposedOrderStatus.accepted:
+        return 'Accepted';
       case ProposedOrderStatus.rejected:
         return 'Rejected';
-      case ProposedOrderStatus.converted:
+      case ProposedOrderStatus.ordered:
         return 'Converted to Order';
-      case ProposedOrderStatus.expired:
-        return 'Expired';
       case ProposedOrderStatus.unknown:
         return 'Unknown';
     }
@@ -363,5 +373,41 @@ class ProposedOrderDetail {
       default:
         return refillStrategy ?? 'Unknown';
     }
+  }
+}
+
+/// Result of converting a proposed order to a real sales order.
+///
+/// Field names are parsed defensively (multiple plausible key variants,
+/// nothing required beyond what a 2xx response already implies) since no
+/// real response from `POST /proposed-orders/{order_id}/convert-to-order`
+/// has been observed yet — this endpoint exists in the remote datasource
+/// but was never previously wired through the repository/controller
+/// layers, so there's no captured sample response to parse exactly
+/// against, unlike the rest of this file's models.
+class ConvertToSalesOrderResult {
+  final bool success;
+  final String? salesOrderId;
+  final String? salesOrderNumber;
+  final String? message;
+
+  const ConvertToSalesOrderResult({
+    required this.success,
+    this.salesOrderId,
+    this.salesOrderNumber,
+    this.message,
+  });
+
+  factory ConvertToSalesOrderResult.fromJson(Map<String, dynamic> json) {
+    return ConvertToSalesOrderResult(
+      success: json['success'] as bool? ?? true,
+      salesOrderId:
+          json['sales_order_id']?.toString() ?? json['order_id']?.toString(),
+      salesOrderNumber:
+          json['sales_order_number']?.toString() ??
+          json['order_number']?.toString() ??
+          json['doc_num']?.toString(),
+      message: json['message'] as String?,
+    );
   }
 }

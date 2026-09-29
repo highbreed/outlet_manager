@@ -49,6 +49,24 @@
 
     <!-- FCM: show notifications on Android 13+ -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Backs TrackingReminderScheduler's reboot reminder: the full-screen
+         alarm-style notification prompting the user to reopen the app
+         after a reboot (see that class's doc comment for why this exists
+         at all — the app is otherwise stuck at a background execution
+         tier that can't reliably sustain tracking). Android 14+ still
+         requires the user to separately grant this via
+         MainActivity.requestFullScreenIntentPermission(); without it the
+         notification just downgrades to a normal heads-up one. -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <!-- Lets the reminder repeat on a precise 5-minute schedule via
+         AlarmManager.setExactAndAllowWhileIdle. Requires the user to grant
+         it via Settings on Android 12+ (not a runtime prompt dialog);
+         TrackingReminderScheduler falls back to inexact scheduling if it
+         isn't granted, so this is a best-effort precision improvement,
+         not a hard requirement. -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <!-- open_filex declares these unconditionally to open arbitrary file
          types, but this app only uses it to open a PDF it just generated
@@ -107,6 +125,23 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- See TrackingReminderScheduler's doc comment. Exported: true
+             is required for the system to deliver BOOT_COMPLETED — same
+             pattern the flutter_background_geolocation plugin's own
+             bundled BootReceiver uses. -->
+        <receiver
+            android:name=".reminder.RebootTrackingReminderReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+        <!-- Only ever invoked via our own explicit PendingIntent from
+             TrackingReminderScheduler — not exported. -->
+        <receiver
+            android:name=".reminder.TrackingReminderAlarmReceiver"
+            android:exported="false" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

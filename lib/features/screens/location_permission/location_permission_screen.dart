@@ -171,6 +171,7 @@ class _LocationPermissionScreenState
       }
 
       await _requestBatteryOptimizationExemptionIfNeeded();
+      await _requestFullScreenIntentPermissionIfNeeded();
 
       if (mounted) {
         context.go('/');
@@ -193,6 +194,20 @@ class _LocationPermissionScreenState
     final alreadyExempt = await service.isIgnoringBatteryOptimizations();
     if (!alreadyExempt) {
       await service.requestBatteryOptimizationExemption();
+    }
+  }
+
+  /// Android 14+ only (no-op on older versions): without this, the reboot
+  /// reminder that nudges the agent to reopen the app after a device
+  /// restart (see TrackingReminderScheduler) silently downgrades to a
+  /// normal heads-up notification instead of taking over the screen. Same
+  /// non-fatal, best-effort pattern as the battery-optimization request
+  /// above — a denial here doesn't block using the app.
+  Future<void> _requestFullScreenIntentPermissionIfNeeded() async {
+    final service = ref.read(backgroundGeolocationServiceProvider);
+    final alreadyGranted = await service.isFullScreenIntentPermissionGranted();
+    if (!alreadyGranted) {
+      await service.requestFullScreenIntentPermission();
     }
   }
 

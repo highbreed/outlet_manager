@@ -7,6 +7,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/network/failures.dart';
 import '../../../../core/providers/location_providers.dart';
 import '../../../../core/theme/colors.dart';
+import '../../../outlet_mapping/domain/entities/mapping_enums.dart';
+import '../../../outlet_mapping/presentation/widgets/mapping_request_card.dart';
+import '../../../outlet_mapping/providers/mapping_session_notifier.dart';
 import '../../domain/entities/outlet_visit.dart';
 import '../../providers/daily_route_providers.dart';
 import '../widgets/widgets.dart';
@@ -171,8 +174,21 @@ class _ActiveVisitScreenState extends ConsumerState<ActiveVisitScreen> {
 
               const SizedBox(height: 20),
 
+              MappingRequestCard(visit: visit),
+
               // Error message
-              if (clockOutState.hasError) ...[
+              // A GeofenceViolationFailure is excluded here — _clockOut()
+              // already shows a full dedicated dialog for it (title,
+              // explanation, "End Anyway"/"Cancel"), and clockOutNotifierProvider's
+              // state isn't reset after that dialog closes (it's watched
+              // here, not consumed once). Without this exclusion, this
+              // banner would render *underneath* the dialog and then sit
+              // there indefinitely afterward — the same geofence error
+              // reported twice, once nicely (the dialog) and once as a raw
+              // Failure dump (this banner used .toString() instead of
+              // .displayMessage, printing every constructor field verbatim).
+              if (clockOutState.hasError &&
+                  clockOutState.error is! GeofenceViolationFailure) ...[
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
@@ -185,7 +201,9 @@ class _ActiveVisitScreenState extends ConsumerState<ActiveVisitScreen> {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          clockOutState.error.toString(),
+                          clockOutState.error is Failure
+                              ? (clockOutState.error as Failure).displayMessage
+                              : 'Failed to end visit: ${clockOutState.error}',
                           style: const TextStyle(color: kRedColor, fontSize: 14),
                         ),
                       ),
@@ -197,7 +215,7 @@ class _ActiveVisitScreenState extends ConsumerState<ActiveVisitScreen> {
 
               // Clock out button
               ClockInButton(
-                onPressed: () => _clockOut(visit),
+                onPressed: () => _confirmAndClockOut(visit),
                 isLoading: clockOutState.isLoading,
                 isClockIn: false,
               ),
@@ -234,6 +252,89 @@ class _ActiveVisitScreenState extends ConsumerState<ActiveVisitScreen> {
         ),
       ],
     );
+  }
+
+  /// Two-step confirmation before ending the visit — clocking out is not
+  /// reversible from the app (no "resume visit" flow), so a single tap
+  /// shouldn't be enough to trigger it.
+  ///
+  /// If outlet mapping is still `capturing` for this visit, this defers to
+  /// [_confirmClockOutWhileMapping] instead (spec §22/§70) — an explicit
+  /// three-way choice rather than a plain confirm, since clocking out here
+  /// also has to decide what happens to the in-progress capture.
+  Future<void> _confirmAndClockOut(OutletVisit visit) async {
+    final mappingState = ref.read(mappingSessionNotifierProvider).session;
+    final isMappingThisVisit =
+        mappingState != null && mappingState.visitLocalId == visit.localId;
+    if (isMappingThisVisit && mappingState.localState == MappingLocalState.capturing) {
+      await _confirmClockOutWhileMapping(visit);
+      return;
+    }
+
+    final confirm = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('End This Visit?'),
+        content: const Text(
+          'Clocking out will end this visit now. This action cannot be '
+          'undone.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            style: TextButton.styleFrom(foregroundColor: kRedColor),
+            child: const Text('Clock Out'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirm != true || !mounted) return;
+    await _clockOut(visit);
+  }
+
+  /// Spec §22/§70's explicit three-way choice — never silently leaves
+  /// mapping running until a server-side timeout, and never conflates
+  /// "finish" (keep the data) with "stop" (discard it).
+  Future<void> _confirmClockOutWhileMapping(OutletVisit visit) async {
+    final choice = await showDialog<_ClockOutMappingChoice>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Outlet mapping is still in progress'),
+        content: const Text(
+          'What would you like to do with the mapping capture before clocking out?',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(_ClockOutMappingChoice.continueMapping),
+            child: const Text('Continue Mapping'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(_ClockOutMappingChoice.finishAndClockOut),
+            child: const Text('Finish Mapping & Clock Out'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(_ClockOutMappingChoice.stopAndClockOut),
+            style: TextButton.styleFrom(foregroundColor: kRedColor),
+            child: const Text('Stop Mapping & Clock Out'),
+          ),
+        ],
+      ),
+    );
+
+    if (!mounted || choice == null || choice == _ClockOutMappingChoice.continueMapping) return;
+
+    if (choice == _ClockOutMappingChoice.finishAndClockOut) {
+      await ref.read(mappingSessionNotifierProvider.notifier).finishMappingForClockOut();
+    } else {
+      await ref.read(mappingSessionNotifierProvider.notifier).stopMappingForClockOut();
+    }
+    if (!mounted) return;
+    await _clockOut(visit);
   }
 
   Future<void> _clockOut(OutletVisit visit, {bool force = false}) async {
@@ -330,3 +431,5 @@ class _ActiveVisitScreenState extends ConsumerState<ActiveVisitScreen> {
     return '$hour12:$minute $period';
   }
 }
+
+enum _ClockOutMappingChoice { continueMapping, finishAndClockOut, stopAndClockOut }

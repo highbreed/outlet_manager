@@ -11,6 +11,8 @@ import '../datasources/daily_route_local_datasource.dart';
 import '../datasources/daily_route_remote_datasource.dart';
 import '../models/outlet_visit_model.dart' as visit_model;
 import '../models/geofence_override_model.dart' as override_model;
+import '../../../outlet_mapping/domain/entities/mapping_enums.dart';
+import '../../../outlet_mapping/domain/entities/mapping_request.dart';
 
 /// Implementation of [OutletVisitRepository].
 ///
@@ -100,6 +102,8 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
     required double latitude,
     required double longitude,
     required double accuracyMeters,
+    String? verificationId,
+    String? deviceId,
     String? notes,
   }) async {
     try {
@@ -119,6 +123,8 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
         latitude: latitude,
         longitude: longitude,
         accuracy: accuracyMeters,
+        verificationId: verificationId,
+        deviceId: deviceId,
         notes: notes,
       );
 
@@ -353,6 +359,8 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
   Future<Either<Failure, OutletVisit>> clockInWithOverride({
     required String visitLocalId,
     required String overrideLocalId,
+    String? verificationId,
+    String? deviceId,
     String? notes,
   }) async {
     try {
@@ -386,6 +394,8 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
         latitude: localOverride.requestLatitude,
         longitude: localOverride.requestLongitude,
         accuracy: localOverride.requestAccuracyMeters,
+        verificationId: verificationId,
+        deviceId: deviceId,
         notes: notes,
         overrideRequestId: overrideServerId,
       );
@@ -509,6 +519,15 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
       visitNotes: model.visitNotes,
       syncState: SyncState.synced,
       lastSyncedAt: model.lastSyncedAt,
+      mappingRequest: model.mappingRequestId == null
+          ? null
+          : MappingRequest(
+              requestId: model.mappingRequestId!,
+              footprintId: model.mappingFootprintId,
+              footprintStatus: model.mappingFootprintStatus == null
+                  ? null
+                  : MappingFootprintStatus.values.byName(model.mappingFootprintStatus!),
+            ),
     );
   }
 
@@ -559,7 +578,10 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
       ..syncError = visit.syncError
       ..lastSyncedAt = visit.lastSyncedAt
       ..createdAt = DateTime.now()
-      ..updatedAt = DateTime.now();
+      ..updatedAt = DateTime.now()
+      ..mappingRequestId = visit.mappingRequest?.requestId
+      ..mappingFootprintId = visit.mappingRequest?.footprintId
+      ..mappingFootprintStatus = visit.mappingRequest?.footprintStatus?.name;
   }
 
   GeofenceOverrideRequest _overrideToDomain(
@@ -784,6 +806,29 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
         return InvalidVisitStateFailure(
           currentStatus: currentState ?? 'unknown',
           operation: 'perform this action',
+        );
+      }
+
+      // Clock-in's own rejection of a missing/expired/invalid/already-used
+      // verification_id — see the "Phase 5" plan's section D. Distinct
+      // from `/biometrics/verify`'s own error codes (handled in
+      // BiometricRepositoryImpl), since these are returned by the
+      // clock-in endpoint itself.
+      final clockInRejectionReason = switch (errorCode) {
+        'BIOMETRIC_VERIFICATION_REQUIRED' =>
+          BiometricClockInRejectionReason.verificationRequired,
+        'BIOMETRIC_VERIFICATION_EXPIRED' =>
+          BiometricClockInRejectionReason.verificationExpired,
+        'BIOMETRIC_VERIFICATION_INVALID' =>
+          BiometricClockInRejectionReason.verificationInvalid,
+        'BIOMETRIC_VERIFICATION_ALREADY_USED' =>
+          BiometricClockInRejectionReason.verificationAlreadyUsed,
+        _ => null,
+      };
+      if (clockInRejectionReason != null) {
+        return BiometricVerificationFailure.clockInRejected(
+          reason: clockInRejectionReason,
+          message: message ?? 'Verification could not be completed. Please try again.',
         );
       }
 

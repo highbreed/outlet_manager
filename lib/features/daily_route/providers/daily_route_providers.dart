@@ -15,6 +15,7 @@ import '../domain/entities/outlet_visit.dart';
 import '../domain/entities/geofence_override_request.dart';
 import '../domain/entities/skip_reason.dart';
 import '../domain/entities/day_status.dart';
+import '../domain/entities/lunch_break.dart';
 import '../domain/repositories/daily_route_repository.dart';
 import '../domain/repositories/outlet_visit_repository.dart';
 import '../domain/usecases/usecases.dart';
@@ -441,6 +442,8 @@ class ClockInNotifier extends _$ClockInNotifier {
     required double latitude,
     required double longitude,
     required double accuracyMeters,
+    String? verificationId,
+    String? deviceId,
     String? notes,
   }) async {
     state = const AsyncLoading();
@@ -450,6 +453,8 @@ class ClockInNotifier extends _$ClockInNotifier {
       latitude: latitude,
       longitude: longitude,
       accuracyMeters: accuracyMeters,
+      verificationId: verificationId,
+      deviceId: deviceId,
       notes: notes,
     );
     state = result.fold((failure) => AsyncError(failure, StackTrace.current), (
@@ -576,9 +581,16 @@ class RouteCloseNotifier extends _$RouteCloseNotifier {
   }
 }
 
-/// Loads the most recent override for a given visit from local storage
-/// regardless of status (pending/approved/rejected/expired).
-/// Used by the visit detail screen to show a status banner.
+/// Loads the most recent override for a given visit, regardless of status
+/// (pending/approved/rejected/expired). Used by the visit detail screen
+/// to show a status banner and to decide whether the clock-in button can
+/// bypass the geofence check — a decision consequential enough that a
+/// stale local snapshot isn't good enough. The local record is only the
+/// starting point; if one exists, this actively re-checks its status
+/// with the backend (same "don't trust a possibly-stale cached value for
+/// a security-relevant gate" principle already applied to biometric
+/// status — see biometricStatusProvider) before returning it, same as
+/// GeofenceOverrideNotifier.loadExistingForVisit.
 @riverpod
 Future<GeofenceOverrideRequest?> overrideForVisit(
   Ref ref,
@@ -586,7 +598,14 @@ Future<GeofenceOverrideRequest?> overrideForVisit(
 ) async {
   final repo = ref.read(outletVisitRepositoryProvider);
   final result = await repo.getLatestOverrideForVisit(visitLocalId);
-  return result.fold((_) => null, (v) => v);
+  final existing = result.fold((_) => null, (v) => v);
+  if (existing == null) return null;
+
+  final refreshed = await repo.refreshOverrideStatus(existing.localId);
+  // Fail open on the freshness check — offline shouldn't hide a perfectly
+  // valid locally-cached override; the backend's own clock-in-side
+  // validation is the real backstop if this guess is stale.
+  return refreshed.fold((_) => existing, (updated) => updated);
 }
 
 /// Notifier for geofence override request.
@@ -595,16 +614,43 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
   @override
   AsyncValue<GeofenceOverrideRequest?> build() => const AsyncData(null);
 
-  /// Restore any saved override for [visitLocalId] from local storage.
-  /// Called on screen open so state survives app restarts.
+  /// Restore any saved override for [visitLocalId] on screen open, so
+  /// state survives app restarts and (for an override approved/rejected
+  /// from a different session — e.g. by a supervisor — since this device
+  /// last synced) reflects reality rather than a stale local guess.
+  ///
+  /// Two bugs fixed here, confirmed on-device: this used to call
+  /// `getOverrideForVisit`, which only looks up a *pending* override
+  /// locally — so once approved (no longer pending), this found nothing,
+  /// state stayed null, and the screen showed the "Request Override" form
+  /// again even though VisitDetailScreen's own banner (backed by
+  /// `getLatestOverrideForVisit`, status-agnostic) was correctly showing
+  /// "Override Approved". Switched to the same status-agnostic lookup.
+  /// Second, a local record — even found — can itself be stale (the
+  /// approval may have happened server-side without a subsequent local
+  /// sync); actively re-check with the backend rather than trusting the
+  /// local snapshot for a decision this consequential (whether the
+  /// geofence check gets bypassed at clock-in).
   Future<void> loadExistingForVisit(String visitLocalId) async {
     final repo = ref.read(outletVisitRepositoryProvider);
-    final result = await repo.getOverrideForVisit(visitLocalId);
-    result.fold((_) {}, (existing) {
-      if (existing != null && state.valueOrNull == null) {
-        state = AsyncData(existing);
-      }
-    });
+    final result = await repo.getLatestOverrideForVisit(visitLocalId);
+    final existing = result.fold((_) => null, (v) => v);
+    if (existing == null || state.valueOrNull != null) return;
+
+    state = AsyncData(existing);
+
+    final refreshed = await repo.refreshOverrideStatus(existing.localId);
+    refreshed.fold(
+      // Fail open on the freshness check itself — offline shouldn't wipe
+      // out the local value just loaded; the backend's own clock-in-side
+      // validation is the real backstop if this guess is stale.
+      (_) {},
+      (updated) {
+        if (state.valueOrNull?.localId == existing.localId) {
+          state = AsyncData(updated);
+        }
+      },
+    );
   }
 
   Future<void> requestOverride({
@@ -642,6 +688,8 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
   Future<void> clockInWithOverride({
     required String visitLocalId,
     required String overrideLocalId,
+    String? verificationId,
+    String? deviceId,
     String? notes,
   }) async {
     state = const AsyncLoading();
@@ -649,6 +697,8 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
     final result = await repo.clockInWithOverride(
       visitLocalId: visitLocalId,
       overrideLocalId: overrideLocalId,
+      verificationId: verificationId,
+      deviceId: deviceId,
       notes: notes,
     );
     // This returns OutletVisit, not GeofenceOverrideRequest
@@ -671,6 +721,105 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
               outletLongitude: visit.outletLongitude,
               geofenceRadiusMeters: visit.geofenceRadiusMeters,
             );
+      },
+    );
+  }
+}
+
+// ============================================================================
+// Lunch Break
+// ============================================================================
+
+/// The agent's lunch-break state for today, sourced from
+/// [dayStatusPollProvider] — never decided locally. `null` means
+/// day-status hasn't loaded yet; a resolved [LunchBreakState.unavailable]
+/// is a distinct, real answer from the backend and must not be confused
+/// with "still loading" by defaulting one into the other.
+@riverpod
+LunchBreak? lunchBreak(Ref ref) {
+  return ref.watch(dayStatusPollProvider).valueOrNull?.lunchBreak;
+}
+
+/// Notifier for starting/ending today's lunch break.
+///
+/// This notifier's own [AsyncValue] only drives the Start/End button's
+/// loading/error affordance — the lunch state the UI actually *renders*
+/// always comes from [lunchBreakProvider]. Both actions reconcile against
+/// a freshly-refetched day-status on every outcome, success or failure:
+/// a lost response after a real server-side success (or `/end` losing a
+/// race against automatic server-side expiry, returning `NO_LUNCH_BREAK`)
+/// must never be shown to the agent as a failure when the backend already
+/// has it right. Only a failure that *still* reproduces after reconciling
+/// is surfaced as a real error.
+@riverpod
+class LunchBreakNotifier extends _$LunchBreakNotifier {
+  @override
+  AsyncValue<void> build() => const AsyncData(null);
+
+  Future<void> start({
+    double? latitude,
+    double? longitude,
+    double? accuracyMeters,
+  }) async {
+    state = const AsyncLoading();
+    final repo = ref.read(dailyRouteRepositoryProvider);
+    final result = await repo.startLunchBreak(
+      latitude: latitude,
+      longitude: longitude,
+      accuracyMeters: accuracyMeters,
+    );
+    await result.fold(
+      (failure) async {
+        ref.invalidate(dayStatusPollProvider);
+        // The reconciliation fetch itself can fail — e.g. the same
+        // network outage that broke the original call — and must not be
+        // allowed to escape uncaught: that would leave `state` stuck at
+        // AsyncLoading() forever (the button staying permanently
+        // disabled), which is worse than just surfacing the original
+        // failure. Confirmed live: a real ~40s WiFi drop on the test
+        // device reproduced exactly this hang before this try/catch was
+        // added.
+        try {
+          final reconciled = await ref.read(dayStatusPollProvider.future);
+          state = reconciled.lunchBreak.state == LunchBreakState.onBreak
+              ? const AsyncData(null)
+              : AsyncError(failure, StackTrace.current);
+        } catch (_) {
+          state = AsyncError(failure, StackTrace.current);
+        }
+      },
+      (_) async {
+        ref.invalidate(dayStatusPollProvider);
+        state = const AsyncData(null);
+      },
+    );
+  }
+
+  Future<void> end() async {
+    state = const AsyncLoading();
+    final repo = ref.read(dailyRouteRepositoryProvider);
+    final result = await repo.endLunchBreak();
+    await result.fold(
+      (failure) async {
+        ref.invalidate(dayStatusPollProvider);
+        // See start()'s matching try/catch — reconciliation itself can
+        // fail and must not hang this notifier forever.
+        try {
+          final reconciled = await ref.read(dayStatusPollProvider.future);
+          // Covers a lost-response timeout AND the exact end-vs-expiration
+          // race (the contract's own NO_LUNCH_BREAK-on-End case): either
+          // way, `used` after reconciling means the break is over, which
+          // is what End was trying to achieve.
+          state = reconciled.lunchBreak.state == LunchBreakState.used
+              ? const AsyncData(null)
+              : AsyncError(failure, StackTrace.current);
+        } catch (_) {
+          state = AsyncError(failure, StackTrace.current);
+        }
+      },
+      (_) async {
+        ref.invalidate(dayStatusPollProvider);
+        state = const AsyncData(null);
       },
     );
   }

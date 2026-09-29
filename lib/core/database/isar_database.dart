@@ -43,60 +43,94 @@ import '../../features/facings_count/data/models/facings_count_model.dart';
 // Daily Sales Feature Models
 import '../../features/daily_sales/data/models/daily_sale_model.dart';
 
+// Outlet Mapping Feature Models
+import '../../features/outlet_mapping/data/models/mapping_session_model.dart';
+import '../../features/outlet_mapping/data/models/mapping_sample_model.dart';
+
 class IsarDatabase {
   static Isar? _instance;
 
-  static Future<Isar> getInstance() async {
-    if (_instance != null) return _instance!;
+  // A caller wrapping getInstance() in Future.timeout() (see
+  // AppInitializationService._initializeDatabase) only stops *waiting* on
+  // Isar.open() — it doesn't cancel the underlying native call, which keeps
+  // running. Without this cache, a retry after that timeout would call
+  // Isar.open() a second time for the same name while the first call is
+  // still in flight: at best wasted work, at worst a race at the native
+  // mdbx layer or an `IsarError('Instance has already been opened.')` once
+  // the orphaned first call eventually completes. Caching the in-flight
+  // Future means every caller — the timed-out phase, a retry, any other
+  // getInstance() call made while opening is still in progress — awaits
+  // the one real open attempt instead of starting a new one. This also
+  // means a retry after a merely-slow (not truly hung) open resolves
+  // near-instantly once that original call finally finishes.
+  static Future<Isar>? _openingFuture;
 
-    final dir = await getApplicationDocumentsDirectory();
+  static Future<Isar> getInstance() {
+    if (_instance != null) return Future.value(_instance!);
+    return _openingFuture ??= _open();
+  }
 
-    _instance = await Isar.open(
-      [
-        ClockInSessionModelSchema,
-        ClockSessionEventModelSchema,
-        EntityIdMapModelSchema,
-        SyncOperationModelSchema,
-        AttachmentModelSchema,
-        PermissionCacheModelSchema,
-        PriceCacheModelSchema,
-        StockTakeEntryModelSchema,
-        RouteModelSchema,
-        RouteActivationModelSchema,
-        // Daily Route Feature Collections
-        DailyRouteModelSchema,
-        OutletVisitModelSchema,
-        GeofenceOverrideModelSchema,
-        // Location Tracking Feature Collections
-        LocationPingModelSchema,
-        // Visit Schedules Feature Collections
-        VisitScheduleModelSchema,
-        // Stock Take Feature Collections
-        AgentBrandModelSchema,
-        CustomerProductModelSchema,
-        WarehouseModelSchema,
-        StockTakeSessionModelSchema,
-        StockTakeItemModelSchema,
-        SerialNumberEntryModelSchema,
-        // Item Groups Feature Collections
-        ItemGroupModelSchema,
-        // Shelf Share Feature Collections
-        ShelfShareSessionModelSchema,
-        // Facings Count Feature Collections
-        FacingsCountModelSchema,
-        // Daily Sales Feature Collections
-        DailySaleModelSchema,
-      ],
-      directory: dir.path,
-      name: 'outlet_manager',
-    );
+  static Future<Isar> _open() async {
+    try {
+      final dir = await getApplicationDocumentsDirectory();
 
-    return _instance!;
+      final isar = await Isar.open(
+        [
+          ClockInSessionModelSchema,
+          ClockSessionEventModelSchema,
+          EntityIdMapModelSchema,
+          SyncOperationModelSchema,
+          AttachmentModelSchema,
+          PermissionCacheModelSchema,
+          PriceCacheModelSchema,
+          StockTakeEntryModelSchema,
+          RouteModelSchema,
+          RouteActivationModelSchema,
+          // Daily Route Feature Collections
+          DailyRouteModelSchema,
+          OutletVisitModelSchema,
+          GeofenceOverrideModelSchema,
+          // Location Tracking Feature Collections
+          LocationPingModelSchema,
+          // Visit Schedules Feature Collections
+          VisitScheduleModelSchema,
+          // Stock Take Feature Collections
+          AgentBrandModelSchema,
+          CustomerProductModelSchema,
+          WarehouseModelSchema,
+          StockTakeSessionModelSchema,
+          StockTakeItemModelSchema,
+          SerialNumberEntryModelSchema,
+          // Item Groups Feature Collections
+          ItemGroupModelSchema,
+          // Shelf Share Feature Collections
+          ShelfShareSessionModelSchema,
+          // Facings Count Feature Collections
+          FacingsCountModelSchema,
+          // Daily Sales Feature Collections
+          DailySaleModelSchema,
+          // Outlet Mapping Feature Collections
+          MappingSessionModelSchema,
+          MappingSampleModelSchema,
+        ],
+        directory: dir.path,
+        name: 'outlet_manager',
+      );
+
+      _instance = isar;
+      return isar;
+    } finally {
+      // Whether it succeeded or threw, this attempt is no longer "in
+      // flight" — a future getInstance() call (e.g. the next retry) should
+      // start a fresh attempt rather than replaying a failed one forever.
+      _openingFuture = null;
+    }
   }
 
   static Future<void> close() async {
     await _instance?.close();
     _instance = null;
+    _openingFuture = null;
   }
 
   /// Clear all data (for testing or logout)
