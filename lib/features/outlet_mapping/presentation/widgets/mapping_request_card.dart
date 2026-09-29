@@ -54,9 +54,25 @@ class MappingRequestCard extends ConsumerWidget {
           subtitle: '${uiState.localSampleCount} readings captured'
               '${uiState.pendingUploadCount > 0 ? ' • ${uiState.pendingUploadCount} waiting to upload' : ''}',
           actionLabel: 'Resume Mapping',
-          onAction: () => Navigator.of(context, rootNavigator: true).push(
-            MaterialPageRoute(builder: (_) => OutletMappingCaptureScreen(visit: visit)),
-          ),
+          // This is spec §56's explicit "Resume Mapping" tap — the only
+          // place that's allowed to re-arm high-frequency capture mode
+          // (`MappingRecoveryCoordinator.recover` deliberately never does
+          // this itself). Confirmed on-device this was missing entirely:
+          // after a cold app restart (killed process, not just
+          // backgrounded), `BackgroundGeolocationService`'s in-memory
+          // `_mappingActive` resets to false, and without calling
+          // `resumeMapping()` here nothing ever re-arms it — the capture
+          // screen renders normally but silently captures zero new
+          // samples forever. Safe to call even when capture never
+          // stopped (just backgrounded, not killed) — `startMappingCapture`
+          // already no-ops if the same footprint is already active.
+          onAction: () async {
+            await ref.read(mappingSessionNotifierProvider.notifier).resumeMapping();
+            if (!context.mounted) return;
+            Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(builder: (_) => OutletMappingCaptureScreen(visit: visit)),
+            );
+          },
         );
 
       case MappingLocalState.captureFinishedLocal:

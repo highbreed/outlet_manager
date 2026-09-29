@@ -18,21 +18,19 @@ case "$REGION" in
     ;;
 esac
 
-# --target-platform excludes the 32-bit armeabi-v7a (and x86) native builds.
-# isar_community's bundled libmdbx crashes with SIGABRT on armeabi-v7a in
-# production (debug assertions left enabled in its "release" native build -
-# see isar-community/isar-community#33) - confirmed via Play Console
-# (split_config.armeabi_v7a.apk!libisar.so, isar_key_add_long_list_hash) and
-# Sentry (a Samsung SM-A135F crash whose abort() address falls in the
-# 32-bit libc mapping range, despite that device's chipset being
-# 64-bit-capable - Play was serving it the 32-bit split unnecessarily). The
-# proper fix is an isar_community 3.3.2 upgrade, currently blocked on an
-# unresolvable freezed/riverpod/build-tooling version conflict (see the
-# migration plan). Restricting to 64-bit targets forces Play to serve
-# arm64-v8a to any 64-bit-capable device instead, sidestepping the crash
-# without that migration - remove this once the isar upgrade lands.
+# NOTE: this used to pass --target-platform android-arm64,android-x64 to
+# exclude the 32-bit armeabi-v7a native build, working around a crash in
+# isar_community's bundled libmdbx on armeabi-v7a (debug assertions left
+# enabled in its "release" native build - isar-community/isar-community#33).
+# That excluded genuinely 32-bit-only devices (confirmed on a real Samsung
+# SM-A135F: no arm64-v8a fallback exists for a device with no 64-bit ABI at
+# all, so it couldn't launch the app whatsoever) - a materially worse
+# outcome than the crash it was working around. The isar_community 3.3.2
+# upgrade (see the migration plan) fixes the underlying bug directly,
+# confirmed live on that same SM-A135F: fresh install, reached the isar
+# database-open step that used to crash, zero errors. Restriction removed -
+# all ABIs build normally now.
 flutter build appbundle --release \
-  --target-platform android-arm64,android-x64 \
   --dart-define=APP_REGION="$REGION" \
   --dart-define=APP_ENV=prod
 

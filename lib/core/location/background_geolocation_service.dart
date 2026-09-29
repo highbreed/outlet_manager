@@ -434,6 +434,16 @@ class BackgroundGeolocationService {
           geolocation: bg.GeoConfig(distanceFilter: mappingDistanceFilterMeters),
         ),
       );
+      // Walking the outlet IS the moving state by definition — force it
+      // immediately rather than waiting on native Activity Recognition to
+      // independently notice motion. Confirmed on-device: without this, a
+      // device the plugin currently has classified as stationary (common
+      // right after standing still to tap "Start Mapping", especially
+      // indoors with noisy accelerometer/poor GPS) never fires a single
+      // onLocation/onMotionChange event — capture sits frozen at 0 samples
+      // until AR eventually catches up on its own, which can take a while
+      // or never clear its confidence threshold indoors.
+      await bg.BackgroundGeolocation.changePace(true);
       _mappingActive = true;
       developer.log(
         '[BackgroundGeolocationService] mapping capture started footprint=$footprintId '

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,6 +40,29 @@ class OutletMappingCaptureScreen extends ConsumerStatefulWidget {
 class _OutletMappingCaptureScreenState
     extends ConsumerState<OutletMappingCaptureScreen> {
   bool _popped = false;
+
+  // ELAPSED is wall-clock time since the session started — it gates
+  // `session.limits.minDurationSeconds`, a total-time-open requirement, not
+  // a time-spent-moving one, so it must keep counting through stationary
+  // stretches. Without this ticker the only thing that triggers a rebuild
+  // is a new sample/pending-count change, so the display would freeze
+  // solid the moment GPS goes quiet — exactly the moment the employee most
+  // needs to see the clock still running toward the minimum.
+  Timer? _elapsedTicker;
+
+  @override
+  void initState() {
+    super.initState();
+    _elapsedTicker = Timer.periodic(const Duration(seconds: 1), (_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _elapsedTicker?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
