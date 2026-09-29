@@ -6,8 +6,8 @@ part of 'location_ping.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$LocationPingImpl _$$LocationPingImplFromJson(Map<String, dynamic> json) =>
-    _$LocationPingImpl(
+_LocationPing _$LocationPingFromJson(Map<String, dynamic> json) =>
+    _LocationPing(
       localId: json['localId'] as String,
       serverId: (json['serverId'] as num?)?.toInt(),
       latitude: (json['latitude'] as num).toDouble(),
@@ -33,7 +33,7 @@ _$LocationPingImpl _$$LocationPingImplFromJson(Map<String, dynamic> json) =>
           LocationPingSyncState.pending,
     );
 
-Map<String, dynamic> _$$LocationPingImplToJson(_$LocationPingImpl instance) =>
+Map<String, dynamic> _$LocationPingToJson(_LocationPing instance) =>
     <String, dynamic>{
       'localId': instance.localId,
       'serverId': instance.serverId,
@@ -67,9 +67,9 @@ const _$LocationPingSyncStateEnumMap = {
   LocationPingSyncState.failed: 'failed',
 };
 
-_$LocationPingResponseImpl _$$LocationPingResponseImplFromJson(
+_LocationPingResponse _$LocationPingResponseFromJson(
   Map<String, dynamic> json,
-) => _$LocationPingResponseImpl(
+) => _LocationPingResponse(
   success: json['success'] as bool,
   pingId: (json['pingId'] as num).toInt(),
   nextPingSeconds: (json['nextPingSeconds'] as num?)?.toInt(),
@@ -77,8 +77,8 @@ _$LocationPingResponseImpl _$$LocationPingResponseImplFromJson(
   isDuplicate: json['isDuplicate'] as bool,
 );
 
-Map<String, dynamic> _$$LocationPingResponseImplToJson(
-  _$LocationPingResponseImpl instance,
+Map<String, dynamic> _$LocationPingResponseToJson(
+  _LocationPingResponse instance,
 ) => <String, dynamic>{
   'success': instance.success,
   'pingId': instance.pingId,

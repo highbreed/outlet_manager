@@ -380,7 +380,7 @@ class _SalesPerformanceScreenState
       ),
       data: (targets) {
         final soldByItem = <String, SalesPerformanceProduct>{
-          for (final p in performanceAsync.valueOrNull?.products ?? [])
+          for (final p in performanceAsync.value?.products ?? [])
             p.itemCode: p,
         };
         final merged = [
@@ -427,7 +427,7 @@ class _SalesPerformanceScreenState
                 onChanged: (v) => setState(() => _modelQuery = v),
                 filterActive: _categoryFilter != null,
                 onFilterTap: () => _pickCategory(
-                  baseTargetsAsync.valueOrNull?.items ?? targets.items,
+                  baseTargetsAsync.value?.items ?? targets.items,
                 ),
               ),
               if (_categoryFilter != null) ...[

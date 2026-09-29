@@ -5,7 +5,7 @@ part 'item_group.freezed.dart';
 /// Domain entity for an Item Group (product category)
 /// Used by both Shelf Share and Facings features
 @freezed
-class ItemGroup with _$ItemGroup {
+abstract class ItemGroup with _$ItemGroup {
   const factory ItemGroup({
     required int id,
     required String code,

@@ -11,24 +11,20 @@ part 'location_ping_providers.g.dart';
 // === Data Sources ===
 
 @riverpod
-LocationPingRemoteDataSource locationPingRemoteDataSource(
-  LocationPingRemoteDataSourceRef ref,
-) {
+LocationPingRemoteDataSource locationPingRemoteDataSource(Ref ref) {
   final dio = ref.watch(dioProvider);
   return LocationPingRemoteDataSource(dio);
 }
 
 @riverpod
-LocationPingLocalDataSource locationPingLocalDataSource(
-  LocationPingLocalDataSourceRef ref,
-) {
+LocationPingLocalDataSource locationPingLocalDataSource(Ref ref) {
   return LocationPingLocalDataSource();
 }
 
 // === Repository ===
 
 @riverpod
-LocationPingRepository locationPingRepository(LocationPingRepositoryRef ref) {
+LocationPingRepository locationPingRepository(Ref ref) {
   return LocationPingRepositoryImpl(
     remoteDataSource: ref.watch(locationPingRemoteDataSourceProvider),
     localDataSource: ref.watch(locationPingLocalDataSourceProvider),

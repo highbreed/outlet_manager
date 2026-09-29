@@ -1,4 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// See products_providers.dart's matching comment — StateNotifier moved to
+// this explicit legacy import in Riverpod 3.x, kept as-is rather than
+// rewritten given this file's real sales-order business logic.
+import 'package:flutter_riverpod/legacy.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../core/network/api_client.dart';

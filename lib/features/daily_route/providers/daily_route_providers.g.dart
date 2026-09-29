@@ -6,705 +6,869 @@ part of 'daily_route_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(dailyRouteLocalDataSource)
+const dailyRouteLocalDataSourceProvider = DailyRouteLocalDataSourceProvider._();
+
+final class DailyRouteLocalDataSourceProvider
+    extends
+        $FunctionalProvider<
+          DailyRouteLocalDataSource,
+          DailyRouteLocalDataSource,
+          DailyRouteLocalDataSource
+        >
+    with $Provider<DailyRouteLocalDataSource> {
+  const DailyRouteLocalDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailyRouteLocalDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailyRouteLocalDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<DailyRouteLocalDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DailyRouteLocalDataSource create(Ref ref) {
+    return dailyRouteLocalDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DailyRouteLocalDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DailyRouteLocalDataSource>(value),
+    );
+  }
+}
+
 String _$dailyRouteLocalDataSourceHash() =>
     r'95009175e0ad5152ed3df097197d8f406bd0d143';
 
-/// See also [dailyRouteLocalDataSource].
-@ProviderFor(dailyRouteLocalDataSource)
-final dailyRouteLocalDataSourceProvider =
-    AutoDisposeProvider<DailyRouteLocalDataSource>.internal(
-      dailyRouteLocalDataSource,
-      name: r'dailyRouteLocalDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$dailyRouteLocalDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(dailyRouteRemoteDataSource)
+const dailyRouteRemoteDataSourceProvider =
+    DailyRouteRemoteDataSourceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DailyRouteLocalDataSourceRef =
-    AutoDisposeProviderRef<DailyRouteLocalDataSource>;
+final class DailyRouteRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          DailyRouteRemoteDataSource,
+          DailyRouteRemoteDataSource,
+          DailyRouteRemoteDataSource
+        >
+    with $Provider<DailyRouteRemoteDataSource> {
+  const DailyRouteRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailyRouteRemoteDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailyRouteRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<DailyRouteRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DailyRouteRemoteDataSource create(Ref ref) {
+    return dailyRouteRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DailyRouteRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DailyRouteRemoteDataSource>(value),
+    );
+  }
+}
+
 String _$dailyRouteRemoteDataSourceHash() =>
     r'a65ec202a7859758d6ef704349e67cae6aeec451';
 
-/// See also [dailyRouteRemoteDataSource].
-@ProviderFor(dailyRouteRemoteDataSource)
-final dailyRouteRemoteDataSourceProvider =
-    AutoDisposeProvider<DailyRouteRemoteDataSource>.internal(
-      dailyRouteRemoteDataSource,
-      name: r'dailyRouteRemoteDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$dailyRouteRemoteDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(dailyRouteRepository)
+const dailyRouteRepositoryProvider = DailyRouteRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DailyRouteRemoteDataSourceRef =
-    AutoDisposeProviderRef<DailyRouteRemoteDataSource>;
+final class DailyRouteRepositoryProvider
+    extends
+        $FunctionalProvider<
+          DailyRouteRepository,
+          DailyRouteRepository,
+          DailyRouteRepository
+        >
+    with $Provider<DailyRouteRepository> {
+  const DailyRouteRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailyRouteRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailyRouteRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<DailyRouteRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DailyRouteRepository create(Ref ref) {
+    return dailyRouteRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DailyRouteRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DailyRouteRepository>(value),
+    );
+  }
+}
+
 String _$dailyRouteRepositoryHash() =>
     r'00e41b523aef186ea5ad7a3c0c9586c5e1aec7bb';
 
-/// See also [dailyRouteRepository].
-@ProviderFor(dailyRouteRepository)
-final dailyRouteRepositoryProvider =
-    AutoDisposeProvider<DailyRouteRepository>.internal(
-      dailyRouteRepository,
-      name: r'dailyRouteRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$dailyRouteRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(outletVisitRepository)
+const outletVisitRepositoryProvider = OutletVisitRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef DailyRouteRepositoryRef = AutoDisposeProviderRef<DailyRouteRepository>;
+final class OutletVisitRepositoryProvider
+    extends
+        $FunctionalProvider<
+          OutletVisitRepository,
+          OutletVisitRepository,
+          OutletVisitRepository
+        >
+    with $Provider<OutletVisitRepository> {
+  const OutletVisitRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'outletVisitRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$outletVisitRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<OutletVisitRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  OutletVisitRepository create(Ref ref) {
+    return outletVisitRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(OutletVisitRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<OutletVisitRepository>(value),
+    );
+  }
+}
+
 String _$outletVisitRepositoryHash() =>
     r'ca773ca12769d7d64e62dcfd5385fbc3b45f38ce';
 
-/// See also [outletVisitRepository].
-@ProviderFor(outletVisitRepository)
-final outletVisitRepositoryProvider =
-    AutoDisposeProvider<OutletVisitRepository>.internal(
-      outletVisitRepository,
-      name: r'outletVisitRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$outletVisitRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(activateRouteUseCase)
+const activateRouteUseCaseProvider = ActivateRouteUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef OutletVisitRepositoryRef =
-    AutoDisposeProviderRef<OutletVisitRepository>;
+final class ActivateRouteUseCaseProvider
+    extends
+        $FunctionalProvider<
+          ActivateRouteUseCase,
+          ActivateRouteUseCase,
+          ActivateRouteUseCase
+        >
+    with $Provider<ActivateRouteUseCase> {
+  const ActivateRouteUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activateRouteUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activateRouteUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<ActivateRouteUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ActivateRouteUseCase create(Ref ref) {
+    return activateRouteUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ActivateRouteUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ActivateRouteUseCase>(value),
+    );
+  }
+}
+
 String _$activateRouteUseCaseHash() =>
     r'cdbf11f52a86ae6666ad05166a1c6e54cb2b6a80';
 
-/// See also [activateRouteUseCase].
-@ProviderFor(activateRouteUseCase)
-final activateRouteUseCaseProvider =
-    AutoDisposeProvider<ActivateRouteUseCase>.internal(
-      activateRouteUseCase,
-      name: r'activateRouteUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$activateRouteUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(getTodaysRouteUseCase)
+const getTodaysRouteUseCaseProvider = GetTodaysRouteUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ActivateRouteUseCaseRef = AutoDisposeProviderRef<ActivateRouteUseCase>;
+final class GetTodaysRouteUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetTodaysRouteUseCase,
+          GetTodaysRouteUseCase,
+          GetTodaysRouteUseCase
+        >
+    with $Provider<GetTodaysRouteUseCase> {
+  const GetTodaysRouteUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getTodaysRouteUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getTodaysRouteUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetTodaysRouteUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetTodaysRouteUseCase create(Ref ref) {
+    return getTodaysRouteUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetTodaysRouteUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetTodaysRouteUseCase>(value),
+    );
+  }
+}
+
 String _$getTodaysRouteUseCaseHash() =>
     r'ea37cd77b8f5570bff60242302842b699efffaa7';
 
-/// See also [getTodaysRouteUseCase].
-@ProviderFor(getTodaysRouteUseCase)
-final getTodaysRouteUseCaseProvider =
-    AutoDisposeProvider<GetTodaysRouteUseCase>.internal(
-      getTodaysRouteUseCase,
-      name: r'getTodaysRouteUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$getTodaysRouteUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(closeRouteUseCase)
+const closeRouteUseCaseProvider = CloseRouteUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetTodaysRouteUseCaseRef =
-    AutoDisposeProviderRef<GetTodaysRouteUseCase>;
+final class CloseRouteUseCaseProvider
+    extends
+        $FunctionalProvider<
+          CloseRouteUseCase,
+          CloseRouteUseCase,
+          CloseRouteUseCase
+        >
+    with $Provider<CloseRouteUseCase> {
+  const CloseRouteUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'closeRouteUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$closeRouteUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<CloseRouteUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  CloseRouteUseCase create(Ref ref) {
+    return closeRouteUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(CloseRouteUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<CloseRouteUseCase>(value),
+    );
+  }
+}
+
 String _$closeRouteUseCaseHash() => r'6bd04ab54bc506eb80c63114be8a070aa8e2e8b6';
 
-/// See also [closeRouteUseCase].
-@ProviderFor(closeRouteUseCase)
-final closeRouteUseCaseProvider =
-    AutoDisposeProvider<CloseRouteUseCase>.internal(
-      closeRouteUseCase,
-      name: r'closeRouteUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$closeRouteUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(clockInVisitUseCase)
+const clockInVisitUseCaseProvider = ClockInVisitUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CloseRouteUseCaseRef = AutoDisposeProviderRef<CloseRouteUseCase>;
+final class ClockInVisitUseCaseProvider
+    extends
+        $FunctionalProvider<
+          ClockInVisitUseCase,
+          ClockInVisitUseCase,
+          ClockInVisitUseCase
+        >
+    with $Provider<ClockInVisitUseCase> {
+  const ClockInVisitUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clockInVisitUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clockInVisitUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<ClockInVisitUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ClockInVisitUseCase create(Ref ref) {
+    return clockInVisitUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ClockInVisitUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ClockInVisitUseCase>(value),
+    );
+  }
+}
+
 String _$clockInVisitUseCaseHash() =>
     r'810ebe4a39f4564971e57b3b6af28b05643fa304';
 
-/// See also [clockInVisitUseCase].
-@ProviderFor(clockInVisitUseCase)
-final clockInVisitUseCaseProvider =
-    AutoDisposeProvider<ClockInVisitUseCase>.internal(
-      clockInVisitUseCase,
-      name: r'clockInVisitUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$clockInVisitUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(clockOutVisitUseCase)
+const clockOutVisitUseCaseProvider = ClockOutVisitUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ClockInVisitUseCaseRef = AutoDisposeProviderRef<ClockInVisitUseCase>;
+final class ClockOutVisitUseCaseProvider
+    extends
+        $FunctionalProvider<
+          ClockOutVisitUseCase,
+          ClockOutVisitUseCase,
+          ClockOutVisitUseCase
+        >
+    with $Provider<ClockOutVisitUseCase> {
+  const ClockOutVisitUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clockOutVisitUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clockOutVisitUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<ClockOutVisitUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ClockOutVisitUseCase create(Ref ref) {
+    return clockOutVisitUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ClockOutVisitUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ClockOutVisitUseCase>(value),
+    );
+  }
+}
+
 String _$clockOutVisitUseCaseHash() =>
     r'31c42137d2a5bb06ee9dd60ad81d815ed27b0f9b';
 
-/// See also [clockOutVisitUseCase].
-@ProviderFor(clockOutVisitUseCase)
-final clockOutVisitUseCaseProvider =
-    AutoDisposeProvider<ClockOutVisitUseCase>.internal(
-      clockOutVisitUseCase,
-      name: r'clockOutVisitUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$clockOutVisitUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(skipVisitUseCase)
+const skipVisitUseCaseProvider = SkipVisitUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ClockOutVisitUseCaseRef = AutoDisposeProviderRef<ClockOutVisitUseCase>;
+final class SkipVisitUseCaseProvider
+    extends
+        $FunctionalProvider<
+          SkipVisitUseCase,
+          SkipVisitUseCase,
+          SkipVisitUseCase
+        >
+    with $Provider<SkipVisitUseCase> {
+  const SkipVisitUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'skipVisitUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$skipVisitUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<SkipVisitUseCase> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  SkipVisitUseCase create(Ref ref) {
+    return skipVisitUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SkipVisitUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SkipVisitUseCase>(value),
+    );
+  }
+}
+
 String _$skipVisitUseCaseHash() => r'6ebc24f1fa3fa506b3098716be8512b64853402f';
 
-/// See also [skipVisitUseCase].
-@ProviderFor(skipVisitUseCase)
-final skipVisitUseCaseProvider = AutoDisposeProvider<SkipVisitUseCase>.internal(
-  skipVisitUseCase,
-  name: r'skipVisitUseCaseProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$skipVisitUseCaseHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(getActiveVisitUseCase)
+const getActiveVisitUseCaseProvider = GetActiveVisitUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SkipVisitUseCaseRef = AutoDisposeProviderRef<SkipVisitUseCase>;
+final class GetActiveVisitUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetActiveVisitUseCase,
+          GetActiveVisitUseCase,
+          GetActiveVisitUseCase
+        >
+    with $Provider<GetActiveVisitUseCase> {
+  const GetActiveVisitUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getActiveVisitUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getActiveVisitUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetActiveVisitUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetActiveVisitUseCase create(Ref ref) {
+    return getActiveVisitUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetActiveVisitUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetActiveVisitUseCase>(value),
+    );
+  }
+}
+
 String _$getActiveVisitUseCaseHash() =>
     r'381f6e0dcfe3239407b9b18d4c3bb09030c5f5c5';
 
-/// See also [getActiveVisitUseCase].
-@ProviderFor(getActiveVisitUseCase)
-final getActiveVisitUseCaseProvider =
-    AutoDisposeProvider<GetActiveVisitUseCase>.internal(
-      getActiveVisitUseCase,
-      name: r'getActiveVisitUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$getActiveVisitUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(requestGeofenceOverrideUseCase)
+const requestGeofenceOverrideUseCaseProvider =
+    RequestGeofenceOverrideUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetActiveVisitUseCaseRef =
-    AutoDisposeProviderRef<GetActiveVisitUseCase>;
+final class RequestGeofenceOverrideUseCaseProvider
+    extends
+        $FunctionalProvider<
+          RequestGeofenceOverrideUseCase,
+          RequestGeofenceOverrideUseCase,
+          RequestGeofenceOverrideUseCase
+        >
+    with $Provider<RequestGeofenceOverrideUseCase> {
+  const RequestGeofenceOverrideUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'requestGeofenceOverrideUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$requestGeofenceOverrideUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<RequestGeofenceOverrideUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  RequestGeofenceOverrideUseCase create(Ref ref) {
+    return requestGeofenceOverrideUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RequestGeofenceOverrideUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RequestGeofenceOverrideUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
 String _$requestGeofenceOverrideUseCaseHash() =>
     r'3272f05f3abcba538d70b990025508c01ca35030';
 
-/// See also [requestGeofenceOverrideUseCase].
-@ProviderFor(requestGeofenceOverrideUseCase)
-final requestGeofenceOverrideUseCaseProvider =
-    AutoDisposeProvider<RequestGeofenceOverrideUseCase>.internal(
-      requestGeofenceOverrideUseCase,
-      name: r'requestGeofenceOverrideUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$requestGeofenceOverrideUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+/// Fetches and caches skip reasons from API.
+/// These are the predefined reasons a user can choose when skipping a visit.
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef RequestGeofenceOverrideUseCaseRef =
-    AutoDisposeProviderRef<RequestGeofenceOverrideUseCase>;
-String _$skipReasonsHash() => r'6a55340702ce9299ca281467f2e6fb8eac1f4991';
+@ProviderFor(skipReasons)
+const skipReasonsProvider = SkipReasonsProvider._();
 
 /// Fetches and caches skip reasons from API.
 /// These are the predefined reasons a user can choose when skipping a visit.
-///
-/// Copied from [skipReasons].
-@ProviderFor(skipReasons)
-final skipReasonsProvider =
-    AutoDisposeFutureProvider<List<SkipReason>>.internal(
-      skipReasons,
-      name: r'skipReasonsProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$skipReasonsHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SkipReasonsRef = AutoDisposeFutureProviderRef<List<SkipReason>>;
-String _$todaysRouteHash() => r'88a5bf42632cb083e74f1fd18bbaa7dcc29b25e5';
+final class SkipReasonsProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<SkipReason>>,
+          List<SkipReason>,
+          FutureOr<List<SkipReason>>
+        >
+    with $FutureModifier<List<SkipReason>>, $FutureProvider<List<SkipReason>> {
+  /// Fetches and caches skip reasons from API.
+  /// These are the predefined reasons a user can choose when skipping a visit.
+  const SkipReasonsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'skipReasonsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$skipReasonsHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<SkipReason>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<SkipReason>> create(Ref ref) {
+    return skipReasons(ref);
+  }
+}
+
+String _$skipReasonsHash() => r'6a55340702ce9299ca281467f2e6fb8eac1f4991';
 
 /// Fetches and caches today's route with visits.
 /// Use `ref.invalidate(todaysRouteProvider)` to refresh.
-///
-/// Copied from [todaysRoute].
-@ProviderFor(todaysRoute)
-final todaysRouteProvider =
-    AutoDisposeFutureProvider<DailyRouteWithVisits?>.internal(
-      todaysRoute,
-      name: r'todaysRouteProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todaysRouteHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef TodaysRouteRef = AutoDisposeFutureProviderRef<DailyRouteWithVisits?>;
-String _$routeToCloseHash() => r'd81f95374c5117c393a55b6b6133cab660dd2c5b';
+@ProviderFor(todaysRoute)
+const todaysRouteProvider = TodaysRouteProvider._();
+
+/// Fetches and caches today's route with visits.
+/// Use `ref.invalidate(todaysRouteProvider)` to refresh.
+
+final class TodaysRouteProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<DailyRouteWithVisits?>,
+          DailyRouteWithVisits?,
+          FutureOr<DailyRouteWithVisits?>
+        >
+    with
+        $FutureModifier<DailyRouteWithVisits?>,
+        $FutureProvider<DailyRouteWithVisits?> {
+  /// Fetches and caches today's route with visits.
+  /// Use `ref.invalidate(todaysRouteProvider)` to refresh.
+  const TodaysRouteProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'todaysRouteProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$todaysRouteHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<DailyRouteWithVisits?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<DailyRouteWithVisits?> create(Ref ref) {
+    return todaysRoute(ref);
+  }
+}
+
+String _$todaysRouteHash() => r'88a5bf42632cb083e74f1fd18bbaa7dcc29b25e5';
 
 /// Fetches the route to be closed - either an unclosed route or today's route.
 /// This is used by the RouteCloseScreen to handle both scenarios:
 /// 1. When closing a previous day's unclosed route
 /// 2. When closing today's route normally
-///
-/// Copied from [routeToClose].
-@ProviderFor(routeToClose)
-final routeToCloseProvider =
-    AutoDisposeFutureProvider<DailyRouteWithVisits?>.internal(
-      routeToClose,
-      name: r'routeToCloseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$routeToCloseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef RouteToCloseRef = AutoDisposeFutureProviderRef<DailyRouteWithVisits?>;
-String _$pendingRoutesToCloseHash() =>
-    r'2eb542eaf5d4fc5f027ad1f3c79f7be8b3837f42';
+@ProviderFor(routeToClose)
+const routeToCloseProvider = RouteToCloseProvider._();
+
+/// Fetches the route to be closed - either an unclosed route or today's route.
+/// This is used by the RouteCloseScreen to handle both scenarios:
+/// 1. When closing a previous day's unclosed route
+/// 2. When closing today's route normally
+
+final class RouteToCloseProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<DailyRouteWithVisits?>,
+          DailyRouteWithVisits?,
+          FutureOr<DailyRouteWithVisits?>
+        >
+    with
+        $FutureModifier<DailyRouteWithVisits?>,
+        $FutureProvider<DailyRouteWithVisits?> {
+  /// Fetches the route to be closed - either an unclosed route or today's route.
+  /// This is used by the RouteCloseScreen to handle both scenarios:
+  /// 1. When closing a previous day's unclosed route
+  /// 2. When closing today's route normally
+  const RouteToCloseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'routeToCloseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$routeToCloseHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<DailyRouteWithVisits?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<DailyRouteWithVisits?> create(Ref ref) {
+    return routeToClose(ref);
+  }
+}
+
+String _$routeToCloseHash() => r'd81f95374c5117c393a55b6b6133cab660dd2c5b';
 
 /// Fetches pending routes from backend and filters for previous dates.
 /// Returns list of routes that need to be closed before a new route can be activated.
-///
-/// Copied from [pendingRoutesToClose].
+
 @ProviderFor(pendingRoutesToClose)
-final pendingRoutesToCloseProvider =
-    AutoDisposeFutureProvider<List<PendingRouteResponse>>.internal(
-      pendingRoutesToClose,
-      name: r'pendingRoutesToCloseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$pendingRoutesToCloseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+const pendingRoutesToCloseProvider = PendingRoutesToCloseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PendingRoutesToCloseRef =
-    AutoDisposeFutureProviderRef<List<PendingRouteResponse>>;
-String _$routeStatusHash() => r'ddb97b8814197785441f9d00f194b60bb292c3ff';
+/// Fetches pending routes from backend and filters for previous dates.
+/// Returns list of routes that need to be closed before a new route can be activated.
 
-/// Provides the current route status.
-///
-/// Copied from [routeStatus].
-@ProviderFor(routeStatus)
-final routeStatusProvider = AutoDisposeProvider<DailyRouteStatus?>.internal(
-  routeStatus,
-  name: r'routeStatusProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$routeStatusHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef RouteStatusRef = AutoDisposeProviderRef<DailyRouteStatus?>;
-String _$visitListHash() => r'43671fbea05dcc11b6fa4c306a43d1a1dc537908';
-
-/// Provides the list of visits for today's route.
-///
-/// Copied from [visitList].
-@ProviderFor(visitList)
-final visitListProvider = AutoDisposeProvider<List<OutletVisit>>.internal(
-  visitList,
-  name: r'visitListProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$visitListHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef VisitListRef = AutoDisposeProviderRef<List<OutletVisit>>;
-String _$activeVisitHash() => r'20fc63ccd5eaf0f04ac77329318801190bd1b666';
-
-/// Provides the currently active visit (in progress).
-///
-/// Sourced from [dayStatusPollProvider] first — it refreshes every
-/// [dayStatusPollInterval] and after every clock-in/out this device
-/// performs, so every screen gated on "am I clocked in" (Products'
-/// visit-context cards, Daily Sales, Stock Take's visit-context injection,
-/// etc.) sees the same, fresh answer instead of each reading a one-shot
-/// [todaysRouteProvider] snapshot that only that specific action refreshed.
-/// Falls back to [todaysRouteProvider] only for the brief window before the
-/// first poll completes (or if it errors) — never regresses to "not
-/// clocked in" on cold start.
-///
-/// Copied from [activeVisit].
-@ProviderFor(activeVisit)
-final activeVisitProvider = AutoDisposeProvider<OutletVisit?>.internal(
-  activeVisit,
-  name: r'activeVisitProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$activeVisitHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ActiveVisitRef = AutoDisposeProviderRef<OutletVisit?>;
-String _$pendingVisitsCountHash() =>
-    r'161453f4a8aad9f6ecb83f5e6fbec43700f374b6';
-
-/// Provides pending visits count.
-///
-/// Copied from [pendingVisitsCount].
-@ProviderFor(pendingVisitsCount)
-final pendingVisitsCountProvider = AutoDisposeProvider<int>.internal(
-  pendingVisitsCount,
-  name: r'pendingVisitsCountProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$pendingVisitsCountHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef PendingVisitsCountRef = AutoDisposeProviderRef<int>;
-String _$completedVisitsCountHash() =>
-    r'35c5fe38d74ce42e6be230a319fab8e1e6b6cf0e';
-
-/// Provides completed visits count.
-///
-/// Copied from [completedVisitsCount].
-@ProviderFor(completedVisitsCount)
-final completedVisitsCountProvider = AutoDisposeProvider<int>.internal(
-  completedVisitsCount,
-  name: r'completedVisitsCountProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$completedVisitsCountHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CompletedVisitsCountRef = AutoDisposeProviderRef<int>;
-String _$routeProgressHash() => r'c9d53ae7b237bb63d9658ab812dffe4dfd2366b8';
-
-/// Provides route progress (0.0 to 1.0).
-///
-/// Copied from [routeProgress].
-@ProviderFor(routeProgress)
-final routeProgressProvider = AutoDisposeProvider<double>.internal(
-  routeProgress,
-  name: r'routeProgressProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$routeProgressHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef RouteProgressRef = AutoDisposeProviderRef<double>;
-String _$canCloseRouteHash() => r'b1f3cf92109a7c52bed51227614ae8dc8732f4af';
-
-/// Whether the route can be closed (all visits resolved).
-///
-/// Copied from [canCloseRoute].
-@ProviderFor(canCloseRoute)
-final canCloseRouteProvider = AutoDisposeProvider<bool>.internal(
-  canCloseRoute,
-  name: r'canCloseRouteProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$canCloseRouteHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef CanCloseRouteRef = AutoDisposeProviderRef<bool>;
-String _$overrideForVisitHash() => r'c7d32e97ac1cf945aafcdec876d1c565f19f19ff';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// Loads the most recent override for a given visit, regardless of status
-/// (pending/approved/rejected/expired). Used by the visit detail screen
-/// to show a status banner and to decide whether the clock-in button can
-/// bypass the geofence check — a decision consequential enough that a
-/// stale local snapshot isn't good enough. The local record is only the
-/// starting point; if one exists, this actively re-checks its status
-/// with the backend (same "don't trust a possibly-stale cached value for
-/// a security-relevant gate" principle already applied to biometric
-/// status — see biometricStatusProvider) before returning it, same as
-/// GeofenceOverrideNotifier.loadExistingForVisit.
-///
-/// Copied from [overrideForVisit].
-@ProviderFor(overrideForVisit)
-const overrideForVisitProvider = OverrideForVisitFamily();
-
-/// Loads the most recent override for a given visit, regardless of status
-/// (pending/approved/rejected/expired). Used by the visit detail screen
-/// to show a status banner and to decide whether the clock-in button can
-/// bypass the geofence check — a decision consequential enough that a
-/// stale local snapshot isn't good enough. The local record is only the
-/// starting point; if one exists, this actively re-checks its status
-/// with the backend (same "don't trust a possibly-stale cached value for
-/// a security-relevant gate" principle already applied to biometric
-/// status — see biometricStatusProvider) before returning it, same as
-/// GeofenceOverrideNotifier.loadExistingForVisit.
-///
-/// Copied from [overrideForVisit].
-class OverrideForVisitFamily
-    extends Family<AsyncValue<GeofenceOverrideRequest?>> {
-  /// Loads the most recent override for a given visit, regardless of status
-  /// (pending/approved/rejected/expired). Used by the visit detail screen
-  /// to show a status banner and to decide whether the clock-in button can
-  /// bypass the geofence check — a decision consequential enough that a
-  /// stale local snapshot isn't good enough. The local record is only the
-  /// starting point; if one exists, this actively re-checks its status
-  /// with the backend (same "don't trust a possibly-stale cached value for
-  /// a security-relevant gate" principle already applied to biometric
-  /// status — see biometricStatusProvider) before returning it, same as
-  /// GeofenceOverrideNotifier.loadExistingForVisit.
-  ///
-  /// Copied from [overrideForVisit].
-  const OverrideForVisitFamily();
-
-  /// Loads the most recent override for a given visit, regardless of status
-  /// (pending/approved/rejected/expired). Used by the visit detail screen
-  /// to show a status banner and to decide whether the clock-in button can
-  /// bypass the geofence check — a decision consequential enough that a
-  /// stale local snapshot isn't good enough. The local record is only the
-  /// starting point; if one exists, this actively re-checks its status
-  /// with the backend (same "don't trust a possibly-stale cached value for
-  /// a security-relevant gate" principle already applied to biometric
-  /// status — see biometricStatusProvider) before returning it, same as
-  /// GeofenceOverrideNotifier.loadExistingForVisit.
-  ///
-  /// Copied from [overrideForVisit].
-  OverrideForVisitProvider call(String visitLocalId) {
-    return OverrideForVisitProvider(visitLocalId);
-  }
-
-  @override
-  OverrideForVisitProvider getProviderOverride(
-    covariant OverrideForVisitProvider provider,
-  ) {
-    return call(provider.visitLocalId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'overrideForVisitProvider';
-}
-
-/// Loads the most recent override for a given visit, regardless of status
-/// (pending/approved/rejected/expired). Used by the visit detail screen
-/// to show a status banner and to decide whether the clock-in button can
-/// bypass the geofence check — a decision consequential enough that a
-/// stale local snapshot isn't good enough. The local record is only the
-/// starting point; if one exists, this actively re-checks its status
-/// with the backend (same "don't trust a possibly-stale cached value for
-/// a security-relevant gate" principle already applied to biometric
-/// status — see biometricStatusProvider) before returning it, same as
-/// GeofenceOverrideNotifier.loadExistingForVisit.
-///
-/// Copied from [overrideForVisit].
-class OverrideForVisitProvider
-    extends AutoDisposeFutureProvider<GeofenceOverrideRequest?> {
-  /// Loads the most recent override for a given visit, regardless of status
-  /// (pending/approved/rejected/expired). Used by the visit detail screen
-  /// to show a status banner and to decide whether the clock-in button can
-  /// bypass the geofence check — a decision consequential enough that a
-  /// stale local snapshot isn't good enough. The local record is only the
-  /// starting point; if one exists, this actively re-checks its status
-  /// with the backend (same "don't trust a possibly-stale cached value for
-  /// a security-relevant gate" principle already applied to biometric
-  /// status — see biometricStatusProvider) before returning it, same as
-  /// GeofenceOverrideNotifier.loadExistingForVisit.
-  ///
-  /// Copied from [overrideForVisit].
-  OverrideForVisitProvider(String visitLocalId)
-    : this._internal(
-        (ref) => overrideForVisit(ref as OverrideForVisitRef, visitLocalId),
-        from: overrideForVisitProvider,
-        name: r'overrideForVisitProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$overrideForVisitHash,
-        dependencies: OverrideForVisitFamily._dependencies,
-        allTransitiveDependencies:
-            OverrideForVisitFamily._allTransitiveDependencies,
-        visitLocalId: visitLocalId,
+final class PendingRoutesToCloseProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<PendingRouteResponse>>,
+          List<PendingRouteResponse>,
+          FutureOr<List<PendingRouteResponse>>
+        >
+    with
+        $FutureModifier<List<PendingRouteResponse>>,
+        $FutureProvider<List<PendingRouteResponse>> {
+  /// Fetches pending routes from backend and filters for previous dates.
+  /// Returns list of routes that need to be closed before a new route can be activated.
+  const PendingRoutesToCloseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pendingRoutesToCloseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  OverrideForVisitProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.visitLocalId,
-  }) : super.internal();
+  @override
+  String debugGetCreateSourceHash() => _$pendingRoutesToCloseHash();
 
-  final String visitLocalId;
+  @$internal
+  @override
+  $FutureProviderElement<List<PendingRouteResponse>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
 
   @override
-  Override overrideWith(
-    FutureOr<GeofenceOverrideRequest?> Function(OverrideForVisitRef provider)
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: OverrideForVisitProvider._internal(
-        (ref) => create(ref as OverrideForVisitRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        visitLocalId: visitLocalId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeFutureProviderElement<GeofenceOverrideRequest?> createElement() {
-    return _OverrideForVisitProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is OverrideForVisitProvider &&
-        other.visitLocalId == visitLocalId;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, visitLocalId.hashCode);
-
-    return _SystemHash.finish(hash);
+  FutureOr<List<PendingRouteResponse>> create(Ref ref) {
+    return pendingRoutesToClose(ref);
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin OverrideForVisitRef
-    on AutoDisposeFutureProviderRef<GeofenceOverrideRequest?> {
-  /// The parameter `visitLocalId` of this provider.
-  String get visitLocalId;
-}
+String _$pendingRoutesToCloseHash() =>
+    r'2eb542eaf5d4fc5f027ad1f3c79f7be8b3837f42';
 
-class _OverrideForVisitProviderElement
-    extends AutoDisposeFutureProviderElement<GeofenceOverrideRequest?>
-    with OverrideForVisitRef {
-  _OverrideForVisitProviderElement(super.provider);
-
-  @override
-  String get visitLocalId => (origin as OverrideForVisitProvider).visitLocalId;
-}
-
-String _$lunchBreakHash() => r'd8ff381b1c3aafc502e4370c4976d0b8675bd6ac';
-
-/// The agent's lunch-break state for today, sourced from
-/// [dayStatusPollProvider] — never decided locally. `null` means
-/// day-status hasn't loaded yet; a resolved [LunchBreakState.unavailable]
-/// is a distinct, real answer from the backend and must not be confused
-/// with "still loading" by defaulting one into the other.
+/// Polled snapshot of the agent's day from `GET /visits/routes/day-status`
+/// — blocked / not scheduled / not activated / active / at outlet / in
+/// transit / completed. This is the single source of truth for "what should
+/// Home show right now" *and* for "am I clocked in" everywhere else
+/// ([activeVisitProvider] is derived from this); unlike [todaysRouteProvider]
+/// (only refreshed after an action this device took), it re-fetches on a
+/// timer so server-side changes an admin makes — closing, force-closing, or
+/// otherwise altering the agent's route or an outlet visit — get reflected
+/// here without the agent doing anything.
 ///
-/// Copied from [lunchBreak].
-@ProviderFor(lunchBreak)
-final lunchBreakProvider = AutoDisposeProvider<LunchBreak?>.internal(
-  lunchBreak,
-  name: r'lunchBreakProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$lunchBreakHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+/// `keepAlive: true` — deliberately NOT autoDispose. The app's bottom nav
+/// (`CustomBottomNavBar`) uses `context.go()` per tab, which fully unmounts
+/// the previous screen; an autoDispose provider watched only by Home would
+/// get torn down on every tab switch, so any screen reached via Tasks/Menu
+/// (without Home in the current watch chain) would cold-start this provider
+/// and read a synchronous `AsyncLoading` with no cached value — exactly the
+/// "shows not clocked in even though I am" bug this provider exists to
+/// prevent. Kept alive for the app session so every screen sees the same,
+/// already-resolved state instead of racing a fresh network round-trip.
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef LunchBreakRef = AutoDisposeProviderRef<LunchBreak?>;
+@ProviderFor(DayStatusPoll)
+const dayStatusPollProvider = DayStatusPollProvider._();
+
+/// Polled snapshot of the agent's day from `GET /visits/routes/day-status`
+/// — blocked / not scheduled / not activated / active / at outlet / in
+/// transit / completed. This is the single source of truth for "what should
+/// Home show right now" *and* for "am I clocked in" everywhere else
+/// ([activeVisitProvider] is derived from this); unlike [todaysRouteProvider]
+/// (only refreshed after an action this device took), it re-fetches on a
+/// timer so server-side changes an admin makes — closing, force-closing, or
+/// otherwise altering the agent's route or an outlet visit — get reflected
+/// here without the agent doing anything.
+///
+/// `keepAlive: true` — deliberately NOT autoDispose. The app's bottom nav
+/// (`CustomBottomNavBar`) uses `context.go()` per tab, which fully unmounts
+/// the previous screen; an autoDispose provider watched only by Home would
+/// get torn down on every tab switch, so any screen reached via Tasks/Menu
+/// (without Home in the current watch chain) would cold-start this provider
+/// and read a synchronous `AsyncLoading` with no cached value — exactly the
+/// "shows not clocked in even though I am" bug this provider exists to
+/// prevent. Kept alive for the app session so every screen sees the same,
+/// already-resolved state instead of racing a fresh network round-trip.
+final class DayStatusPollProvider
+    extends $AsyncNotifierProvider<DayStatusPoll, DayStatusInfo> {
+  /// Polled snapshot of the agent's day from `GET /visits/routes/day-status`
+  /// — blocked / not scheduled / not activated / active / at outlet / in
+  /// transit / completed. This is the single source of truth for "what should
+  /// Home show right now" *and* for "am I clocked in" everywhere else
+  /// ([activeVisitProvider] is derived from this); unlike [todaysRouteProvider]
+  /// (only refreshed after an action this device took), it re-fetches on a
+  /// timer so server-side changes an admin makes — closing, force-closing, or
+  /// otherwise altering the agent's route or an outlet visit — get reflected
+  /// here without the agent doing anything.
+  ///
+  /// `keepAlive: true` — deliberately NOT autoDispose. The app's bottom nav
+  /// (`CustomBottomNavBar`) uses `context.go()` per tab, which fully unmounts
+  /// the previous screen; an autoDispose provider watched only by Home would
+  /// get torn down on every tab switch, so any screen reached via Tasks/Menu
+  /// (without Home in the current watch chain) would cold-start this provider
+  /// and read a synchronous `AsyncLoading` with no cached value — exactly the
+  /// "shows not clocked in even though I am" bug this provider exists to
+  /// prevent. Kept alive for the app session so every screen sees the same,
+  /// already-resolved state instead of racing a fresh network round-trip.
+  const DayStatusPollProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dayStatusPollProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dayStatusPollHash();
+
+  @$internal
+  @override
+  DayStatusPoll create() => DayStatusPoll();
+}
+
 String _$dayStatusPollHash() => r'834737fe9285e8f74f261d7d4acf38db4b42add5';
 
 /// Polled snapshot of the agent's day from `GET /visits/routes/day-status`
@@ -726,152 +890,1024 @@ String _$dayStatusPollHash() => r'834737fe9285e8f74f261d7d4acf38db4b42add5';
 /// "shows not clocked in even though I am" bug this provider exists to
 /// prevent. Kept alive for the app session so every screen sees the same,
 /// already-resolved state instead of racing a fresh network round-trip.
-///
-/// Copied from [DayStatusPoll].
-@ProviderFor(DayStatusPoll)
-final dayStatusPollProvider =
-    AsyncNotifierProvider<DayStatusPoll, DayStatusInfo>.internal(
-      DayStatusPoll.new,
-      name: r'dayStatusPollProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$dayStatusPollHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$DayStatusPoll = AsyncNotifier<DayStatusInfo>;
+abstract class _$DayStatusPoll extends $AsyncNotifier<DayStatusInfo> {
+  FutureOr<DayStatusInfo> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<DayStatusInfo>, DayStatusInfo>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DayStatusInfo>, DayStatusInfo>,
+              AsyncValue<DayStatusInfo>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Provides the current route status.
+
+@ProviderFor(routeStatus)
+const routeStatusProvider = RouteStatusProvider._();
+
+/// Provides the current route status.
+
+final class RouteStatusProvider
+    extends
+        $FunctionalProvider<
+          DailyRouteStatus?,
+          DailyRouteStatus?,
+          DailyRouteStatus?
+        >
+    with $Provider<DailyRouteStatus?> {
+  /// Provides the current route status.
+  const RouteStatusProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'routeStatusProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$routeStatusHash();
+
+  @$internal
+  @override
+  $ProviderElement<DailyRouteStatus?> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  DailyRouteStatus? create(Ref ref) {
+    return routeStatus(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DailyRouteStatus? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DailyRouteStatus?>(value),
+    );
+  }
+}
+
+String _$routeStatusHash() => r'ddb97b8814197785441f9d00f194b60bb292c3ff';
+
+/// Provides the list of visits for today's route.
+
+@ProviderFor(visitList)
+const visitListProvider = VisitListProvider._();
+
+/// Provides the list of visits for today's route.
+
+final class VisitListProvider
+    extends
+        $FunctionalProvider<
+          List<OutletVisit>,
+          List<OutletVisit>,
+          List<OutletVisit>
+        >
+    with $Provider<List<OutletVisit>> {
+  /// Provides the list of visits for today's route.
+  const VisitListProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'visitListProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$visitListHash();
+
+  @$internal
+  @override
+  $ProviderElement<List<OutletVisit>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  List<OutletVisit> create(Ref ref) {
+    return visitList(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(List<OutletVisit> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<List<OutletVisit>>(value),
+    );
+  }
+}
+
+String _$visitListHash() => r'43671fbea05dcc11b6fa4c306a43d1a1dc537908';
+
+/// Provides the currently active visit (in progress).
+///
+/// Sourced from [dayStatusPollProvider] first — it refreshes every
+/// [dayStatusPollInterval] and after every clock-in/out this device
+/// performs, so every screen gated on "am I clocked in" (Products'
+/// visit-context cards, Daily Sales, Stock Take's visit-context injection,
+/// etc.) sees the same, fresh answer instead of each reading a one-shot
+/// [todaysRouteProvider] snapshot that only that specific action refreshed.
+/// Falls back to [todaysRouteProvider] only for the brief window before the
+/// first poll completes (or if it errors) — never regresses to "not
+/// clocked in" on cold start.
+
+@ProviderFor(activeVisit)
+const activeVisitProvider = ActiveVisitProvider._();
+
+/// Provides the currently active visit (in progress).
+///
+/// Sourced from [dayStatusPollProvider] first — it refreshes every
+/// [dayStatusPollInterval] and after every clock-in/out this device
+/// performs, so every screen gated on "am I clocked in" (Products'
+/// visit-context cards, Daily Sales, Stock Take's visit-context injection,
+/// etc.) sees the same, fresh answer instead of each reading a one-shot
+/// [todaysRouteProvider] snapshot that only that specific action refreshed.
+/// Falls back to [todaysRouteProvider] only for the brief window before the
+/// first poll completes (or if it errors) — never regresses to "not
+/// clocked in" on cold start.
+
+final class ActiveVisitProvider
+    extends $FunctionalProvider<OutletVisit?, OutletVisit?, OutletVisit?>
+    with $Provider<OutletVisit?> {
+  /// Provides the currently active visit (in progress).
+  ///
+  /// Sourced from [dayStatusPollProvider] first — it refreshes every
+  /// [dayStatusPollInterval] and after every clock-in/out this device
+  /// performs, so every screen gated on "am I clocked in" (Products'
+  /// visit-context cards, Daily Sales, Stock Take's visit-context injection,
+  /// etc.) sees the same, fresh answer instead of each reading a one-shot
+  /// [todaysRouteProvider] snapshot that only that specific action refreshed.
+  /// Falls back to [todaysRouteProvider] only for the brief window before the
+  /// first poll completes (or if it errors) — never regresses to "not
+  /// clocked in" on cold start.
+  const ActiveVisitProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activeVisitProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activeVisitHash();
+
+  @$internal
+  @override
+  $ProviderElement<OutletVisit?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  OutletVisit? create(Ref ref) {
+    return activeVisit(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(OutletVisit? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<OutletVisit?>(value),
+    );
+  }
+}
+
+String _$activeVisitHash() => r'5ce43185bb549754d568980b966c3244227b77d7';
+
+/// Provides pending visits count.
+
+@ProviderFor(pendingVisitsCount)
+const pendingVisitsCountProvider = PendingVisitsCountProvider._();
+
+/// Provides pending visits count.
+
+final class PendingVisitsCountProvider
+    extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  /// Provides pending visits count.
+  const PendingVisitsCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'pendingVisitsCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$pendingVisitsCountHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return pendingVisitsCount(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$pendingVisitsCountHash() =>
+    r'161453f4a8aad9f6ecb83f5e6fbec43700f374b6';
+
+/// Provides completed visits count.
+
+@ProviderFor(completedVisitsCount)
+const completedVisitsCountProvider = CompletedVisitsCountProvider._();
+
+/// Provides completed visits count.
+
+final class CompletedVisitsCountProvider
+    extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  /// Provides completed visits count.
+  const CompletedVisitsCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'completedVisitsCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$completedVisitsCountHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return completedVisitsCount(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$completedVisitsCountHash() =>
+    r'35c5fe38d74ce42e6be230a319fab8e1e6b6cf0e';
+
+/// Provides route progress (0.0 to 1.0).
+
+@ProviderFor(routeProgress)
+const routeProgressProvider = RouteProgressProvider._();
+
+/// Provides route progress (0.0 to 1.0).
+
+final class RouteProgressProvider
+    extends $FunctionalProvider<double, double, double>
+    with $Provider<double> {
+  /// Provides route progress (0.0 to 1.0).
+  const RouteProgressProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'routeProgressProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$routeProgressHash();
+
+  @$internal
+  @override
+  $ProviderElement<double> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  double create(Ref ref) {
+    return routeProgress(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(double value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<double>(value),
+    );
+  }
+}
+
+String _$routeProgressHash() => r'c9d53ae7b237bb63d9658ab812dffe4dfd2366b8';
+
+/// Whether the route can be closed (all visits resolved).
+
+@ProviderFor(canCloseRoute)
+const canCloseRouteProvider = CanCloseRouteProvider._();
+
+/// Whether the route can be closed (all visits resolved).
+
+final class CanCloseRouteProvider extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// Whether the route can be closed (all visits resolved).
+  const CanCloseRouteProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'canCloseRouteProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$canCloseRouteHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    return canCloseRoute(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$canCloseRouteHash() => r'b1f3cf92109a7c52bed51227614ae8dc8732f4af';
+
+/// Notifier for route activation action.
+
+@ProviderFor(RouteActivationNotifier)
+const routeActivationNotifierProvider = RouteActivationNotifierProvider._();
+
+/// Notifier for route activation action.
+final class RouteActivationNotifierProvider
+    extends
+        $NotifierProvider<RouteActivationNotifier, AsyncValue<DailyRoute?>> {
+  /// Notifier for route activation action.
+  const RouteActivationNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'routeActivationNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$routeActivationNotifierHash();
+
+  @$internal
+  @override
+  RouteActivationNotifier create() => RouteActivationNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<DailyRoute?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<DailyRoute?>>(value),
+    );
+  }
+}
+
 String _$routeActivationNotifierHash() =>
     r'6d78491245efd822d5a3ede7802d70fdfa8577d7';
 
 /// Notifier for route activation action.
-///
-/// Copied from [RouteActivationNotifier].
-@ProviderFor(RouteActivationNotifier)
-final routeActivationNotifierProvider =
-    AutoDisposeNotifierProvider<
-      RouteActivationNotifier,
-      AsyncValue<DailyRoute?>
-    >.internal(
-      RouteActivationNotifier.new,
-      name: r'routeActivationNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$routeActivationNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$RouteActivationNotifier =
-    AutoDisposeNotifier<AsyncValue<DailyRoute?>>;
+abstract class _$RouteActivationNotifier
+    extends $Notifier<AsyncValue<DailyRoute?>> {
+  AsyncValue<DailyRoute?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<DailyRoute?>, AsyncValue<DailyRoute?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DailyRoute?>, AsyncValue<DailyRoute?>>,
+              AsyncValue<DailyRoute?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Notifier for clock-in action.
+
+@ProviderFor(ClockInNotifier)
+const clockInNotifierProvider = ClockInNotifierProvider._();
+
+/// Notifier for clock-in action.
+final class ClockInNotifierProvider
+    extends $NotifierProvider<ClockInNotifier, AsyncValue<OutletVisit?>> {
+  /// Notifier for clock-in action.
+  const ClockInNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clockInNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clockInNotifierHash();
+
+  @$internal
+  @override
+  ClockInNotifier create() => ClockInNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<OutletVisit?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<OutletVisit?>>(value),
+    );
+  }
+}
+
 String _$clockInNotifierHash() => r'42e9f6a0befbeb466adc50a04e1630ea8059f012';
 
 /// Notifier for clock-in action.
-///
-/// Copied from [ClockInNotifier].
-@ProviderFor(ClockInNotifier)
-final clockInNotifierProvider =
-    AutoDisposeNotifierProvider<
-      ClockInNotifier,
-      AsyncValue<OutletVisit?>
-    >.internal(
-      ClockInNotifier.new,
-      name: r'clockInNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$clockInNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$ClockInNotifier = AutoDisposeNotifier<AsyncValue<OutletVisit?>>;
+abstract class _$ClockInNotifier extends $Notifier<AsyncValue<OutletVisit?>> {
+  AsyncValue<OutletVisit?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<OutletVisit?>, AsyncValue<OutletVisit?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<OutletVisit?>, AsyncValue<OutletVisit?>>,
+              AsyncValue<OutletVisit?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Notifier for clock-out action.
+
+@ProviderFor(ClockOutNotifier)
+const clockOutNotifierProvider = ClockOutNotifierProvider._();
+
+/// Notifier for clock-out action.
+final class ClockOutNotifierProvider
+    extends $NotifierProvider<ClockOutNotifier, AsyncValue<OutletVisit?>> {
+  /// Notifier for clock-out action.
+  const ClockOutNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'clockOutNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$clockOutNotifierHash();
+
+  @$internal
+  @override
+  ClockOutNotifier create() => ClockOutNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<OutletVisit?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<OutletVisit?>>(value),
+    );
+  }
+}
+
 String _$clockOutNotifierHash() => r'b1b9a0a1fc68f69e69ef70c61dfa3644aeea04b8';
 
 /// Notifier for clock-out action.
-///
-/// Copied from [ClockOutNotifier].
-@ProviderFor(ClockOutNotifier)
-final clockOutNotifierProvider =
-    AutoDisposeNotifierProvider<
-      ClockOutNotifier,
-      AsyncValue<OutletVisit?>
-    >.internal(
-      ClockOutNotifier.new,
-      name: r'clockOutNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$clockOutNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$ClockOutNotifier = AutoDisposeNotifier<AsyncValue<OutletVisit?>>;
+abstract class _$ClockOutNotifier extends $Notifier<AsyncValue<OutletVisit?>> {
+  AsyncValue<OutletVisit?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<OutletVisit?>, AsyncValue<OutletVisit?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<OutletVisit?>, AsyncValue<OutletVisit?>>,
+              AsyncValue<OutletVisit?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Notifier for skip visit action.
+
+@ProviderFor(SkipVisitNotifier)
+const skipVisitNotifierProvider = SkipVisitNotifierProvider._();
+
+/// Notifier for skip visit action.
+final class SkipVisitNotifierProvider
+    extends $NotifierProvider<SkipVisitNotifier, AsyncValue<OutletVisit?>> {
+  /// Notifier for skip visit action.
+  const SkipVisitNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'skipVisitNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$skipVisitNotifierHash();
+
+  @$internal
+  @override
+  SkipVisitNotifier create() => SkipVisitNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<OutletVisit?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<OutletVisit?>>(value),
+    );
+  }
+}
+
 String _$skipVisitNotifierHash() => r'6456d1f4b6176cf8c6a1674f9d88fc6813414c8f';
 
 /// Notifier for skip visit action.
-///
-/// Copied from [SkipVisitNotifier].
-@ProviderFor(SkipVisitNotifier)
-final skipVisitNotifierProvider =
-    AutoDisposeNotifierProvider<
-      SkipVisitNotifier,
-      AsyncValue<OutletVisit?>
-    >.internal(
-      SkipVisitNotifier.new,
-      name: r'skipVisitNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$skipVisitNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$SkipVisitNotifier = AutoDisposeNotifier<AsyncValue<OutletVisit?>>;
+abstract class _$SkipVisitNotifier extends $Notifier<AsyncValue<OutletVisit?>> {
+  AsyncValue<OutletVisit?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<OutletVisit?>, AsyncValue<OutletVisit?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<OutletVisit?>, AsyncValue<OutletVisit?>>,
+              AsyncValue<OutletVisit?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Notifier for route close action.
+
+@ProviderFor(RouteCloseNotifier)
+const routeCloseNotifierProvider = RouteCloseNotifierProvider._();
+
+/// Notifier for route close action.
+final class RouteCloseNotifierProvider
+    extends $NotifierProvider<RouteCloseNotifier, AsyncValue<DailyRoute?>> {
+  /// Notifier for route close action.
+  const RouteCloseNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'routeCloseNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$routeCloseNotifierHash();
+
+  @$internal
+  @override
+  RouteCloseNotifier create() => RouteCloseNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<DailyRoute?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<DailyRoute?>>(value),
+    );
+  }
+}
+
 String _$routeCloseNotifierHash() =>
     r'87ea0a92310ab970a1fd7b3f5ce6201dba2342e8';
 
 /// Notifier for route close action.
-///
-/// Copied from [RouteCloseNotifier].
-@ProviderFor(RouteCloseNotifier)
-final routeCloseNotifierProvider =
-    AutoDisposeNotifierProvider<
-      RouteCloseNotifier,
-      AsyncValue<DailyRoute?>
-    >.internal(
-      RouteCloseNotifier.new,
-      name: r'routeCloseNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$routeCloseNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$RouteCloseNotifier = AutoDisposeNotifier<AsyncValue<DailyRoute?>>;
-String _$geofenceOverrideNotifierHash() =>
-    r'eac0be19729d41e9b1f81728d34cfdaf845acc65';
+abstract class _$RouteCloseNotifier extends $Notifier<AsyncValue<DailyRoute?>> {
+  AsyncValue<DailyRoute?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<DailyRoute?>, AsyncValue<DailyRoute?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DailyRoute?>, AsyncValue<DailyRoute?>>,
+              AsyncValue<DailyRoute?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Loads the most recent override for a given visit, regardless of status
+/// (pending/approved/rejected/expired). Used by the visit detail screen
+/// to show a status banner and to decide whether the clock-in button can
+/// bypass the geofence check — a decision consequential enough that a
+/// stale local snapshot isn't good enough. The local record is only the
+/// starting point; if one exists, this actively re-checks its status
+/// with the backend (same "don't trust a possibly-stale cached value for
+/// a security-relevant gate" principle already applied to biometric
+/// status — see biometricStatusProvider) before returning it, same as
+/// GeofenceOverrideNotifier.loadExistingForVisit.
+
+@ProviderFor(overrideForVisit)
+const overrideForVisitProvider = OverrideForVisitFamily._();
+
+/// Loads the most recent override for a given visit, regardless of status
+/// (pending/approved/rejected/expired). Used by the visit detail screen
+/// to show a status banner and to decide whether the clock-in button can
+/// bypass the geofence check — a decision consequential enough that a
+/// stale local snapshot isn't good enough. The local record is only the
+/// starting point; if one exists, this actively re-checks its status
+/// with the backend (same "don't trust a possibly-stale cached value for
+/// a security-relevant gate" principle already applied to biometric
+/// status — see biometricStatusProvider) before returning it, same as
+/// GeofenceOverrideNotifier.loadExistingForVisit.
+
+final class OverrideForVisitProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<GeofenceOverrideRequest?>,
+          GeofenceOverrideRequest?,
+          FutureOr<GeofenceOverrideRequest?>
+        >
+    with
+        $FutureModifier<GeofenceOverrideRequest?>,
+        $FutureProvider<GeofenceOverrideRequest?> {
+  /// Loads the most recent override for a given visit, regardless of status
+  /// (pending/approved/rejected/expired). Used by the visit detail screen
+  /// to show a status banner and to decide whether the clock-in button can
+  /// bypass the geofence check — a decision consequential enough that a
+  /// stale local snapshot isn't good enough. The local record is only the
+  /// starting point; if one exists, this actively re-checks its status
+  /// with the backend (same "don't trust a possibly-stale cached value for
+  /// a security-relevant gate" principle already applied to biometric
+  /// status — see biometricStatusProvider) before returning it, same as
+  /// GeofenceOverrideNotifier.loadExistingForVisit.
+  const OverrideForVisitProvider._({
+    required OverrideForVisitFamily super.from,
+    required String super.argument,
+  }) : super(
+         retry: null,
+         name: r'overrideForVisitProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$overrideForVisitHash();
+
+  @override
+  String toString() {
+    return r'overrideForVisitProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<GeofenceOverrideRequest?> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<GeofenceOverrideRequest?> create(Ref ref) {
+    final argument = this.argument as String;
+    return overrideForVisit(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is OverrideForVisitProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$overrideForVisitHash() => r'c7d32e97ac1cf945aafcdec876d1c565f19f19ff';
+
+/// Loads the most recent override for a given visit, regardless of status
+/// (pending/approved/rejected/expired). Used by the visit detail screen
+/// to show a status banner and to decide whether the clock-in button can
+/// bypass the geofence check — a decision consequential enough that a
+/// stale local snapshot isn't good enough. The local record is only the
+/// starting point; if one exists, this actively re-checks its status
+/// with the backend (same "don't trust a possibly-stale cached value for
+/// a security-relevant gate" principle already applied to biometric
+/// status — see biometricStatusProvider) before returning it, same as
+/// GeofenceOverrideNotifier.loadExistingForVisit.
+
+final class OverrideForVisitFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<GeofenceOverrideRequest?>, String> {
+  const OverrideForVisitFamily._()
+    : super(
+        retry: null,
+        name: r'overrideForVisitProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Loads the most recent override for a given visit, regardless of status
+  /// (pending/approved/rejected/expired). Used by the visit detail screen
+  /// to show a status banner and to decide whether the clock-in button can
+  /// bypass the geofence check — a decision consequential enough that a
+  /// stale local snapshot isn't good enough. The local record is only the
+  /// starting point; if one exists, this actively re-checks its status
+  /// with the backend (same "don't trust a possibly-stale cached value for
+  /// a security-relevant gate" principle already applied to biometric
+  /// status — see biometricStatusProvider) before returning it, same as
+  /// GeofenceOverrideNotifier.loadExistingForVisit.
+
+  OverrideForVisitProvider call(String visitLocalId) =>
+      OverrideForVisitProvider._(argument: visitLocalId, from: this);
+
+  @override
+  String toString() => r'overrideForVisitProvider';
+}
 
 /// Notifier for geofence override request.
-///
-/// Copied from [GeofenceOverrideNotifier].
-@ProviderFor(GeofenceOverrideNotifier)
-final geofenceOverrideNotifierProvider =
-    AutoDisposeNotifierProvider<
-      GeofenceOverrideNotifier,
-      AsyncValue<GeofenceOverrideRequest?>
-    >.internal(
-      GeofenceOverrideNotifier.new,
-      name: r'geofenceOverrideNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$geofenceOverrideNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$GeofenceOverrideNotifier =
-    AutoDisposeNotifier<AsyncValue<GeofenceOverrideRequest?>>;
+@ProviderFor(GeofenceOverrideNotifier)
+const geofenceOverrideNotifierProvider = GeofenceOverrideNotifierProvider._();
+
+/// Notifier for geofence override request.
+final class GeofenceOverrideNotifierProvider
+    extends
+        $NotifierProvider<
+          GeofenceOverrideNotifier,
+          AsyncValue<GeofenceOverrideRequest?>
+        > {
+  /// Notifier for geofence override request.
+  const GeofenceOverrideNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'geofenceOverrideNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$geofenceOverrideNotifierHash();
+
+  @$internal
+  @override
+  GeofenceOverrideNotifier create() => GeofenceOverrideNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<GeofenceOverrideRequest?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<AsyncValue<GeofenceOverrideRequest?>>(value),
+    );
+  }
+}
+
+String _$geofenceOverrideNotifierHash() =>
+    r'1392a2f66a7ff714af5827110a42caa9f63fad69';
+
+/// Notifier for geofence override request.
+
+abstract class _$GeofenceOverrideNotifier
+    extends $Notifier<AsyncValue<GeofenceOverrideRequest?>> {
+  AsyncValue<GeofenceOverrideRequest?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref
+            as $Ref<
+              AsyncValue<GeofenceOverrideRequest?>,
+              AsyncValue<GeofenceOverrideRequest?>
+            >;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<
+                AsyncValue<GeofenceOverrideRequest?>,
+                AsyncValue<GeofenceOverrideRequest?>
+              >,
+              AsyncValue<GeofenceOverrideRequest?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// The agent's lunch-break state for today, sourced from
+/// [dayStatusPollProvider] — never decided locally. `null` means
+/// day-status hasn't loaded yet; a resolved [LunchBreakState.unavailable]
+/// is a distinct, real answer from the backend and must not be confused
+/// with "still loading" by defaulting one into the other.
+
+@ProviderFor(lunchBreak)
+const lunchBreakProvider = LunchBreakProvider._();
+
+/// The agent's lunch-break state for today, sourced from
+/// [dayStatusPollProvider] — never decided locally. `null` means
+/// day-status hasn't loaded yet; a resolved [LunchBreakState.unavailable]
+/// is a distinct, real answer from the backend and must not be confused
+/// with "still loading" by defaulting one into the other.
+
+final class LunchBreakProvider
+    extends $FunctionalProvider<LunchBreak?, LunchBreak?, LunchBreak?>
+    with $Provider<LunchBreak?> {
+  /// The agent's lunch-break state for today, sourced from
+  /// [dayStatusPollProvider] — never decided locally. `null` means
+  /// day-status hasn't loaded yet; a resolved [LunchBreakState.unavailable]
+  /// is a distinct, real answer from the backend and must not be confused
+  /// with "still loading" by defaulting one into the other.
+  const LunchBreakProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lunchBreakProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lunchBreakHash();
+
+  @$internal
+  @override
+  $ProviderElement<LunchBreak?> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  LunchBreak? create(Ref ref) {
+    return lunchBreak(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LunchBreak? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LunchBreak?>(value),
+    );
+  }
+}
+
+String _$lunchBreakHash() => r'184909d29ff5893c2f7a21f79295b2f06b10b9be';
+
+/// Notifier for starting/ending today's lunch break.
+///
+/// This notifier's own [AsyncValue] only drives the Start/End button's
+/// loading/error affordance — the lunch state the UI actually *renders*
+/// always comes from [lunchBreakProvider]. Both actions reconcile against
+/// a freshly-refetched day-status on every outcome, success or failure:
+/// a lost response after a real server-side success (or `/end` losing a
+/// race against automatic server-side expiry, returning `NO_LUNCH_BREAK`)
+/// must never be shown to the agent as a failure when the backend already
+/// has it right. Only a failure that *still* reproduces after reconciling
+/// is surfaced as a real error.
+
+@ProviderFor(LunchBreakNotifier)
+const lunchBreakNotifierProvider = LunchBreakNotifierProvider._();
+
+/// Notifier for starting/ending today's lunch break.
+///
+/// This notifier's own [AsyncValue] only drives the Start/End button's
+/// loading/error affordance — the lunch state the UI actually *renders*
+/// always comes from [lunchBreakProvider]. Both actions reconcile against
+/// a freshly-refetched day-status on every outcome, success or failure:
+/// a lost response after a real server-side success (or `/end` losing a
+/// race against automatic server-side expiry, returning `NO_LUNCH_BREAK`)
+/// must never be shown to the agent as a failure when the backend already
+/// has it right. Only a failure that *still* reproduces after reconciling
+/// is surfaced as a real error.
+final class LunchBreakNotifierProvider
+    extends $NotifierProvider<LunchBreakNotifier, AsyncValue<void>> {
+  /// Notifier for starting/ending today's lunch break.
+  ///
+  /// This notifier's own [AsyncValue] only drives the Start/End button's
+  /// loading/error affordance — the lunch state the UI actually *renders*
+  /// always comes from [lunchBreakProvider]. Both actions reconcile against
+  /// a freshly-refetched day-status on every outcome, success or failure:
+  /// a lost response after a real server-side success (or `/end` losing a
+  /// race against automatic server-side expiry, returning `NO_LUNCH_BREAK`)
+  /// must never be shown to the agent as a failure when the backend already
+  /// has it right. Only a failure that *still* reproduces after reconciling
+  /// is surfaced as a real error.
+  const LunchBreakNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'lunchBreakNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$lunchBreakNotifierHash();
+
+  @$internal
+  @override
+  LunchBreakNotifier create() => LunchBreakNotifier();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<void> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<void>>(value),
+    );
+  }
+}
+
 String _$lunchBreakNotifierHash() =>
     r'0223e905b9ff9cf7f80eb07159ba98285f7919e2';
 
@@ -886,20 +1922,22 @@ String _$lunchBreakNotifierHash() =>
 /// must never be shown to the agent as a failure when the backend already
 /// has it right. Only a failure that *still* reproduces after reconciling
 /// is surfaced as a real error.
-///
-/// Copied from [LunchBreakNotifier].
-@ProviderFor(LunchBreakNotifier)
-final lunchBreakNotifierProvider =
-    AutoDisposeNotifierProvider<LunchBreakNotifier, AsyncValue<void>>.internal(
-      LunchBreakNotifier.new,
-      name: r'lunchBreakNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$lunchBreakNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$LunchBreakNotifier = AutoDisposeNotifier<AsyncValue<void>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$LunchBreakNotifier extends $Notifier<AsyncValue<void>> {
+  AsyncValue<void> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<void>, AsyncValue<void>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<void>, AsyncValue<void>>,
+              AsyncValue<void>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

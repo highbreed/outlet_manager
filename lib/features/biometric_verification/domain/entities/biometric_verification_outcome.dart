@@ -9,7 +9,7 @@ part 'biometric_verification_outcome.freezed.dart';
 /// gate — returns. This is the ONLY biometric type Attendance code ever
 /// sees; it carries no ML Kit/camera/liveness detail.
 @freezed
-class BiometricVerificationOutcome with _$BiometricVerificationOutcome {
+abstract class BiometricVerificationOutcome with _$BiometricVerificationOutcome {
   const factory BiometricVerificationOutcome({
     required bool verified,
     String? verificationId,

@@ -6,216 +6,177 @@ part of 'daily_sales_list_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Currently selected status filter tab on the daily sales home screen.
+/// `null` means "all statuses".
+
+@ProviderFor(DailySalesStatusFilter)
+const dailySalesStatusFilterProvider = DailySalesStatusFilterProvider._();
+
+/// Currently selected status filter tab on the daily sales home screen.
+/// `null` means "all statuses".
+final class DailySalesStatusFilterProvider
+    extends $NotifierProvider<DailySalesStatusFilter, DailySaleStatus?> {
+  /// Currently selected status filter tab on the daily sales home screen.
+  /// `null` means "all statuses".
+  const DailySalesStatusFilterProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'dailySalesStatusFilterProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$dailySalesStatusFilterHash();
+
+  @$internal
+  @override
+  DailySalesStatusFilter create() => DailySalesStatusFilter();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(DailySaleStatus? value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<DailySaleStatus?>(value),
+    );
+  }
+}
+
 String _$dailySalesStatusFilterHash() =>
     r'a95533173445f65d1242c057371532639cc3a12b';
 
 /// Currently selected status filter tab on the daily sales home screen.
 /// `null` means "all statuses".
-///
-/// Copied from [DailySalesStatusFilter].
-@ProviderFor(DailySalesStatusFilter)
-final dailySalesStatusFilterProvider =
-    AutoDisposeNotifierProvider<
-      DailySalesStatusFilter,
-      DailySaleStatus?
-    >.internal(
-      DailySalesStatusFilter.new,
-      name: r'dailySalesStatusFilterProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$dailySalesStatusFilterHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$DailySalesStatusFilter = AutoDisposeNotifier<DailySaleStatus?>;
-String _$dailySalesListControllerHash() =>
-    r'b435ffaa05c3f322ed697ca4e1ae7930aef551ae';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
+abstract class _$DailySalesStatusFilter extends $Notifier<DailySaleStatus?> {
+  DailySaleStatus? build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<DailySaleStatus?, DailySaleStatus?>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<DailySaleStatus?, DailySaleStatus?>,
+              DailySaleStatus?,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
   }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$DailySalesListController
-    extends BuildlessAutoDisposeAsyncNotifier<DailySalesPage> {
-  late final int outletId;
-
-  FutureOr<DailySalesPage> build(int outletId);
 }
 
 /// Loads today's sales for a given outlet, re-fetching whenever the status
 /// filter changes.
-///
-/// Copied from [DailySalesListController].
+
 @ProviderFor(DailySalesListController)
-const dailySalesListControllerProvider = DailySalesListControllerFamily();
+const dailySalesListControllerProvider = DailySalesListControllerFamily._();
 
 /// Loads today's sales for a given outlet, re-fetching whenever the status
 /// filter changes.
-///
-/// Copied from [DailySalesListController].
-class DailySalesListControllerFamily
-    extends Family<AsyncValue<DailySalesPage>> {
+final class DailySalesListControllerProvider
+    extends $AsyncNotifierProvider<DailySalesListController, DailySalesPage> {
   /// Loads today's sales for a given outlet, re-fetching whenever the status
   /// filter changes.
-  ///
-  /// Copied from [DailySalesListController].
-  const DailySalesListControllerFamily();
+  const DailySalesListControllerProvider._({
+    required DailySalesListControllerFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'dailySalesListControllerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// Loads today's sales for a given outlet, re-fetching whenever the status
-  /// filter changes.
-  ///
-  /// Copied from [DailySalesListController].
-  DailySalesListControllerProvider call(int outletId) {
-    return DailySalesListControllerProvider(outletId);
+  @override
+  String debugGetCreateSourceHash() => _$dailySalesListControllerHash();
+
+  @override
+  String toString() {
+    return r'dailySalesListControllerProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  DailySalesListControllerProvider getProviderOverride(
-    covariant DailySalesListControllerProvider provider,
-  ) {
-    return call(provider.outletId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'dailySalesListControllerProvider';
-}
-
-/// Loads today's sales for a given outlet, re-fetching whenever the status
-/// filter changes.
-///
-/// Copied from [DailySalesListController].
-class DailySalesListControllerProvider
-    extends
-        AutoDisposeAsyncNotifierProviderImpl<
-          DailySalesListController,
-          DailySalesPage
-        > {
-  /// Loads today's sales for a given outlet, re-fetching whenever the status
-  /// filter changes.
-  ///
-  /// Copied from [DailySalesListController].
-  DailySalesListControllerProvider(int outletId)
-    : this._internal(
-        () => DailySalesListController()..outletId = outletId,
-        from: dailySalesListControllerProvider,
-        name: r'dailySalesListControllerProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$dailySalesListControllerHash,
-        dependencies: DailySalesListControllerFamily._dependencies,
-        allTransitiveDependencies:
-            DailySalesListControllerFamily._allTransitiveDependencies,
-        outletId: outletId,
-      );
-
-  DailySalesListControllerProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.outletId,
-  }) : super.internal();
-
-  final int outletId;
-
-  @override
-  FutureOr<DailySalesPage> runNotifierBuild(
-    covariant DailySalesListController notifier,
-  ) {
-    return notifier.build(outletId);
-  }
-
-  @override
-  Override overrideWith(DailySalesListController Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: DailySalesListControllerProvider._internal(
-        () => create()..outletId = outletId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        outletId: outletId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<
-    DailySalesListController,
-    DailySalesPage
-  >
-  createElement() {
-    return _DailySalesListControllerProviderElement(this);
-  }
+  DailySalesListController create() => DailySalesListController();
 
   @override
   bool operator ==(Object other) {
     return other is DailySalesListControllerProvider &&
-        other.outletId == outletId;
+        other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, outletId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin DailySalesListControllerRef
-    on AutoDisposeAsyncNotifierProviderRef<DailySalesPage> {
-  /// The parameter `outletId` of this provider.
-  int get outletId;
-}
+String _$dailySalesListControllerHash() =>
+    r'b435ffaa05c3f322ed697ca4e1ae7930aef551ae';
 
-class _DailySalesListControllerProviderElement
-    extends
-        AutoDisposeAsyncNotifierProviderElement<
+/// Loads today's sales for a given outlet, re-fetching whenever the status
+/// filter changes.
+
+final class DailySalesListControllerFamily extends $Family
+    with
+        $ClassFamilyOverride<
           DailySalesListController,
-          DailySalesPage
-        >
-    with DailySalesListControllerRef {
-  _DailySalesListControllerProviderElement(super.provider);
+          AsyncValue<DailySalesPage>,
+          DailySalesPage,
+          FutureOr<DailySalesPage>,
+          int
+        > {
+  const DailySalesListControllerFamily._()
+    : super(
+        retry: null,
+        name: r'dailySalesListControllerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Loads today's sales for a given outlet, re-fetching whenever the status
+  /// filter changes.
+
+  DailySalesListControllerProvider call(int outletId) =>
+      DailySalesListControllerProvider._(argument: outletId, from: this);
 
   @override
-  int get outletId => (origin as DailySalesListControllerProvider).outletId;
+  String toString() => r'dailySalesListControllerProvider';
 }
 
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+/// Loads today's sales for a given outlet, re-fetching whenever the status
+/// filter changes.
+
+abstract class _$DailySalesListController
+    extends $AsyncNotifier<DailySalesPage> {
+  late final _$args = ref.$arg as int;
+  int get outletId => _$args;
+
+  FutureOr<DailySalesPage> build(int outletId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref = this.ref as $Ref<AsyncValue<DailySalesPage>, DailySalesPage>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DailySalesPage>, DailySalesPage>,
+              AsyncValue<DailySalesPage>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

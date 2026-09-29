@@ -7,7 +7,7 @@ enum ShelfShareStatus { inProgress, submitted, approved, rejected }
 
 /// Domain entity for a shelf share session
 @freezed
-class ShelfShareSession with _$ShelfShareSession {
+abstract class ShelfShareSession with _$ShelfShareSession {
   const factory ShelfShareSession({
     /// Local UUID for offline-first
     required String localId,
@@ -88,7 +88,7 @@ enum SyncState { pending, syncing, synced, failed }
 
 /// A group of brand entries within a shelf share session
 @freezed
-class ShelfShareItemGroup with _$ShelfShareItemGroup {
+abstract class ShelfShareItemGroup with _$ShelfShareItemGroup {
   const factory ShelfShareItemGroup({
     /// The item group ID (references ItemGroup entity)
     required int itemGroupId,
@@ -116,7 +116,7 @@ class ShelfShareItemGroup with _$ShelfShareItemGroup {
 
 /// A single brand's facing count within an item group
 @freezed
-class ShelfShareBrandEntry with _$ShelfShareBrandEntry {
+abstract class ShelfShareBrandEntry with _$ShelfShareBrandEntry {
   const factory ShelfShareBrandEntry({
     /// Brand reference
     required int brandId,

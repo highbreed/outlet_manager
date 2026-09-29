@@ -94,7 +94,7 @@ const PriceCacheModelSchema = CollectionSchema(
   getId: _priceCacheModelGetId,
   getLinks: _priceCacheModelGetLinks,
   attach: _priceCacheModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _priceCacheModelEstimateSize(

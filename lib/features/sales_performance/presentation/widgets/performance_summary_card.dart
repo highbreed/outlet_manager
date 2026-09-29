@@ -50,7 +50,7 @@ class PerformanceSummaryCard extends ConsumerWidget {
       children: [
         _RingCard(
           performance: performance,
-          previous: previousAsync.valueOrNull,
+          previous: previousAsync.value,
           year: year,
           month: month,
         ),

@@ -20,7 +20,7 @@ class HomeScreen extends ConsumerWidget {
     // for what Home shows — it catches admin-side changes (closing,
     // force-closing) that a one-off fetch wouldn't. activeVisitProvider
     // still feeds ActiveVisitCard's own live duration ticker.
-    final dayStatus = ref.watch(dayStatusPollProvider).valueOrNull;
+    final dayStatus = ref.watch(dayStatusPollProvider).value;
     final hasActiveVisit = dayStatus?.status == DayStatus.atOutlet;
     // Same source ActiveVisitCard itself reads (activeVisitProvider is
     // dayStatusPollProvider-sourced) — kept as a separate watch here

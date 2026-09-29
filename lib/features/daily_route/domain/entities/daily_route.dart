@@ -19,7 +19,7 @@ part 'daily_route.g.dart';
 /// - Route MUST be activated before any clock-in operations
 /// - Previous unclosed route BLOCKS activation (ROUTE_BLOCKED error)
 @freezed
-class DailyRoute with _$DailyRoute {
+abstract class DailyRoute with _$DailyRoute {
   const factory DailyRoute({
     /// Local UUID for offline-first operations
     required String localId,

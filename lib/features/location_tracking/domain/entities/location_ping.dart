@@ -8,7 +8,7 @@ part 'location_ping.g.dart';
 /// Pings are sent continuously whether the agent is clocked in or not,
 /// providing fleet visibility, route optimization data, and safety tracking.
 @freezed
-class LocationPing with _$LocationPing {
+abstract class LocationPing with _$LocationPing {
   const factory LocationPing({
     /// Local UUID for deduplication
     required String localId,
@@ -88,7 +88,7 @@ enum LocationPingSyncState {
 
 /// Response from location ping API
 @freezed
-class LocationPingResponse with _$LocationPingResponse {
+abstract class LocationPingResponse with _$LocationPingResponse {
   const factory LocationPingResponse({
     required bool success,
     required int pingId,

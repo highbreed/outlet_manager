@@ -33,7 +33,7 @@ void main() {
     // point it explicitly at the version pinned in pubspec.yaml.
     final home = Platform.environment['HOME'];
     final dylibPath =
-        '$home/.pub-cache/hosted/pub.dev/isar_community_flutter_libs-3.3.0-dev.1/macos/libisar.dylib';
+        '$home/.pub-cache/hosted/pub.dev/isar_community_flutter_libs-3.3.2/macos/libisar.dylib';
     if (File(dylibPath).existsSync()) {
       await Isar.initializeIsarCore(libraries: {Abi.current(): dylibPath});
     }

@@ -659,6 +659,11 @@ class MappingSessionNotifier extends _$MappingSessionNotifier {
     if (!shouldUpdateServerTotal(session.lastKnownServerTotalSamples, reportedTotal)) return;
     final updated = session.copyWith(lastKnownServerTotalSamples: reportedTotal);
     await ref.read(mappingSessionLocalDataSourceProvider).save(updated);
+    // Riverpod 3.x throws (rather than silently no-opping) on any `state`
+    // access once this provider's been disposed — `ref.mounted` must be
+    // checked after every async gap that could race a dispose, not just
+    // the pre-existing session-identity staleness check below.
+    if (!ref.mounted) return;
     if (state.session?.localId == session.localId) {
       state = state.copyWith(session: updated);
     }
@@ -702,6 +707,8 @@ class MappingSessionNotifier extends _$MappingSessionNotifier {
     final localCount = await sampleLocalDataSource.countAllForFootprint(session.footprintId);
     final pendingCount =
         await sampleLocalDataSource.countPendingForFootprint(session.footprintId);
+    // See _persistServerTotalIfNewer's matching comment.
+    if (!ref.mounted) return;
     if (state.session?.localId == session.localId) {
       state = state.copyWith(localSampleCount: localCount, pendingUploadCount: pendingCount);
     }

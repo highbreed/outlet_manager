@@ -13,7 +13,7 @@ enum SerialStatus {
 
 /// Domain entity for serial number entry
 @freezed
-class SerialNumberEntry with _$SerialNumberEntry {
+abstract class SerialNumberEntry with _$SerialNumberEntry {
   const factory SerialNumberEntry({
     required String localId,
     int? serverId,

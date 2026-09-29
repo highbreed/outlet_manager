@@ -16,7 +16,7 @@ class PerformanceSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final stats = ref.watch(homePerformanceProvider).valueOrNull;
+    final stats = ref.watch(homePerformanceProvider).value;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

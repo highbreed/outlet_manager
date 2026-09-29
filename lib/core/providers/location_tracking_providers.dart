@@ -85,11 +85,14 @@ class LocationTrackingState {
 }
 
 /// Location tracking controller
-class LocationTrackingController extends StateNotifier<LocationTrackingState> {
-  final LocationService _locationService;
+class LocationTrackingController extends Notifier<LocationTrackingState> {
+  late final LocationService _locationService;
 
-  LocationTrackingController(this._locationService)
-    : super(const LocationTrackingState());
+  @override
+  LocationTrackingState build() {
+    _locationService = ref.watch(locationServiceProvider);
+    return const LocationTrackingState();
+  }
 
   /// Check current permission status
   Future<LocationPermissionStatus> checkPermission() async {
@@ -119,9 +122,6 @@ class LocationTrackingController extends StateNotifier<LocationTrackingState> {
 
 /// Provider for location tracking controller
 final locationTrackingControllerProvider =
-    StateNotifierProvider<LocationTrackingController, LocationTrackingState>((
-      ref,
-    ) {
-      final locationService = ref.watch(locationServiceProvider);
-      return LocationTrackingController(locationService);
-    });
+    NotifierProvider<LocationTrackingController, LocationTrackingState>(
+      LocationTrackingController.new,
+    );

@@ -16,7 +16,7 @@ class RecentActivitySection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final items = ref.watch(recentActivityProvider).valueOrNull ?? const [];
+    final items = ref.watch(recentActivityProvider).value ?? const [];
     if (items.isEmpty) return const SizedBox.shrink();
 
     return Column(

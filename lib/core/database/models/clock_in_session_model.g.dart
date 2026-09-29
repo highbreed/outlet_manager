@@ -208,7 +208,7 @@ const ClockInSessionModelSchema = CollectionSchema(
   getId: _clockInSessionModelGetId,
   getLinks: _clockInSessionModelGetLinks,
   attach: _clockInSessionModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _clockInSessionModelEstimateSize(

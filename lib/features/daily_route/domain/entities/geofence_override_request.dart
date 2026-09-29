@@ -24,7 +24,7 @@ part 'geofence_override_request.g.dart';
 /// - Reject: `POST /api/v1/visits/geofence-overrides/{id}/reject`
 /// - Default expiry: 15 minutes
 @freezed
-class GeofenceOverrideRequest with _$GeofenceOverrideRequest {
+abstract class GeofenceOverrideRequest with _$GeofenceOverrideRequest {
   const factory GeofenceOverrideRequest({
     /// Local UUID for offline-first operations
     required String localId,

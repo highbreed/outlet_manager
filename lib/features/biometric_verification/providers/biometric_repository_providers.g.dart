@@ -6,121 +6,295 @@ part of 'biometric_repository_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(biometricRemoteDatasource)
+const biometricRemoteDatasourceProvider = BiometricRemoteDatasourceProvider._();
+
+final class BiometricRemoteDatasourceProvider
+    extends
+        $FunctionalProvider<
+          BiometricRemoteDatasource,
+          BiometricRemoteDatasource,
+          BiometricRemoteDatasource
+        >
+    with $Provider<BiometricRemoteDatasource> {
+  const BiometricRemoteDatasourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'biometricRemoteDatasourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$biometricRemoteDatasourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<BiometricRemoteDatasource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  BiometricRemoteDatasource create(Ref ref) {
+    return biometricRemoteDatasource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BiometricRemoteDatasource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BiometricRemoteDatasource>(value),
+    );
+  }
+}
+
 String _$biometricRemoteDatasourceHash() =>
     r'b27b7141f14258213e31cf5856f885756b2cb2b7';
 
-/// See also [biometricRemoteDatasource].
-@ProviderFor(biometricRemoteDatasource)
-final biometricRemoteDatasourceProvider =
-    AutoDisposeProvider<BiometricRemoteDatasource>.internal(
-      biometricRemoteDatasource,
-      name: r'biometricRemoteDatasourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$biometricRemoteDatasourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(biometricRepository)
+const biometricRepositoryProvider = BiometricRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BiometricRemoteDatasourceRef =
-    AutoDisposeProviderRef<BiometricRemoteDatasource>;
+final class BiometricRepositoryProvider
+    extends
+        $FunctionalProvider<
+          BiometricRepository,
+          BiometricRepository,
+          BiometricRepository
+        >
+    with $Provider<BiometricRepository> {
+  const BiometricRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'biometricRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$biometricRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<BiometricRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  BiometricRepository create(Ref ref) {
+    return biometricRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BiometricRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BiometricRepository>(value),
+    );
+  }
+}
+
 String _$biometricRepositoryHash() =>
     r'3ab626a6c5b6e6edf21f9323e941e32578f7efaa';
 
-/// See also [biometricRepository].
-@ProviderFor(biometricRepository)
-final biometricRepositoryProvider =
-    AutoDisposeProvider<BiometricRepository>.internal(
-      biometricRepository,
-      name: r'biometricRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$biometricRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(requestLivenessChallengeUseCase)
+const requestLivenessChallengeUseCaseProvider =
+    RequestLivenessChallengeUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BiometricRepositoryRef = AutoDisposeProviderRef<BiometricRepository>;
+final class RequestLivenessChallengeUseCaseProvider
+    extends
+        $FunctionalProvider<
+          RequestLivenessChallengeUseCase,
+          RequestLivenessChallengeUseCase,
+          RequestLivenessChallengeUseCase
+        >
+    with $Provider<RequestLivenessChallengeUseCase> {
+  const RequestLivenessChallengeUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'requestLivenessChallengeUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$requestLivenessChallengeUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<RequestLivenessChallengeUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  RequestLivenessChallengeUseCase create(Ref ref) {
+    return requestLivenessChallengeUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RequestLivenessChallengeUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RequestLivenessChallengeUseCase>(
+        value,
+      ),
+    );
+  }
+}
+
 String _$requestLivenessChallengeUseCaseHash() =>
     r'90d8becf460face19e875c53cb41b0976e06ec39';
 
-/// See also [requestLivenessChallengeUseCase].
-@ProviderFor(requestLivenessChallengeUseCase)
-final requestLivenessChallengeUseCaseProvider =
-    AutoDisposeProvider<RequestLivenessChallengeUseCase>.internal(
-      requestLivenessChallengeUseCase,
-      name: r'requestLivenessChallengeUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$requestLivenessChallengeUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(verifyFaceUseCase)
+const verifyFaceUseCaseProvider = VerifyFaceUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef RequestLivenessChallengeUseCaseRef =
-    AutoDisposeProviderRef<RequestLivenessChallengeUseCase>;
+final class VerifyFaceUseCaseProvider
+    extends
+        $FunctionalProvider<
+          VerifyFaceUseCase,
+          VerifyFaceUseCase,
+          VerifyFaceUseCase
+        >
+    with $Provider<VerifyFaceUseCase> {
+  const VerifyFaceUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'verifyFaceUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$verifyFaceUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<VerifyFaceUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  VerifyFaceUseCase create(Ref ref) {
+    return verifyFaceUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(VerifyFaceUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<VerifyFaceUseCase>(value),
+    );
+  }
+}
+
 String _$verifyFaceUseCaseHash() => r'a823eb6c61052c50ab7c7ef2bacabedd09faa329';
 
-/// See also [verifyFaceUseCase].
-@ProviderFor(verifyFaceUseCase)
-final verifyFaceUseCaseProvider =
-    AutoDisposeProvider<VerifyFaceUseCase>.internal(
-      verifyFaceUseCase,
-      name: r'verifyFaceUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$verifyFaceUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(registerFaceUseCase)
+const registerFaceUseCaseProvider = RegisterFaceUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef VerifyFaceUseCaseRef = AutoDisposeProviderRef<VerifyFaceUseCase>;
+final class RegisterFaceUseCaseProvider
+    extends
+        $FunctionalProvider<
+          RegisterFaceUseCase,
+          RegisterFaceUseCase,
+          RegisterFaceUseCase
+        >
+    with $Provider<RegisterFaceUseCase> {
+  const RegisterFaceUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'registerFaceUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$registerFaceUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<RegisterFaceUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  RegisterFaceUseCase create(Ref ref) {
+    return registerFaceUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(RegisterFaceUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<RegisterFaceUseCase>(value),
+    );
+  }
+}
+
 String _$registerFaceUseCaseHash() =>
     r'9e3ce311ead6b7615b353d6e0f1713b732a6b1e7';
 
-/// See also [registerFaceUseCase].
-@ProviderFor(registerFaceUseCase)
-final registerFaceUseCaseProvider =
-    AutoDisposeProvider<RegisterFaceUseCase>.internal(
-      registerFaceUseCase,
-      name: r'registerFaceUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$registerFaceUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(getBiometricStatusUseCase)
+const getBiometricStatusUseCaseProvider = GetBiometricStatusUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef RegisterFaceUseCaseRef = AutoDisposeProviderRef<RegisterFaceUseCase>;
+final class GetBiometricStatusUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetBiometricStatusUseCase,
+          GetBiometricStatusUseCase,
+          GetBiometricStatusUseCase
+        >
+    with $Provider<GetBiometricStatusUseCase> {
+  const GetBiometricStatusUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getBiometricStatusUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getBiometricStatusUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetBiometricStatusUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetBiometricStatusUseCase create(Ref ref) {
+    return getBiometricStatusUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetBiometricStatusUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetBiometricStatusUseCase>(value),
+    );
+  }
+}
+
 String _$getBiometricStatusUseCaseHash() =>
     r'0a3a01d1351524eaeedbec9d9532c541ba344f24';
-
-/// See also [getBiometricStatusUseCase].
-@ProviderFor(getBiometricStatusUseCase)
-final getBiometricStatusUseCaseProvider =
-    AutoDisposeProvider<GetBiometricStatusUseCase>.internal(
-      getBiometricStatusUseCase,
-      name: r'getBiometricStatusUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$getBiometricStatusUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetBiometricStatusUseCaseRef =
-    AutoDisposeProviderRef<GetBiometricStatusUseCase>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

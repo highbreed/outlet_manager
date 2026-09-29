@@ -1,4 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// StateNotifier/StateNotifierProvider moved to this explicit legacy import
+// in Riverpod 3.x (no longer in the default export) — kept as-is here
+// rather than rewritten to Notifier, since this file's notifiers carry
+// real business logic (competitor mappings, product search/filtering)
+// this migration pass has no context to safely re-verify behaviorally.
+import 'package:flutter_riverpod/legacy.dart';
 
 import '../../../../core/network/api_client.dart';
 import '../../../../core/network/failures.dart';

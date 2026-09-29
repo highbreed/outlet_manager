@@ -33,8 +33,8 @@ dependencies:
     sdk: flutter
 
   # State management
-  flutter_riverpod: ^2.5.1
-  riverpod_annotation: ^2.3.5
+  flutter_riverpod: ^3.0.0
+  riverpod_annotation: ^3.0.0
   
   # Network
   dio: ^5.4.3+1
@@ -54,14 +54,14 @@ dependencies:
   # Local storage
   flutter_secure_storage: ^9.2.2
   shared_preferences: ^2.2.3
-  isar_community: 3.3.0-dev.1
-  isar_community_flutter_libs: 3.3.0-dev.1
+  isar_community: 3.3.2
+  isar_community_flutter_libs: 3.3.2
 
   # Navigation
   go_router: ^14.2.0
 
   # Models & serialization
-  freezed_annotation: ^2.4.1
+  freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
   
   # Phone input
@@ -103,11 +103,11 @@ dev_dependencies:
     sdk: flutter
 
   # Code generation
-  riverpod_generator: ^2.4.0
-  freezed: ^2.5.2
+  riverpod_generator: ^3.0.0
+  freezed: ^3.0.0
   json_serializable: ^6.8.0
   build_runner: ^2.4.9
-  isar_community_generator: 3.3.0-dev.1
+  isar_community_generator: 3.3.2
   
   # Linting
   flutter_lints: ^6.0.0

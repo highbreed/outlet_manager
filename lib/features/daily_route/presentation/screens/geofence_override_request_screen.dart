@@ -159,7 +159,7 @@ class _GeofenceOverrideRequestScreenState
         .read(geofenceOverrideNotifierProvider.notifier)
         .refreshStatus(override.localId);
 
-    final updated = ref.read(geofenceOverrideNotifierProvider).valueOrNull;
+    final updated = ref.read(geofenceOverrideNotifierProvider).value;
     if (updated != null && updated.isPending) {
       _startCountdown(updated);
     }
@@ -232,7 +232,7 @@ class _GeofenceOverrideRequestScreenState
     final state = ref.read(geofenceOverrideNotifierProvider);
     debugPrint(
       '[DIAG-override] result: hasError=${state.hasError} error=${state.error} '
-      'value=${state.valueOrNull}',
+      'value=${state.value}',
     );
 
     if (!state.hasError) {

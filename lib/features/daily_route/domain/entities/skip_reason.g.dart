@@ -6,16 +6,15 @@ part of 'skip_reason.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SkipReasonImpl _$$SkipReasonImplFromJson(Map<String, dynamic> json) =>
-    _$SkipReasonImpl(
-      id: (json['id'] as num).toInt(),
-      code: json['code'] as String,
-      label: json['label'] as String,
-      requiresNotes: json['requiresNotes'] as bool? ?? false,
-      isActive: json['isActive'] as bool? ?? true,
-    );
+_SkipReason _$SkipReasonFromJson(Map<String, dynamic> json) => _SkipReason(
+  id: (json['id'] as num).toInt(),
+  code: json['code'] as String,
+  label: json['label'] as String,
+  requiresNotes: json['requiresNotes'] as bool? ?? false,
+  isActive: json['isActive'] as bool? ?? true,
+);
 
-Map<String, dynamic> _$$SkipReasonImplToJson(_$SkipReasonImpl instance) =>
+Map<String, dynamic> _$SkipReasonToJson(_SkipReason instance) =>
     <String, dynamic>{
       'id': instance.id,
       'code': instance.code,

@@ -137,7 +137,7 @@ const AttachmentModelSchema = CollectionSchema(
   getId: _attachmentModelGetId,
   getLinks: _attachmentModelGetLinks,
   attach: _attachmentModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _attachmentModelEstimateSize(

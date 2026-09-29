@@ -4,7 +4,7 @@ part 'customer_product.freezed.dart';
 
 /// Domain entity for customer product catalogue item
 @freezed
-class CustomerProduct with _$CustomerProduct {
+abstract class CustomerProduct with _$CustomerProduct {
   const factory CustomerProduct({
     required int id,
     required int customerId,

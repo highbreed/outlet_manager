@@ -108,8 +108,8 @@ class _ConfirmSaleScreenState extends ConsumerState<ConfirmSaleScreen> {
     // The controller sets `state.error` on a failed confirm, but nothing
     // was reading it — confirm failures used to produce no UI feedback.
     ref.listen(confirmSaleControllerProvider(widget.saleId), (previous, next) {
-      final error = next.valueOrNull?.error;
-      if (error != null && error != previous?.valueOrNull?.error) {
+      final error = next.value?.error;
+      if (error != null && error != previous?.value?.error) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(error), backgroundColor: kRedColor),
         );
@@ -509,7 +509,7 @@ class _FinalizeSaleSheetState extends ConsumerState<_FinalizeSaleSheet> {
   @override
   Widget build(BuildContext context) {
     final asyncState = ref.watch(confirmSaleControllerProvider(widget.saleId));
-    final state = asyncState.valueOrNull;
+    final state = asyncState.value;
 
     if (state != null && !_requestedOtp && state.otpMessage == null) {
       _requestedOtp = true;

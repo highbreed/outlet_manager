@@ -14,7 +14,7 @@ part 'biometric_capture_state.freezed.dart';
 /// the presentation layer converts [phase]/[errorReason] to user-facing
 /// text.
 @freezed
-class BiometricCaptureState with _$BiometricCaptureState {
+abstract class BiometricCaptureState with _$BiometricCaptureState {
   const factory BiometricCaptureState({
     required String captureSessionId,
     @Default(BiometricPhase.idle) BiometricPhase phase,

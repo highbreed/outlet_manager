@@ -5,7 +5,7 @@ import '../domain/user.dart';
 part 'auth_state.freezed.dart';
 
 @freezed
-class AuthState with _$AuthState {
+abstract class AuthState with _$AuthState {
   const factory AuthState.initial() = AuthInitial;
   const factory AuthState.unauthenticated() = Unauthenticated;
   const factory AuthState.authenticating() = Authenticating;

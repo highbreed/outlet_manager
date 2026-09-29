@@ -39,7 +39,7 @@ class DailySalesHomeScreen extends ConsumerWidget {
 
     final salesAsync = ref.watch(dailySalesListControllerProvider(customerId));
     final selectedStatus = ref.watch(dailySalesStatusFilterProvider);
-    final sales = salesAsync.valueOrNull?.items ?? const <DailySale>[];
+    final sales = salesAsync.value?.items ?? const <DailySale>[];
 
     return Scaffold(
       backgroundColor: kBackground,
@@ -235,7 +235,7 @@ class _ReorderCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final orderAsync = ref.watch(replenishmentCurrentProvider);
-    final order = orderAsync.valueOrNull;
+    final order = orderAsync.value;
 
     if (order == null || order.totalItems <= 0) return const SizedBox.shrink();
 

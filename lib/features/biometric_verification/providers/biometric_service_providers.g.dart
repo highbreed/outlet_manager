@@ -6,8 +6,26 @@ part of 'biometric_service_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$biometricCameraServiceHash() =>
-    r'0e86b98e9fbca34453335db2e97f5fd90994f9dd';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// `keepAlive: true` on every provider below, not the `@riverpod` default
+/// — "a fresh instance per capture session, not a shared singleton" is
+/// still the intent, but autoDispose is the wrong mechanism for it here.
+/// These are only ever consumed via `ref.read` inside screen `build()`/
+/// callback methods (never `ref.watch`), which does not count as a
+/// listener for autoDispose purposes — confirmed on-device: with the
+/// `@riverpod` default, [biometricCameraServiceProvider] could be (and
+/// reliably was) disposed by Riverpod moments after creation, tearing
+/// down the `CameraController` out from under
+/// `BiometricCameraPreview._start()` mid-initialization, so the camera
+/// preview showed "Camera unavailable" on every attempt. Same class of
+/// bug as `BiometricRegistrationNotifier`/`BiometricCaptureNotifier` (see
+/// their doc comments) — "fresh session per screen visit" is instead
+/// enforced explicitly by `FaceRegistrationScreen`/`FaceVerificationScreen`
+/// invalidating these providers in `dispose()`.
+
+@ProviderFor(biometricCameraService)
+const biometricCameraServiceProvider = BiometricCameraServiceProvider._();
 
 /// `keepAlive: true` on every provider below, not the `@riverpod` default
 /// — "a fresh instance per capture session, not a shared singleton" is
@@ -24,136 +42,363 @@ String _$biometricCameraServiceHash() =>
 /// their doc comments) — "fresh session per screen visit" is instead
 /// enforced explicitly by `FaceRegistrationScreen`/`FaceVerificationScreen`
 /// invalidating these providers in `dispose()`.
-///
-/// Copied from [biometricCameraService].
-@ProviderFor(biometricCameraService)
-final biometricCameraServiceProvider =
-    Provider<BiometricCameraService>.internal(
-      biometricCameraService,
-      name: r'biometricCameraServiceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$biometricCameraServiceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BiometricCameraServiceRef = ProviderRef<BiometricCameraService>;
+final class BiometricCameraServiceProvider
+    extends
+        $FunctionalProvider<
+          BiometricCameraService,
+          BiometricCameraService,
+          BiometricCameraService
+        >
+    with $Provider<BiometricCameraService> {
+  /// `keepAlive: true` on every provider below, not the `@riverpod` default
+  /// — "a fresh instance per capture session, not a shared singleton" is
+  /// still the intent, but autoDispose is the wrong mechanism for it here.
+  /// These are only ever consumed via `ref.read` inside screen `build()`/
+  /// callback methods (never `ref.watch`), which does not count as a
+  /// listener for autoDispose purposes — confirmed on-device: with the
+  /// `@riverpod` default, [biometricCameraServiceProvider] could be (and
+  /// reliably was) disposed by Riverpod moments after creation, tearing
+  /// down the `CameraController` out from under
+  /// `BiometricCameraPreview._start()` mid-initialization, so the camera
+  /// preview showed "Camera unavailable" on every attempt. Same class of
+  /// bug as `BiometricRegistrationNotifier`/`BiometricCaptureNotifier` (see
+  /// their doc comments) — "fresh session per screen visit" is instead
+  /// enforced explicitly by `FaceRegistrationScreen`/`FaceVerificationScreen`
+  /// invalidating these providers in `dispose()`.
+  const BiometricCameraServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'biometricCameraServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$biometricCameraServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<BiometricCameraService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  BiometricCameraService create(Ref ref) {
+    return biometricCameraService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BiometricCameraService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BiometricCameraService>(value),
+    );
+  }
+}
+
+String _$biometricCameraServiceHash() =>
+    r'0e86b98e9fbca34453335db2e97f5fd90994f9dd';
+
+@ProviderFor(faceDetectionService)
+const faceDetectionServiceProvider = FaceDetectionServiceProvider._();
+
+final class FaceDetectionServiceProvider
+    extends
+        $FunctionalProvider<
+          FaceDetectionService,
+          FaceDetectionService,
+          FaceDetectionService
+        >
+    with $Provider<FaceDetectionService> {
+  const FaceDetectionServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'faceDetectionServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$faceDetectionServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<FaceDetectionService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FaceDetectionService create(Ref ref) {
+    return faceDetectionService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FaceDetectionService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FaceDetectionService>(value),
+    );
+  }
+}
+
 String _$faceDetectionServiceHash() =>
     r'efbe7f85ae7dfcb24ce188abe15f63fa7ca0958f';
 
-/// See also [faceDetectionService].
-@ProviderFor(faceDetectionService)
-final faceDetectionServiceProvider = Provider<FaceDetectionService>.internal(
-  faceDetectionService,
-  name: r'faceDetectionServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$faceDetectionServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(faceQualityService)
+const faceQualityServiceProvider = FaceQualityServiceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FaceDetectionServiceRef = ProviderRef<FaceDetectionService>;
+final class FaceQualityServiceProvider
+    extends
+        $FunctionalProvider<
+          FaceQualityService,
+          FaceQualityService,
+          FaceQualityService
+        >
+    with $Provider<FaceQualityService> {
+  const FaceQualityServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'faceQualityServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$faceQualityServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<FaceQualityService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FaceQualityService create(Ref ref) {
+    return faceQualityService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FaceQualityService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FaceQualityService>(value),
+    );
+  }
+}
+
 String _$faceQualityServiceHash() =>
     r'b682b969547dfb240430cfb98efc60c856f4646e';
 
-/// See also [faceQualityService].
-@ProviderFor(faceQualityService)
-final faceQualityServiceProvider = Provider<FaceQualityService>.internal(
-  faceQualityService,
-  name: r'faceQualityServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$faceQualityServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(activeLivenessService)
+const activeLivenessServiceProvider = ActiveLivenessServiceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FaceQualityServiceRef = ProviderRef<FaceQualityService>;
+final class ActiveLivenessServiceProvider
+    extends
+        $FunctionalProvider<
+          ActiveLivenessService,
+          ActiveLivenessService,
+          ActiveLivenessService
+        >
+    with $Provider<ActiveLivenessService> {
+  const ActiveLivenessServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'activeLivenessServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$activeLivenessServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<ActiveLivenessService> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ActiveLivenessService create(Ref ref) {
+    return activeLivenessService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ActiveLivenessService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ActiveLivenessService>(value),
+    );
+  }
+}
+
 String _$activeLivenessServiceHash() =>
     r'7f409b6c5d9eaad5c453cb12960897c8908501e0';
 
-/// See also [activeLivenessService].
-@ProviderFor(activeLivenessService)
-final activeLivenessServiceProvider = Provider<ActiveLivenessService>.internal(
-  activeLivenessService,
-  name: r'activeLivenessServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$activeLivenessServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ActiveLivenessServiceRef = ProviderRef<ActiveLivenessService>;
-String _$livenessServiceHash() => r'aae62c713538a582354b51df795a5b09388cb0df';
-
-/// See also [livenessService].
 @ProviderFor(livenessService)
-final livenessServiceProvider = Provider<LivenessService>.internal(
-  livenessService,
-  name: r'livenessServiceProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$livenessServiceHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const livenessServiceProvider = LivenessServiceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef LivenessServiceRef = ProviderRef<LivenessService>;
-String _$livenessChallengeGeneratorHash() =>
-    r'4f85fb1cc9793c0e542a47e34bf641af890ec395';
+final class LivenessServiceProvider
+    extends
+        $FunctionalProvider<LivenessService, LivenessService, LivenessService>
+    with $Provider<LivenessService> {
+  const LivenessServiceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'livenessServiceProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$livenessServiceHash();
+
+  @$internal
+  @override
+  $ProviderElement<LivenessService> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  LivenessService create(Ref ref) {
+    return livenessService(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LivenessService value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LivenessService>(value),
+    );
+  }
+}
+
+String _$livenessServiceHash() => r'aae62c713538a582354b51df795a5b09388cb0df';
 
 /// V1 default is server-issued challenges (see the "Phase 4" plan's
 /// "Liveness architecture"/"Backend coordination" sections) —
 /// `LocalChallengeGenerator` is only reachable by editing this provider
 /// directly for local development, same explicit-opt-in spirit as
 /// [useDevBiometricFake].
-///
-/// Copied from [livenessChallengeGenerator].
-@ProviderFor(livenessChallengeGenerator)
-final livenessChallengeGeneratorProvider =
-    Provider<LivenessChallengeGenerator>.internal(
-      livenessChallengeGenerator,
-      name: r'livenessChallengeGeneratorProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$livenessChallengeGeneratorHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef LivenessChallengeGeneratorRef = ProviderRef<LivenessChallengeGenerator>;
+@ProviderFor(livenessChallengeGenerator)
+const livenessChallengeGeneratorProvider =
+    LivenessChallengeGeneratorProvider._();
+
+/// V1 default is server-issued challenges (see the "Phase 4" plan's
+/// "Liveness architecture"/"Backend coordination" sections) —
+/// `LocalChallengeGenerator` is only reachable by editing this provider
+/// directly for local development, same explicit-opt-in spirit as
+/// [useDevBiometricFake].
+
+final class LivenessChallengeGeneratorProvider
+    extends
+        $FunctionalProvider<
+          LivenessChallengeGenerator,
+          LivenessChallengeGenerator,
+          LivenessChallengeGenerator
+        >
+    with $Provider<LivenessChallengeGenerator> {
+  /// V1 default is server-issued challenges (see the "Phase 4" plan's
+  /// "Liveness architecture"/"Backend coordination" sections) —
+  /// `LocalChallengeGenerator` is only reachable by editing this provider
+  /// directly for local development, same explicit-opt-in spirit as
+  /// [useDevBiometricFake].
+  const LivenessChallengeGeneratorProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'livenessChallengeGeneratorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$livenessChallengeGeneratorHash();
+
+  @$internal
+  @override
+  $ProviderElement<LivenessChallengeGenerator> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  LivenessChallengeGenerator create(Ref ref) {
+    return livenessChallengeGenerator(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(LivenessChallengeGenerator value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<LivenessChallengeGenerator>(value),
+    );
+  }
+}
+
+String _$livenessChallengeGeneratorHash() =>
+    r'4f85fb1cc9793c0e542a47e34bf641af890ec395';
+
+@ProviderFor(faceImageProcessor)
+const faceImageProcessorProvider = FaceImageProcessorProvider._();
+
+final class FaceImageProcessorProvider
+    extends
+        $FunctionalProvider<
+          FaceImageProcessor,
+          FaceImageProcessor,
+          FaceImageProcessor
+        >
+    with $Provider<FaceImageProcessor> {
+  const FaceImageProcessorProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'faceImageProcessorProvider',
+        isAutoDispose: false,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$faceImageProcessorHash();
+
+  @$internal
+  @override
+  $ProviderElement<FaceImageProcessor> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FaceImageProcessor create(Ref ref) {
+    return faceImageProcessor(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FaceImageProcessor value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FaceImageProcessor>(value),
+    );
+  }
+}
+
 String _$faceImageProcessorHash() =>
     r'88f11d4d8c59c82a0c9873cdfeedf89c7cb5e7fe';
-
-/// See also [faceImageProcessor].
-@ProviderFor(faceImageProcessor)
-final faceImageProcessorProvider = Provider<FaceImageProcessor>.internal(
-  faceImageProcessor,
-  name: r'faceImageProcessorProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$faceImageProcessorHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FaceImageProcessorRef = ProviderRef<FaceImageProcessor>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

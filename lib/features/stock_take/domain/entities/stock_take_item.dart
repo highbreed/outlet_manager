@@ -7,7 +7,7 @@ enum ItemCountStatus { inProgress, completed }
 
 /// Domain entity for stock take item
 @freezed
-class StockTakeItem with _$StockTakeItem {
+abstract class StockTakeItem with _$StockTakeItem {
   const factory StockTakeItem({
     required String localId,
     int? serverId,

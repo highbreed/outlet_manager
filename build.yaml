@@ -3,3 +3,16 @@ targets:
     builders:
       isar_community_generator:
         enabled: true
+      riverpod_generator:
+        options:
+          # riverpod_generator 3.x defaults this to "Notifier$", stripping
+          # the trailing "Notifier" from every generated provider name
+          # (e.g. LunchBreakNotifier -> lunchBreakProvider instead of
+          # lunchBreakNotifierProvider). That's a silent, sweeping rename
+          # of every "...Notifier"-suffixed provider across this app under
+          # the older riverpod_generator 2.x convention this codebase was
+          # written against — disabling it here keeps every existing call
+          # site (and every provider name already used throughout this
+          # codebase) working unchanged, rather than hand-renaming dozens
+          # of call sites across many unrelated features.
+          provider_name_strip_pattern: ""

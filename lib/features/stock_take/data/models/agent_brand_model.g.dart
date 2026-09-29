@@ -76,7 +76,7 @@ const AgentBrandModelSchema = CollectionSchema(
   getId: _agentBrandModelGetId,
   getLinks: _agentBrandModelGetLinks,
   attach: _agentBrandModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _agentBrandModelEstimateSize(

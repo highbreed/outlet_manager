@@ -6,7 +6,7 @@ part 'face_pose.freezed.dart';
 /// our own type (not the raw MLKit type) so services/notifiers/tests never
 /// depend on the ML Kit package directly.
 @freezed
-class FacePose with _$FacePose {
+abstract class FacePose with _$FacePose {
   const factory FacePose({
     required double boundingBoxLeft,
     required double boundingBoxTop,

@@ -79,7 +79,7 @@ const EntityIdMapModelSchema = CollectionSchema(
   getId: _entityIdMapModelGetId,
   getLinks: _entityIdMapModelGetLinks,
   attach: _entityIdMapModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _entityIdMapModelEstimateSize(

@@ -107,7 +107,7 @@ class ConfirmSaleController extends _$ConfirmSaleController {
 
   /// Returns an error message if the serial can't be added, else null.
   String? addSerial(int itemId, String rawSerial) {
-    final current = state.valueOrNull;
+    final current = state.value;
     if (current == null) return null;
 
     final serial = rawSerial.trim();
@@ -132,7 +132,7 @@ class ConfirmSaleController extends _$ConfirmSaleController {
   }
 
   void removeSerial(int itemId, String serial) {
-    final current = state.valueOrNull;
+    final current = state.value;
     if (current == null) return;
 
     final updated = Map<int, List<String>>.from(current.scannedSerials);
@@ -144,7 +144,7 @@ class ConfirmSaleController extends _$ConfirmSaleController {
   /// previously verified code, since the old code is no longer the live
   /// one on the server.
   Future<void> requestOtp() async {
-    final current = state.valueOrNull;
+    final current = state.value;
     if (current == null) return;
 
     state = AsyncData(
@@ -180,7 +180,7 @@ class ConfirmSaleController extends _$ConfirmSaleController {
   /// Precheck of the entered code before the photo step unlocks. The final
   /// `confirm` call re-validates the code server-side regardless.
   Future<void> verifyOtp(String code) async {
-    final current = state.valueOrNull;
+    final current = state.value;
     if (current == null) return;
 
     final trimmed = code.trim();
@@ -221,13 +221,13 @@ class ConfirmSaleController extends _$ConfirmSaleController {
   }
 
   void setProofOfPurchase(File file) {
-    final current = state.valueOrNull;
+    final current = state.value;
     if (current == null) return;
     state = AsyncData(current.copyWith(proofOfPurchase: file));
   }
 
   Future<bool> submit() async {
-    final current = state.valueOrNull;
+    final current = state.value;
     if (current == null || !current.canSubmit || !current.canFinalize) {
       return false;
     }

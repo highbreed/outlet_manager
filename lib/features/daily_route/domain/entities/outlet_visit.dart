@@ -24,7 +24,7 @@ part 'outlet_visit.g.dart';
 /// - Skip: `POST /api/v1/visits/{visit_id}/skip`
 /// - Geofence validation: 50m for clock-in, 100m for clock-out
 @freezed
-class OutletVisit with _$OutletVisit {
+abstract class OutletVisit with _$OutletVisit {
   const factory OutletVisit({
     /// Local UUID for offline-first operations
     required String localId,

@@ -6,8 +6,8 @@ part of 'visit_schedule.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$VisitScheduleImpl _$$VisitScheduleImplFromJson(Map<String, dynamic> json) =>
-    _$VisitScheduleImpl(
+_VisitSchedule _$VisitScheduleFromJson(Map<String, dynamic> json) =>
+    _VisitSchedule(
       serverId: json['serverId'] as String,
       salesAgentServerId: json['salesAgentServerId'] as String,
       outletId: json['outletId'] as String,
@@ -32,7 +32,7 @@ _$VisitScheduleImpl _$$VisitScheduleImplFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['lastSyncedAt'] as String),
     );
 
-Map<String, dynamic> _$$VisitScheduleImplToJson(_$VisitScheduleImpl instance) =>
+Map<String, dynamic> _$VisitScheduleToJson(_VisitSchedule instance) =>
     <String, dynamic>{
       'serverId': instance.serverId,
       'salesAgentServerId': instance.salesAgentServerId,

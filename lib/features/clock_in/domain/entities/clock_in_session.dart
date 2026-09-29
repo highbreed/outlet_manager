@@ -5,7 +5,7 @@ part 'clock_in_session.g.dart';
 
 /// Session state for an agent's clock in at an outlet
 @freezed
-class ClockInSession with _$ClockInSession {
+abstract class ClockInSession with _$ClockInSession {
   const factory ClockInSession({
     required String id,
     required String outletId,

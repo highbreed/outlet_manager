@@ -87,7 +87,7 @@ const RouteModelSchema = CollectionSchema(
   getId: _routeModelGetId,
   getLinks: _routeModelGetLinks,
   attach: _routeModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _routeModelEstimateSize(

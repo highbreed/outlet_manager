@@ -6,88 +6,195 @@ part of 'connectivity_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$isOnlineHash() => r'a0d5142403df05d418cd2a8543ea188796b77ccf';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// Connectivity controller monitors network state changes
 
-/// Simple boolean provider for checking if online
-/// Used by interceptors and UI components
-///
-/// Copied from [isOnline].
-@ProviderFor(isOnline)
-final isOnlineProvider = AutoDisposeProvider<bool>.internal(
-  isOnline,
-  name: r'isOnlineProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$isOnlineHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+@ProviderFor(ConnectivityController)
+const connectivityControllerProvider = ConnectivityControllerProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef IsOnlineRef = AutoDisposeProviderRef<bool>;
-String _$offlineEventsHash() => r'33d4d47fb0ae5705617cab21d19950b0ebda3a74';
+/// Connectivity controller monitors network state changes
+final class ConnectivityControllerProvider
+    extends $NotifierProvider<ConnectivityController, ConnectivityState> {
+  /// Connectivity controller monitors network state changes
+  const ConnectivityControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'connectivityControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
 
-/// Provider that emits only when going offline
-/// Useful for showing snackbars/banners
-///
-/// Copied from [offlineEvents].
-@ProviderFor(offlineEvents)
-final offlineEventsProvider = AutoDisposeStreamProvider<bool>.internal(
-  offlineEvents,
-  name: r'offlineEventsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$offlineEventsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+  @override
+  String debugGetCreateSourceHash() => _$connectivityControllerHash();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef OfflineEventsRef = AutoDisposeStreamProviderRef<bool>;
-String _$onlineRestoredEventsHash() =>
-    r'35d7f6c548117efc9b61f299d7bc805c5d99d902';
+  @$internal
+  @override
+  ConnectivityController create() => ConnectivityController();
 
-/// Provider that emits when connectivity is restored (offline -> online)
-/// Used to trigger background sync operations
-///
-/// Copied from [onlineRestoredEvents].
-@ProviderFor(onlineRestoredEvents)
-final onlineRestoredEventsProvider = AutoDisposeStreamProvider<bool>.internal(
-  onlineRestoredEvents,
-  name: r'onlineRestoredEventsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$onlineRestoredEventsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ConnectivityState value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ConnectivityState>(value),
+    );
+  }
+}
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef OnlineRestoredEventsRef = AutoDisposeStreamProviderRef<bool>;
 String _$connectivityControllerHash() =>
     r'7dbe26540f0134357122da1827c7ea23ca350981';
 
 /// Connectivity controller monitors network state changes
-///
-/// Copied from [ConnectivityController].
-@ProviderFor(ConnectivityController)
-final connectivityControllerProvider =
-    AutoDisposeNotifierProvider<
-      ConnectivityController,
-      ConnectivityState
-    >.internal(
-      ConnectivityController.new,
-      name: r'connectivityControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$connectivityControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$ConnectivityController = AutoDisposeNotifier<ConnectivityState>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$ConnectivityController extends $Notifier<ConnectivityState> {
+  ConnectivityState build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<ConnectivityState, ConnectivityState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<ConnectivityState, ConnectivityState>,
+              ConnectivityState,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Simple boolean provider for checking if online
+/// Used by interceptors and UI components
+
+@ProviderFor(isOnline)
+const isOnlineProvider = IsOnlineProvider._();
+
+/// Simple boolean provider for checking if online
+/// Used by interceptors and UI components
+
+final class IsOnlineProvider extends $FunctionalProvider<bool, bool, bool>
+    with $Provider<bool> {
+  /// Simple boolean provider for checking if online
+  /// Used by interceptors and UI components
+  const IsOnlineProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'isOnlineProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$isOnlineHash();
+
+  @$internal
+  @override
+  $ProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  bool create(Ref ref) {
+    return isOnline(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(bool value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<bool>(value),
+    );
+  }
+}
+
+String _$isOnlineHash() => r'a0d5142403df05d418cd2a8543ea188796b77ccf';
+
+/// Provider that emits only when going offline
+/// Useful for showing snackbars/banners
+
+@ProviderFor(offlineEvents)
+const offlineEventsProvider = OfflineEventsProvider._();
+
+/// Provider that emits only when going offline
+/// Useful for showing snackbars/banners
+
+final class OfflineEventsProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  /// Provider that emits only when going offline
+  /// Useful for showing snackbars/banners
+  const OfflineEventsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'offlineEventsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$offlineEventsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    return offlineEvents(ref);
+  }
+}
+
+String _$offlineEventsHash() => r'33d4d47fb0ae5705617cab21d19950b0ebda3a74';
+
+/// Provider that emits when connectivity is restored (offline -> online)
+/// Used to trigger background sync operations
+
+@ProviderFor(onlineRestoredEvents)
+const onlineRestoredEventsProvider = OnlineRestoredEventsProvider._();
+
+/// Provider that emits when connectivity is restored (offline -> online)
+/// Used to trigger background sync operations
+
+final class OnlineRestoredEventsProvider
+    extends $FunctionalProvider<AsyncValue<bool>, bool, Stream<bool>>
+    with $FutureModifier<bool>, $StreamProvider<bool> {
+  /// Provider that emits when connectivity is restored (offline -> online)
+  /// Used to trigger background sync operations
+  const OnlineRestoredEventsProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'onlineRestoredEventsProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$onlineRestoredEventsHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<bool> $createElement($ProviderPointer pointer) =>
+      $StreamProviderElement(pointer);
+
+  @override
+  Stream<bool> create(Ref ref) {
+    return onlineRestoredEvents(ref);
+  }
+}
+
+String _$onlineRestoredEventsHash() =>
+    r'35d7f6c548117efc9b61f299d7bc805c5d99d902';

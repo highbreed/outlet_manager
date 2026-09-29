@@ -6,7 +6,22 @@ part of 'biometric_status_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$biometricStatusHash() => r'4f661d973677b14b00e45ef99c54aa84f5511a02';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+/// A plain (non-polling) fetch of `GET /biometrics/status` — unlike the
+/// two permission gates in `location_tracking_providers.dart`, which poll
+/// because OS permission state can flip behind the app's back with no
+/// event to hook, `clock_in_verification_required` is a slow, operational
+/// server-side change. Explicitly invalidated at registration success,
+/// relevant 409s (NO_PROFILE/RE_ENROLLMENT_REQUIRED/PROFILE_REVOKED), and
+/// fresh login — see the "Phase 5" plan's section A.3.
+///
+/// Callers making a security-relevant decision (the login gate, a
+/// clock-in) should invalidate + re-read this immediately before deciding
+/// rather than trusting a value that may be stale.
+
+@ProviderFor(biometricStatus)
+const biometricStatusProvider = BiometricStatusProvider._();
 
 /// A plain (non-polling) fetch of `GET /biometrics/status` — unlike the
 /// two permission gates in `location_tracking_providers.dart`, which poll
@@ -19,23 +34,52 @@ String _$biometricStatusHash() => r'4f661d973677b14b00e45ef99c54aa84f5511a02';
 /// Callers making a security-relevant decision (the login gate, a
 /// clock-in) should invalidate + re-read this immediately before deciding
 /// rather than trusting a value that may be stale.
-///
-/// Copied from [biometricStatus].
-@ProviderFor(biometricStatus)
-final biometricStatusProvider =
-    AutoDisposeFutureProvider<Either<Failure, BiometricStatus>>.internal(
-      biometricStatus,
-      name: r'biometricStatusProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$biometricStatusHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BiometricStatusRef =
-    AutoDisposeFutureProviderRef<Either<Failure, BiometricStatus>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class BiometricStatusProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<Either<Failure, BiometricStatus>>,
+          Either<Failure, BiometricStatus>,
+          FutureOr<Either<Failure, BiometricStatus>>
+        >
+    with
+        $FutureModifier<Either<Failure, BiometricStatus>>,
+        $FutureProvider<Either<Failure, BiometricStatus>> {
+  /// A plain (non-polling) fetch of `GET /biometrics/status` — unlike the
+  /// two permission gates in `location_tracking_providers.dart`, which poll
+  /// because OS permission state can flip behind the app's back with no
+  /// event to hook, `clock_in_verification_required` is a slow, operational
+  /// server-side change. Explicitly invalidated at registration success,
+  /// relevant 409s (NO_PROFILE/RE_ENROLLMENT_REQUIRED/PROFILE_REVOKED), and
+  /// fresh login — see the "Phase 5" plan's section A.3.
+  ///
+  /// Callers making a security-relevant decision (the login gate, a
+  /// clock-in) should invalidate + re-read this immediately before deciding
+  /// rather than trusting a value that may be stale.
+  const BiometricStatusProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'biometricStatusProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$biometricStatusHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<Either<Failure, BiometricStatus>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<Either<Failure, BiometricStatus>> create(Ref ref) {
+    return biometricStatus(ref);
+  }
+}
+
+String _$biometricStatusHash() => r'4f661d973677b14b00e45ef99c54aa84f5511a02';

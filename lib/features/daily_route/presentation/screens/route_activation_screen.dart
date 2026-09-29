@@ -69,7 +69,7 @@ class RouteActivationScreen extends ConsumerWidget {
     // caps at 3) via dayStatusPollProvider; this screen is where "+N more"
     // sends the agent to see the rest.
     final scheduledStops =
-        ref.watch(dayStatusPollProvider).valueOrNull?.scheduledStops ??
+        ref.watch(dayStatusPollProvider).value?.scheduledStops ??
         const [];
 
     return AppScaffold(

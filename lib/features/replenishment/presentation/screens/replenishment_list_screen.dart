@@ -198,7 +198,7 @@ class ReplenishmentListScreen extends ConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: orderAsync.valueOrNull?.items.isNotEmpty == true
+      bottomNavigationBar: orderAsync.value?.items.isNotEmpty == true
           ? SafeArea(
               top: false,
               child: Padding(

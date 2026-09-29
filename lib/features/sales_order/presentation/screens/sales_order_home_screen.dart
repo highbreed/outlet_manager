@@ -103,7 +103,7 @@ class _SalesOrderHomeScreenState extends ConsumerState<SalesOrderHomeScreen>
   Widget build(BuildContext context) {
     final orders = ref.watch(salesOrdersProvider);
     final quotationsAsync = ref.watch(salesTodayQuotationsProvider);
-    final quotations = quotationsAsync.valueOrNull ?? const <SalesQuotation>[];
+    final quotations = quotationsAsync.value ?? const <SalesQuotation>[];
     final isOrdersTab = _tabController.index == 0;
 
     return Scaffold(

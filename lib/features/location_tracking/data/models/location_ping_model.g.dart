@@ -145,7 +145,7 @@ const LocationPingModelSchema = CollectionSchema(
   getId: _locationPingModelGetId,
   getLinks: _locationPingModelGetLinks,
   attach: _locationPingModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _locationPingModelEstimateSize(

@@ -6,8 +6,8 @@ part of 'clock_in_session.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$ClockInSessionImpl _$$ClockInSessionImplFromJson(Map<String, dynamic> json) =>
-    _$ClockInSessionImpl(
+_ClockInSession _$ClockInSessionFromJson(Map<String, dynamic> json) =>
+    _ClockInSession(
       id: json['id'] as String,
       outletId: json['outletId'] as String,
       outletName: json['outletName'] as String,
@@ -52,8 +52,8 @@ _$ClockInSessionImpl _$$ClockInSessionImplFromJson(Map<String, dynamic> json) =>
           SyncState.localOnly,
     );
 
-Map<String, dynamic> _$$ClockInSessionImplToJson(
-  _$ClockInSessionImpl instance,
+Map<String, dynamic> _$ClockInSessionToJson(
+  _ClockInSession instance,
 ) => <String, dynamic>{
   'id': instance.id,
   'outletId': instance.outletId,

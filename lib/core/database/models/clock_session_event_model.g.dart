@@ -108,7 +108,7 @@ const ClockSessionEventModelSchema = CollectionSchema(
   getId: _clockSessionEventModelGetId,
   getLinks: _clockSessionEventModelGetLinks,
   attach: _clockSessionEventModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _clockSessionEventModelEstimateSize(

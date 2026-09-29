@@ -171,7 +171,7 @@ const VisitScheduleModelSchema = CollectionSchema(
   getId: _visitScheduleModelGetId,
   getLinks: _visitScheduleModelGetLinks,
   attach: _visitScheduleModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _visitScheduleModelEstimateSize(

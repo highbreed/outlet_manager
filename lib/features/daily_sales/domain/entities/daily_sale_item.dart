@@ -6,7 +6,7 @@ part 'daily_sale_item.freezed.dart';
 
 /// One product line within a daily sale.
 @freezed
-class DailySaleItem with _$DailySaleItem {
+abstract class DailySaleItem with _$DailySaleItem {
   const factory DailySaleItem({
     required int id,
     required int dailySalesId,

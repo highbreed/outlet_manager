@@ -6,563 +6,824 @@ part of 'visit_schedule_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(visitScheduleLocalDataSource)
+const visitScheduleLocalDataSourceProvider =
+    VisitScheduleLocalDataSourceProvider._();
+
+final class VisitScheduleLocalDataSourceProvider
+    extends
+        $FunctionalProvider<
+          VisitScheduleLocalDataSource,
+          VisitScheduleLocalDataSource,
+          VisitScheduleLocalDataSource
+        >
+    with $Provider<VisitScheduleLocalDataSource> {
+  const VisitScheduleLocalDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'visitScheduleLocalDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$visitScheduleLocalDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<VisitScheduleLocalDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  VisitScheduleLocalDataSource create(Ref ref) {
+    return visitScheduleLocalDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(VisitScheduleLocalDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<VisitScheduleLocalDataSource>(value),
+    );
+  }
+}
+
 String _$visitScheduleLocalDataSourceHash() =>
     r'96afc9ab0edb6d0cee1fd788ec5243fedffc849e';
 
-/// See also [visitScheduleLocalDataSource].
-@ProviderFor(visitScheduleLocalDataSource)
-final visitScheduleLocalDataSourceProvider =
-    AutoDisposeProvider<VisitScheduleLocalDataSource>.internal(
-      visitScheduleLocalDataSource,
-      name: r'visitScheduleLocalDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$visitScheduleLocalDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(visitScheduleRemoteDataSource)
+const visitScheduleRemoteDataSourceProvider =
+    VisitScheduleRemoteDataSourceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef VisitScheduleLocalDataSourceRef =
-    AutoDisposeProviderRef<VisitScheduleLocalDataSource>;
+final class VisitScheduleRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          VisitScheduleRemoteDataSource,
+          VisitScheduleRemoteDataSource,
+          VisitScheduleRemoteDataSource
+        >
+    with $Provider<VisitScheduleRemoteDataSource> {
+  const VisitScheduleRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'visitScheduleRemoteDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$visitScheduleRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<VisitScheduleRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  VisitScheduleRemoteDataSource create(Ref ref) {
+    return visitScheduleRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(VisitScheduleRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<VisitScheduleRemoteDataSource>(
+        value,
+      ),
+    );
+  }
+}
+
 String _$visitScheduleRemoteDataSourceHash() =>
     r'cff6f0b2cbd12933767efdebfec7883240ab40f6';
 
-/// See also [visitScheduleRemoteDataSource].
-@ProviderFor(visitScheduleRemoteDataSource)
-final visitScheduleRemoteDataSourceProvider =
-    AutoDisposeProvider<VisitScheduleRemoteDataSource>.internal(
-      visitScheduleRemoteDataSource,
-      name: r'visitScheduleRemoteDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$visitScheduleRemoteDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(visitScheduleRepository)
+const visitScheduleRepositoryProvider = VisitScheduleRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef VisitScheduleRemoteDataSourceRef =
-    AutoDisposeProviderRef<VisitScheduleRemoteDataSource>;
+final class VisitScheduleRepositoryProvider
+    extends
+        $FunctionalProvider<
+          VisitScheduleRepository,
+          VisitScheduleRepository,
+          VisitScheduleRepository
+        >
+    with $Provider<VisitScheduleRepository> {
+  const VisitScheduleRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'visitScheduleRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$visitScheduleRepositoryHash();
+
+  @$internal
+  @override
+  $ProviderElement<VisitScheduleRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  VisitScheduleRepository create(Ref ref) {
+    return visitScheduleRepository(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(VisitScheduleRepository value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<VisitScheduleRepository>(value),
+    );
+  }
+}
+
 String _$visitScheduleRepositoryHash() =>
     r'07a1d12d8afe06d586929929dfea0de1d0d674c7';
 
-/// See also [visitScheduleRepository].
-@ProviderFor(visitScheduleRepository)
-final visitScheduleRepositoryProvider =
-    AutoDisposeProvider<VisitScheduleRepository>.internal(
-      visitScheduleRepository,
-      name: r'visitScheduleRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$visitScheduleRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(getAllSchedulesUseCase)
+const getAllSchedulesUseCaseProvider = GetAllSchedulesUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef VisitScheduleRepositoryRef =
-    AutoDisposeProviderRef<VisitScheduleRepository>;
+final class GetAllSchedulesUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetAllSchedulesUseCase,
+          GetAllSchedulesUseCase,
+          GetAllSchedulesUseCase
+        >
+    with $Provider<GetAllSchedulesUseCase> {
+  const GetAllSchedulesUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getAllSchedulesUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getAllSchedulesUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetAllSchedulesUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetAllSchedulesUseCase create(Ref ref) {
+    return getAllSchedulesUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetAllSchedulesUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetAllSchedulesUseCase>(value),
+    );
+  }
+}
+
 String _$getAllSchedulesUseCaseHash() =>
     r'5eceabba38085edc9f1a27feb45e55fc7dd2f5b1';
 
-/// See also [getAllSchedulesUseCase].
-@ProviderFor(getAllSchedulesUseCase)
-final getAllSchedulesUseCaseProvider =
-    AutoDisposeProvider<GetAllSchedulesUseCase>.internal(
-      getAllSchedulesUseCase,
-      name: r'getAllSchedulesUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$getAllSchedulesUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(getSchedulesForDayUseCase)
+const getSchedulesForDayUseCaseProvider = GetSchedulesForDayUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetAllSchedulesUseCaseRef =
-    AutoDisposeProviderRef<GetAllSchedulesUseCase>;
+final class GetSchedulesForDayUseCaseProvider
+    extends
+        $FunctionalProvider<
+          GetSchedulesForDayUseCase,
+          GetSchedulesForDayUseCase,
+          GetSchedulesForDayUseCase
+        >
+    with $Provider<GetSchedulesForDayUseCase> {
+  const GetSchedulesForDayUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'getSchedulesForDayUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$getSchedulesForDayUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<GetSchedulesForDayUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  GetSchedulesForDayUseCase create(Ref ref) {
+    return getSchedulesForDayUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(GetSchedulesForDayUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<GetSchedulesForDayUseCase>(value),
+    );
+  }
+}
+
 String _$getSchedulesForDayUseCaseHash() =>
     r'c2474696b967ced6f8e197a0c606f445b33cd4ca';
 
-/// See also [getSchedulesForDayUseCase].
-@ProviderFor(getSchedulesForDayUseCase)
-final getSchedulesForDayUseCaseProvider =
-    AutoDisposeProvider<GetSchedulesForDayUseCase>.internal(
-      getSchedulesForDayUseCase,
-      name: r'getSchedulesForDayUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$getSchedulesForDayUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(syncSchedulesUseCase)
+const syncSchedulesUseCaseProvider = SyncSchedulesUseCaseProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef GetSchedulesForDayUseCaseRef =
-    AutoDisposeProviderRef<GetSchedulesForDayUseCase>;
+final class SyncSchedulesUseCaseProvider
+    extends
+        $FunctionalProvider<
+          SyncSchedulesUseCase,
+          SyncSchedulesUseCase,
+          SyncSchedulesUseCase
+        >
+    with $Provider<SyncSchedulesUseCase> {
+  const SyncSchedulesUseCaseProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'syncSchedulesUseCaseProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$syncSchedulesUseCaseHash();
+
+  @$internal
+  @override
+  $ProviderElement<SyncSchedulesUseCase> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  SyncSchedulesUseCase create(Ref ref) {
+    return syncSchedulesUseCase(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(SyncSchedulesUseCase value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<SyncSchedulesUseCase>(value),
+    );
+  }
+}
+
 String _$syncSchedulesUseCaseHash() =>
     r'e734caa0a663450d24a2668a03e9f411d7184491';
 
-/// See also [syncSchedulesUseCase].
-@ProviderFor(syncSchedulesUseCase)
-final syncSchedulesUseCaseProvider =
-    AutoDisposeProvider<SyncSchedulesUseCase>.internal(
-      syncSchedulesUseCase,
-      name: r'syncSchedulesUseCaseProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$syncSchedulesUseCaseHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+/// Provides all visit schedules, grouped by day of week
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SyncSchedulesUseCaseRef = AutoDisposeProviderRef<SyncSchedulesUseCase>;
-String _$schedulesForDayHash() => r'89cab4489287a22262f0b60a6a285d2df80d301c';
+@ProviderFor(AllSchedulesNotifier)
+const allSchedulesNotifierProvider = AllSchedulesNotifierProvider._();
 
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-/// Provides schedules for a specific day
-///
-/// Copied from [schedulesForDay].
-@ProviderFor(schedulesForDay)
-const schedulesForDayProvider = SchedulesForDayFamily();
-
-/// Provides schedules for a specific day
-///
-/// Copied from [schedulesForDay].
-class SchedulesForDayFamily extends Family<AsyncValue<List<VisitSchedule>>> {
-  /// Provides schedules for a specific day
-  ///
-  /// Copied from [schedulesForDay].
-  const SchedulesForDayFamily();
-
-  /// Provides schedules for a specific day
-  ///
-  /// Copied from [schedulesForDay].
-  SchedulesForDayProvider call(int dayOfWeek) {
-    return SchedulesForDayProvider(dayOfWeek);
-  }
-
-  @override
-  SchedulesForDayProvider getProviderOverride(
-    covariant SchedulesForDayProvider provider,
-  ) {
-    return call(provider.dayOfWeek);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'schedulesForDayProvider';
-}
-
-/// Provides schedules for a specific day
-///
-/// Copied from [schedulesForDay].
-class SchedulesForDayProvider
-    extends AutoDisposeFutureProvider<List<VisitSchedule>> {
-  /// Provides schedules for a specific day
-  ///
-  /// Copied from [schedulesForDay].
-  SchedulesForDayProvider(int dayOfWeek)
-    : this._internal(
-        (ref) => schedulesForDay(ref as SchedulesForDayRef, dayOfWeek),
-        from: schedulesForDayProvider,
-        name: r'schedulesForDayProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$schedulesForDayHash,
-        dependencies: SchedulesForDayFamily._dependencies,
-        allTransitiveDependencies:
-            SchedulesForDayFamily._allTransitiveDependencies,
-        dayOfWeek: dayOfWeek,
+/// Provides all visit schedules, grouped by day of week
+final class AllSchedulesNotifierProvider
+    extends $AsyncNotifierProvider<AllSchedulesNotifier, List<VisitSchedule>> {
+  /// Provides all visit schedules, grouped by day of week
+  const AllSchedulesNotifierProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'allSchedulesNotifierProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
       );
 
-  SchedulesForDayProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.dayOfWeek,
-  }) : super.internal();
-
-  final int dayOfWeek;
-
   @override
-  Override overrideWith(
-    FutureOr<List<VisitSchedule>> Function(SchedulesForDayRef provider) create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: SchedulesForDayProvider._internal(
-        (ref) => create(ref as SchedulesForDayRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        dayOfWeek: dayOfWeek,
-      ),
-    );
-  }
+  String debugGetCreateSourceHash() => _$allSchedulesNotifierHash();
 
+  @$internal
   @override
-  AutoDisposeFutureProviderElement<List<VisitSchedule>> createElement() {
-    return _SchedulesForDayProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is SchedulesForDayProvider && other.dayOfWeek == dayOfWeek;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, dayOfWeek.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin SchedulesForDayRef on AutoDisposeFutureProviderRef<List<VisitSchedule>> {
-  /// The parameter `dayOfWeek` of this provider.
-  int get dayOfWeek;
-}
-
-class _SchedulesForDayProviderElement
-    extends AutoDisposeFutureProviderElement<List<VisitSchedule>>
-    with SchedulesForDayRef {
-  _SchedulesForDayProviderElement(super.provider);
-
-  @override
-  int get dayOfWeek => (origin as SchedulesForDayProvider).dayOfWeek;
-}
-
-String _$todaysSchedulesHash() => r'82517dd9ca5ca9394506ab0d9cbbe88046961d15';
-
-/// Provides today's schedules
-///
-/// Copied from [todaysSchedules].
-@ProviderFor(todaysSchedules)
-final todaysSchedulesProvider =
-    AutoDisposeFutureProvider<List<VisitSchedule>>.internal(
-      todaysSchedules,
-      name: r'todaysSchedulesProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$todaysSchedulesHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef TodaysSchedulesRef = AutoDisposeFutureProviderRef<List<VisitSchedule>>;
-String _$schedulesGroupedByDayHash() =>
-    r'3d311903003c65db854cc5216b7a6253036697a9';
-
-/// Provides schedules grouped by day of week
-///
-/// Copied from [schedulesGroupedByDay].
-@ProviderFor(schedulesGroupedByDay)
-final schedulesGroupedByDayProvider =
-    AutoDisposeProvider<Map<int, List<VisitSchedule>>>.internal(
-      schedulesGroupedByDay,
-      name: r'schedulesGroupedByDayProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$schedulesGroupedByDayHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef SchedulesGroupedByDayRef =
-    AutoDisposeProviderRef<Map<int, List<VisitSchedule>>>;
-String _$scheduleCountsByDayHash() =>
-    r'6ea062986f107991de8963b48b13a26ebc6be384';
-
-/// Provides schedule counts per day
-///
-/// Copied from [scheduleCountsByDay].
-@ProviderFor(scheduleCountsByDay)
-final scheduleCountsByDayProvider = AutoDisposeProvider<Map<int, int>>.internal(
-  scheduleCountsByDay,
-  name: r'scheduleCountsByDayProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$scheduleCountsByDayHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ScheduleCountsByDayRef = AutoDisposeProviderRef<Map<int, int>>;
-String _$weeklyOutletCountHash() => r'5a3fe461392cef9b0c3fd1e40c7b3a8857a6e361';
-
-/// Provides total outlet count for the week
-///
-/// Copied from [weeklyOutletCount].
-@ProviderFor(weeklyOutletCount)
-final weeklyOutletCountProvider = AutoDisposeProvider<int>.internal(
-  weeklyOutletCount,
-  name: r'weeklyOutletCountProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$weeklyOutletCountHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef WeeklyOutletCountRef = AutoDisposeProviderRef<int>;
-String _$watchAllSchedulesHash() => r'2846bc6c5a948dc37c427d72e12aeb228f346484';
-
-/// Stream provider for watching schedules
-///
-/// Copied from [watchAllSchedules].
-@ProviderFor(watchAllSchedules)
-final watchAllSchedulesProvider =
-    AutoDisposeStreamProvider<List<VisitSchedule>>.internal(
-      watchAllSchedules,
-      name: r'watchAllSchedulesProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$watchAllSchedulesHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef WatchAllSchedulesRef =
-    AutoDisposeStreamProviderRef<List<VisitSchedule>>;
-String _$watchSchedulesForDayHash() =>
-    r'469e1c83234bb8374830fe0a38f55e0c4afbb10e';
-
-/// Stream provider for watching schedules for a specific day
-///
-/// Copied from [watchSchedulesForDay].
-@ProviderFor(watchSchedulesForDay)
-const watchSchedulesForDayProvider = WatchSchedulesForDayFamily();
-
-/// Stream provider for watching schedules for a specific day
-///
-/// Copied from [watchSchedulesForDay].
-class WatchSchedulesForDayFamily
-    extends Family<AsyncValue<List<VisitSchedule>>> {
-  /// Stream provider for watching schedules for a specific day
-  ///
-  /// Copied from [watchSchedulesForDay].
-  const WatchSchedulesForDayFamily();
-
-  /// Stream provider for watching schedules for a specific day
-  ///
-  /// Copied from [watchSchedulesForDay].
-  WatchSchedulesForDayProvider call(int dayOfWeek) {
-    return WatchSchedulesForDayProvider(dayOfWeek);
-  }
-
-  @override
-  WatchSchedulesForDayProvider getProviderOverride(
-    covariant WatchSchedulesForDayProvider provider,
-  ) {
-    return call(provider.dayOfWeek);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'watchSchedulesForDayProvider';
-}
-
-/// Stream provider for watching schedules for a specific day
-///
-/// Copied from [watchSchedulesForDay].
-class WatchSchedulesForDayProvider
-    extends AutoDisposeStreamProvider<List<VisitSchedule>> {
-  /// Stream provider for watching schedules for a specific day
-  ///
-  /// Copied from [watchSchedulesForDay].
-  WatchSchedulesForDayProvider(int dayOfWeek)
-    : this._internal(
-        (ref) =>
-            watchSchedulesForDay(ref as WatchSchedulesForDayRef, dayOfWeek),
-        from: watchSchedulesForDayProvider,
-        name: r'watchSchedulesForDayProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$watchSchedulesForDayHash,
-        dependencies: WatchSchedulesForDayFamily._dependencies,
-        allTransitiveDependencies:
-            WatchSchedulesForDayFamily._allTransitiveDependencies,
-        dayOfWeek: dayOfWeek,
-      );
-
-  WatchSchedulesForDayProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.dayOfWeek,
-  }) : super.internal();
-
-  final int dayOfWeek;
-
-  @override
-  Override overrideWith(
-    Stream<List<VisitSchedule>> Function(WatchSchedulesForDayRef provider)
-    create,
-  ) {
-    return ProviderOverride(
-      origin: this,
-      override: WatchSchedulesForDayProvider._internal(
-        (ref) => create(ref as WatchSchedulesForDayRef),
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        dayOfWeek: dayOfWeek,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeStreamProviderElement<List<VisitSchedule>> createElement() {
-    return _WatchSchedulesForDayProviderElement(this);
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return other is WatchSchedulesForDayProvider &&
-        other.dayOfWeek == dayOfWeek;
-  }
-
-  @override
-  int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, dayOfWeek.hashCode);
-
-    return _SystemHash.finish(hash);
-  }
-}
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin WatchSchedulesForDayRef
-    on AutoDisposeStreamProviderRef<List<VisitSchedule>> {
-  /// The parameter `dayOfWeek` of this provider.
-  int get dayOfWeek;
-}
-
-class _WatchSchedulesForDayProviderElement
-    extends AutoDisposeStreamProviderElement<List<VisitSchedule>>
-    with WatchSchedulesForDayRef {
-  _WatchSchedulesForDayProviderElement(super.provider);
-
-  @override
-  int get dayOfWeek => (origin as WatchSchedulesForDayProvider).dayOfWeek;
+  AllSchedulesNotifier create() => AllSchedulesNotifier();
 }
 
 String _$allSchedulesNotifierHash() =>
     r'6994bec9a2f67718208a5532a3ffbb618d5ae256';
 
 /// Provides all visit schedules, grouped by day of week
-///
-/// Copied from [AllSchedulesNotifier].
-@ProviderFor(AllSchedulesNotifier)
-final allSchedulesNotifierProvider =
-    AutoDisposeAsyncNotifierProvider<
-      AllSchedulesNotifier,
-      List<VisitSchedule>
-    >.internal(
-      AllSchedulesNotifier.new,
-      name: r'allSchedulesNotifierProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$allSchedulesNotifierHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$AllSchedulesNotifier = AutoDisposeAsyncNotifier<List<VisitSchedule>>;
+abstract class _$AllSchedulesNotifier
+    extends $AsyncNotifier<List<VisitSchedule>> {
+  FutureOr<List<VisitSchedule>> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref =
+        this.ref as $Ref<AsyncValue<List<VisitSchedule>>, List<VisitSchedule>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<List<VisitSchedule>>, List<VisitSchedule>>,
+              AsyncValue<List<VisitSchedule>>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}
+
+/// Provides schedules for a specific day
+
+@ProviderFor(schedulesForDay)
+const schedulesForDayProvider = SchedulesForDayFamily._();
+
+/// Provides schedules for a specific day
+
+final class SchedulesForDayProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<VisitSchedule>>,
+          List<VisitSchedule>,
+          FutureOr<List<VisitSchedule>>
+        >
+    with
+        $FutureModifier<List<VisitSchedule>>,
+        $FutureProvider<List<VisitSchedule>> {
+  /// Provides schedules for a specific day
+  const SchedulesForDayProvider._({
+    required SchedulesForDayFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'schedulesForDayProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$schedulesForDayHash();
+
+  @override
+  String toString() {
+    return r'schedulesForDayProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<VisitSchedule>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<VisitSchedule>> create(Ref ref) {
+    final argument = this.argument as int;
+    return schedulesForDay(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SchedulesForDayProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$schedulesForDayHash() => r'89cab4489287a22262f0b60a6a285d2df80d301c';
+
+/// Provides schedules for a specific day
+
+final class SchedulesForDayFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<VisitSchedule>>, int> {
+  const SchedulesForDayFamily._()
+    : super(
+        retry: null,
+        name: r'schedulesForDayProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Provides schedules for a specific day
+
+  SchedulesForDayProvider call(int dayOfWeek) =>
+      SchedulesForDayProvider._(argument: dayOfWeek, from: this);
+
+  @override
+  String toString() => r'schedulesForDayProvider';
+}
+
+/// Provides today's schedules
+
+@ProviderFor(todaysSchedules)
+const todaysSchedulesProvider = TodaysSchedulesProvider._();
+
+/// Provides today's schedules
+
+final class TodaysSchedulesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<VisitSchedule>>,
+          List<VisitSchedule>,
+          FutureOr<List<VisitSchedule>>
+        >
+    with
+        $FutureModifier<List<VisitSchedule>>,
+        $FutureProvider<List<VisitSchedule>> {
+  /// Provides today's schedules
+  const TodaysSchedulesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'todaysSchedulesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$todaysSchedulesHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<List<VisitSchedule>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<VisitSchedule>> create(Ref ref) {
+    return todaysSchedules(ref);
+  }
+}
+
+String _$todaysSchedulesHash() => r'82517dd9ca5ca9394506ab0d9cbbe88046961d15';
+
+/// Provides schedules grouped by day of week
+
+@ProviderFor(schedulesGroupedByDay)
+const schedulesGroupedByDayProvider = SchedulesGroupedByDayProvider._();
+
+/// Provides schedules grouped by day of week
+
+final class SchedulesGroupedByDayProvider
+    extends
+        $FunctionalProvider<
+          Map<int, List<VisitSchedule>>,
+          Map<int, List<VisitSchedule>>,
+          Map<int, List<VisitSchedule>>
+        >
+    with $Provider<Map<int, List<VisitSchedule>>> {
+  /// Provides schedules grouped by day of week
+  const SchedulesGroupedByDayProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'schedulesGroupedByDayProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$schedulesGroupedByDayHash();
+
+  @$internal
+  @override
+  $ProviderElement<Map<int, List<VisitSchedule>>> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  Map<int, List<VisitSchedule>> create(Ref ref) {
+    return schedulesGroupedByDay(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Map<int, List<VisitSchedule>> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Map<int, List<VisitSchedule>>>(
+        value,
+      ),
+    );
+  }
+}
+
+String _$schedulesGroupedByDayHash() =>
+    r'3d311903003c65db854cc5216b7a6253036697a9';
+
+/// Provides schedule counts per day
+
+@ProviderFor(scheduleCountsByDay)
+const scheduleCountsByDayProvider = ScheduleCountsByDayProvider._();
+
+/// Provides schedule counts per day
+
+final class ScheduleCountsByDayProvider
+    extends $FunctionalProvider<Map<int, int>, Map<int, int>, Map<int, int>>
+    with $Provider<Map<int, int>> {
+  /// Provides schedule counts per day
+  const ScheduleCountsByDayProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'scheduleCountsByDayProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$scheduleCountsByDayHash();
+
+  @$internal
+  @override
+  $ProviderElement<Map<int, int>> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  Map<int, int> create(Ref ref) {
+    return scheduleCountsByDay(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(Map<int, int> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<Map<int, int>>(value),
+    );
+  }
+}
+
+String _$scheduleCountsByDayHash() =>
+    r'6ea062986f107991de8963b48b13a26ebc6be384';
+
+/// Provides total outlet count for the week
+
+@ProviderFor(weeklyOutletCount)
+const weeklyOutletCountProvider = WeeklyOutletCountProvider._();
+
+/// Provides total outlet count for the week
+
+final class WeeklyOutletCountProvider extends $FunctionalProvider<int, int, int>
+    with $Provider<int> {
+  /// Provides total outlet count for the week
+  const WeeklyOutletCountProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'weeklyOutletCountProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$weeklyOutletCountHash();
+
+  @$internal
+  @override
+  $ProviderElement<int> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  int create(Ref ref) {
+    return weeklyOutletCount(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(int value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<int>(value),
+    );
+  }
+}
+
+String _$weeklyOutletCountHash() => r'5a3fe461392cef9b0c3fd1e40c7b3a8857a6e361';
+
+/// Stream provider for watching schedules
+
+@ProviderFor(watchAllSchedules)
+const watchAllSchedulesProvider = WatchAllSchedulesProvider._();
+
+/// Stream provider for watching schedules
+
+final class WatchAllSchedulesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<VisitSchedule>>,
+          List<VisitSchedule>,
+          Stream<List<VisitSchedule>>
+        >
+    with
+        $FutureModifier<List<VisitSchedule>>,
+        $StreamProvider<List<VisitSchedule>> {
+  /// Stream provider for watching schedules
+  const WatchAllSchedulesProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'watchAllSchedulesProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$watchAllSchedulesHash();
+
+  @$internal
+  @override
+  $StreamProviderElement<List<VisitSchedule>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<VisitSchedule>> create(Ref ref) {
+    return watchAllSchedules(ref);
+  }
+}
+
+String _$watchAllSchedulesHash() => r'2846bc6c5a948dc37c427d72e12aeb228f346484';
+
+/// Stream provider for watching schedules for a specific day
+
+@ProviderFor(watchSchedulesForDay)
+const watchSchedulesForDayProvider = WatchSchedulesForDayFamily._();
+
+/// Stream provider for watching schedules for a specific day
+
+final class WatchSchedulesForDayProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<VisitSchedule>>,
+          List<VisitSchedule>,
+          Stream<List<VisitSchedule>>
+        >
+    with
+        $FutureModifier<List<VisitSchedule>>,
+        $StreamProvider<List<VisitSchedule>> {
+  /// Stream provider for watching schedules for a specific day
+  const WatchSchedulesForDayProvider._({
+    required WatchSchedulesForDayFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'watchSchedulesForDayProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$watchSchedulesForDayHash();
+
+  @override
+  String toString() {
+    return r'watchSchedulesForDayProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $StreamProviderElement<List<VisitSchedule>> $createElement(
+    $ProviderPointer pointer,
+  ) => $StreamProviderElement(pointer);
+
+  @override
+  Stream<List<VisitSchedule>> create(Ref ref) {
+    final argument = this.argument as int;
+    return watchSchedulesForDay(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is WatchSchedulesForDayProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$watchSchedulesForDayHash() =>
+    r'469e1c83234bb8374830fe0a38f55e0c4afbb10e';
+
+/// Stream provider for watching schedules for a specific day
+
+final class WatchSchedulesForDayFamily extends $Family
+    with $FunctionalFamilyOverride<Stream<List<VisitSchedule>>, int> {
+  const WatchSchedulesForDayFamily._()
+    : super(
+        retry: null,
+        name: r'watchSchedulesForDayProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Stream provider for watching schedules for a specific day
+
+  WatchSchedulesForDayProvider call(int dayOfWeek) =>
+      WatchSchedulesForDayProvider._(argument: dayOfWeek, from: this);
+
+  @override
+  String toString() => r'watchSchedulesForDayProvider';
+}
+
+/// Manages schedule sync state
+
+@ProviderFor(ScheduleSyncController)
+const scheduleSyncControllerProvider = ScheduleSyncControllerProvider._();
+
+/// Manages schedule sync state
+final class ScheduleSyncControllerProvider
+    extends $NotifierProvider<ScheduleSyncController, AsyncValue<DateTime?>> {
+  /// Manages schedule sync state
+  const ScheduleSyncControllerProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'scheduleSyncControllerProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$scheduleSyncControllerHash();
+
+  @$internal
+  @override
+  ScheduleSyncController create() => ScheduleSyncController();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AsyncValue<DateTime?> value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AsyncValue<DateTime?>>(value),
+    );
+  }
+}
+
 String _$scheduleSyncControllerHash() =>
     r'5159a8d012f951d4637f0424b2936d4e42491db7';
 
 /// Manages schedule sync state
-///
-/// Copied from [ScheduleSyncController].
-@ProviderFor(ScheduleSyncController)
-final scheduleSyncControllerProvider =
-    AutoDisposeNotifierProvider<
-      ScheduleSyncController,
-      AsyncValue<DateTime?>
-    >.internal(
-      ScheduleSyncController.new,
-      name: r'scheduleSyncControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$scheduleSyncControllerHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
 
-typedef _$ScheduleSyncController = AutoDisposeNotifier<AsyncValue<DateTime?>>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+abstract class _$ScheduleSyncController
+    extends $Notifier<AsyncValue<DateTime?>> {
+  AsyncValue<DateTime?> build();
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build();
+    final ref = this.ref as $Ref<AsyncValue<DateTime?>, AsyncValue<DateTime?>>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<DateTime?>, AsyncValue<DateTime?>>,
+              AsyncValue<DateTime?>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

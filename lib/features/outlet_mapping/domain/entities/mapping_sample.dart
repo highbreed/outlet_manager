@@ -8,7 +8,7 @@ part 'mapping_sample.freezed.dart';
 /// Optional diagnostic fields are only ever populated when the plugin
 /// actually supplied them — never defaulted/synthesized (spec §26).
 @freezed
-class MappingSample with _$MappingSample {
+abstract class MappingSample with _$MappingSample {
   const factory MappingSample({
     /// Local UUID — Isar row identity, distinct from [clientSampleId].
     required String localId,

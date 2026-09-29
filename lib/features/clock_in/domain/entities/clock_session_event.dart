@@ -6,7 +6,7 @@ part 'clock_session_event.g.dart';
 /// Audit trail event for clock-in sessions
 /// Used for disputes, debugging, and analytics
 @freezed
-class ClockSessionEvent with _$ClockSessionEvent {
+abstract class ClockSessionEvent with _$ClockSessionEvent {
   const factory ClockSessionEvent({
     required String id,
     required String sessionId,

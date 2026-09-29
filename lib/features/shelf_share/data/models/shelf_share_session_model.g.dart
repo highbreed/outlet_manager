@@ -212,7 +212,7 @@ const ShelfShareSessionModelSchema = CollectionSchema(
   getId: _shelfShareSessionModelGetId,
   getLinks: _shelfShareSessionModelGetLinks,
   attach: _shelfShareSessionModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _shelfShareSessionModelEstimateSize(

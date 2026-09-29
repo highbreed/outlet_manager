@@ -6,85 +6,186 @@ part of 'shelf_share_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(shelfShareLocalDataSource)
+const shelfShareLocalDataSourceProvider = ShelfShareLocalDataSourceProvider._();
+
+final class ShelfShareLocalDataSourceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ShelfShareLocalDataSource>,
+          ShelfShareLocalDataSource,
+          FutureOr<ShelfShareLocalDataSource>
+        >
+    with
+        $FutureModifier<ShelfShareLocalDataSource>,
+        $FutureProvider<ShelfShareLocalDataSource> {
+  const ShelfShareLocalDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'shelfShareLocalDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$shelfShareLocalDataSourceHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<ShelfShareLocalDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ShelfShareLocalDataSource> create(Ref ref) {
+    return shelfShareLocalDataSource(ref);
+  }
+}
+
 String _$shelfShareLocalDataSourceHash() =>
     r'941a9d2f8cebc41ba0ea3550ae8c61dda9c26d76';
 
-/// See also [shelfShareLocalDataSource].
-@ProviderFor(shelfShareLocalDataSource)
-final shelfShareLocalDataSourceProvider =
-    AutoDisposeFutureProvider<ShelfShareLocalDataSource>.internal(
-      shelfShareLocalDataSource,
-      name: r'shelfShareLocalDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$shelfShareLocalDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(shelfShareRemoteDataSource)
+const shelfShareRemoteDataSourceProvider =
+    ShelfShareRemoteDataSourceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ShelfShareLocalDataSourceRef =
-    AutoDisposeFutureProviderRef<ShelfShareLocalDataSource>;
+final class ShelfShareRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          ShelfShareRemoteDataSource,
+          ShelfShareRemoteDataSource,
+          ShelfShareRemoteDataSource
+        >
+    with $Provider<ShelfShareRemoteDataSource> {
+  const ShelfShareRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'shelfShareRemoteDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$shelfShareRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<ShelfShareRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  ShelfShareRemoteDataSource create(Ref ref) {
+    return shelfShareRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(ShelfShareRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<ShelfShareRemoteDataSource>(value),
+    );
+  }
+}
+
 String _$shelfShareRemoteDataSourceHash() =>
     r'8f067238d7f8e2a3a17638be5499fe0b43f2aafd';
 
-/// See also [shelfShareRemoteDataSource].
-@ProviderFor(shelfShareRemoteDataSource)
-final shelfShareRemoteDataSourceProvider =
-    AutoDisposeProvider<ShelfShareRemoteDataSource>.internal(
-      shelfShareRemoteDataSource,
-      name: r'shelfShareRemoteDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$shelfShareRemoteDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(brandRemoteDataSource)
+const brandRemoteDataSourceProvider = BrandRemoteDataSourceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ShelfShareRemoteDataSourceRef =
-    AutoDisposeProviderRef<ShelfShareRemoteDataSource>;
+final class BrandRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          BrandRemoteDataSource,
+          BrandRemoteDataSource,
+          BrandRemoteDataSource
+        >
+    with $Provider<BrandRemoteDataSource> {
+  const BrandRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'brandRemoteDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$brandRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<BrandRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  BrandRemoteDataSource create(Ref ref) {
+    return brandRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BrandRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BrandRemoteDataSource>(value),
+    );
+  }
+}
+
 String _$brandRemoteDataSourceHash() =>
     r'3b3e906393f7af9d244aa6f5eac1d24636b1deab';
 
-/// See also [brandRemoteDataSource].
-@ProviderFor(brandRemoteDataSource)
-final brandRemoteDataSourceProvider =
-    AutoDisposeProvider<BrandRemoteDataSource>.internal(
-      brandRemoteDataSource,
-      name: r'brandRemoteDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$brandRemoteDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(shelfShareRepository)
+const shelfShareRepositoryProvider = ShelfShareRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BrandRemoteDataSourceRef =
-    AutoDisposeProviderRef<BrandRemoteDataSource>;
+final class ShelfShareRepositoryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<ShelfShareRepository>,
+          ShelfShareRepository,
+          FutureOr<ShelfShareRepository>
+        >
+    with
+        $FutureModifier<ShelfShareRepository>,
+        $FutureProvider<ShelfShareRepository> {
+  const ShelfShareRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'shelfShareRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$shelfShareRepositoryHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<ShelfShareRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<ShelfShareRepository> create(Ref ref) {
+    return shelfShareRepository(ref);
+  }
+}
+
 String _$shelfShareRepositoryHash() =>
     r'ebc669637a71f6ba7c59398886c41d078f842c98';
-
-/// See also [shelfShareRepository].
-@ProviderFor(shelfShareRepository)
-final shelfShareRepositoryProvider =
-    AutoDisposeFutureProvider<ShelfShareRepository>.internal(
-      shelfShareRepository,
-      name: r'shelfShareRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$shelfShareRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef ShelfShareRepositoryRef =
-    AutoDisposeFutureProviderRef<ShelfShareRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

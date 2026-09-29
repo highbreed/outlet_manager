@@ -157,7 +157,7 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
 
     final clockInState = ref.watch(clockInNotifierProvider);
     final existingOverride =
-        ref.watch(overrideForVisitProvider(widget.visitLocalId)).valueOrNull;
+        ref.watch(overrideForVisitProvider(widget.visitLocalId)).value;
     final isOverrideApproved =
         existingOverride?.status == GeofenceOverrideStatus.approved;
     final canClockIn =

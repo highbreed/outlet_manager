@@ -282,7 +282,7 @@ const CustomerProductModelSchema = CollectionSchema(
   getId: _customerProductModelGetId,
   getLinks: _customerProductModelGetLinks,
   attach: _customerProductModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _customerProductModelEstimateSize(

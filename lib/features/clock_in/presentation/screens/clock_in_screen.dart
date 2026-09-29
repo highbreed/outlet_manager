@@ -113,7 +113,7 @@ class _ClockInScreenState extends ConsumerState<ClockInScreen> {
     final override = widget.visitLocalId != null
         ? ref
               .watch(overrideForVisitProvider(widget.visitLocalId!))
-              .valueOrNull
+              .value
         : null;
 
     return AppScaffold(

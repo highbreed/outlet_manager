@@ -166,7 +166,7 @@ const SyncOperationModelSchema = CollectionSchema(
   getId: _syncOperationModelGetId,
   getLinks: _syncOperationModelGetLinks,
   attach: _syncOperationModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _syncOperationModelEstimateSize(

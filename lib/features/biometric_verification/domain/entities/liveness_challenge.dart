@@ -11,7 +11,7 @@ part 'liveness_challenge.freezed.dart';
 /// only, never selectable in release (see "Production safety" in the
 /// Phase 4 plan).
 @freezed
-class LivenessChallenge with _$LivenessChallenge {
+abstract class LivenessChallenge with _$LivenessChallenge {
   const factory LivenessChallenge({
     required String challengeId,
     required List<LivenessAction> actions,

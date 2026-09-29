@@ -8,7 +8,7 @@ import 'registration_pose.dart';
 part 'biometric_enrollment_outcome.freezed.dart';
 
 @freezed
-class BiometricEnrollmentOutcome with _$BiometricEnrollmentOutcome {
+abstract class BiometricEnrollmentOutcome with _$BiometricEnrollmentOutcome {
   const factory BiometricEnrollmentOutcome({
     required bool enrolled,
     BiometricEnrollmentStatus? status,

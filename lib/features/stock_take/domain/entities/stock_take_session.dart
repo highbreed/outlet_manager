@@ -11,7 +11,7 @@ enum SyncState { pending, syncing, synced, failed }
 
 /// Domain entity for stock take session
 @freezed
-class StockTakeSession with _$StockTakeSession {
+abstract class StockTakeSession with _$StockTakeSession {
   const factory StockTakeSession({
     required String localId,
     int? serverId,

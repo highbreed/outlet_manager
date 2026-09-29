@@ -7,7 +7,7 @@ enum WarehouseType { display, backStore }
 
 /// Domain entity for warehouse
 @freezed
-class Warehouse with _$Warehouse {
+abstract class Warehouse with _$Warehouse {
   const factory Warehouse({
     required int id,
     required String warehouseName,

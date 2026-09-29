@@ -4,7 +4,7 @@ part 'forgot_password_state.freezed.dart';
 
 /// State for forgot password flow
 @freezed
-class ForgotPasswordState with _$ForgotPasswordState {
+abstract class ForgotPasswordState with _$ForgotPasswordState {
   const factory ForgotPasswordState.initial() = _Initial;
   const factory ForgotPasswordState.loading() = _Loading;
   const factory ForgotPasswordState.otpSent({required String email}) = _OtpSent;

@@ -6,191 +6,113 @@ part of 'confirm_sale_controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$confirmSaleControllerHash() =>
-    r'3a82eaf5fd9b2079704741caf0cc77babd32f1e6';
-
-/// Copied from Dart SDK
-class _SystemHash {
-  _SystemHash._();
-
-  static int combine(int hash, int value) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + value);
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
-    return hash ^ (hash >> 6);
-  }
-
-  static int finish(int hash) {
-    // ignore: parameter_assignments
-    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
-    // ignore: parameter_assignments
-    hash = hash ^ (hash >> 11);
-    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
-  }
-}
-
-abstract class _$ConfirmSaleController
-    extends BuildlessAutoDisposeAsyncNotifier<ConfirmSaleState> {
-  late final int saleId;
-
-  FutureOr<ConfirmSaleState> build(int saleId);
-}
-
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 /// Loads a pending sale and collects the serial numbers required to
 /// confirm it — exactly `quantity` distinct serials per item.
-///
-/// Copied from [ConfirmSaleController].
+
 @ProviderFor(ConfirmSaleController)
-const confirmSaleControllerProvider = ConfirmSaleControllerFamily();
+const confirmSaleControllerProvider = ConfirmSaleControllerFamily._();
 
 /// Loads a pending sale and collects the serial numbers required to
 /// confirm it — exactly `quantity` distinct serials per item.
-///
-/// Copied from [ConfirmSaleController].
-class ConfirmSaleControllerFamily extends Family<AsyncValue<ConfirmSaleState>> {
+final class ConfirmSaleControllerProvider
+    extends $AsyncNotifierProvider<ConfirmSaleController, ConfirmSaleState> {
   /// Loads a pending sale and collects the serial numbers required to
   /// confirm it — exactly `quantity` distinct serials per item.
-  ///
-  /// Copied from [ConfirmSaleController].
-  const ConfirmSaleControllerFamily();
+  const ConfirmSaleControllerProvider._({
+    required ConfirmSaleControllerFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'confirmSaleControllerProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
 
-  /// Loads a pending sale and collects the serial numbers required to
-  /// confirm it — exactly `quantity` distinct serials per item.
-  ///
-  /// Copied from [ConfirmSaleController].
-  ConfirmSaleControllerProvider call(int saleId) {
-    return ConfirmSaleControllerProvider(saleId);
+  @override
+  String debugGetCreateSourceHash() => _$confirmSaleControllerHash();
+
+  @override
+  String toString() {
+    return r'confirmSaleControllerProvider'
+        ''
+        '($argument)';
   }
 
+  @$internal
   @override
-  ConfirmSaleControllerProvider getProviderOverride(
-    covariant ConfirmSaleControllerProvider provider,
-  ) {
-    return call(provider.saleId);
-  }
-
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
-
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
-
-  @override
-  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
-      _allTransitiveDependencies;
-
-  @override
-  String? get name => r'confirmSaleControllerProvider';
-}
-
-/// Loads a pending sale and collects the serial numbers required to
-/// confirm it — exactly `quantity` distinct serials per item.
-///
-/// Copied from [ConfirmSaleController].
-class ConfirmSaleControllerProvider
-    extends
-        AutoDisposeAsyncNotifierProviderImpl<
-          ConfirmSaleController,
-          ConfirmSaleState
-        > {
-  /// Loads a pending sale and collects the serial numbers required to
-  /// confirm it — exactly `quantity` distinct serials per item.
-  ///
-  /// Copied from [ConfirmSaleController].
-  ConfirmSaleControllerProvider(int saleId)
-    : this._internal(
-        () => ConfirmSaleController()..saleId = saleId,
-        from: confirmSaleControllerProvider,
-        name: r'confirmSaleControllerProvider',
-        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-            ? null
-            : _$confirmSaleControllerHash,
-        dependencies: ConfirmSaleControllerFamily._dependencies,
-        allTransitiveDependencies:
-            ConfirmSaleControllerFamily._allTransitiveDependencies,
-        saleId: saleId,
-      );
-
-  ConfirmSaleControllerProvider._internal(
-    super._createNotifier, {
-    required super.name,
-    required super.dependencies,
-    required super.allTransitiveDependencies,
-    required super.debugGetCreateSourceHash,
-    required super.from,
-    required this.saleId,
-  }) : super.internal();
-
-  final int saleId;
-
-  @override
-  FutureOr<ConfirmSaleState> runNotifierBuild(
-    covariant ConfirmSaleController notifier,
-  ) {
-    return notifier.build(saleId);
-  }
-
-  @override
-  Override overrideWith(ConfirmSaleController Function() create) {
-    return ProviderOverride(
-      origin: this,
-      override: ConfirmSaleControllerProvider._internal(
-        () => create()..saleId = saleId,
-        from: from,
-        name: null,
-        dependencies: null,
-        allTransitiveDependencies: null,
-        debugGetCreateSourceHash: null,
-        saleId: saleId,
-      ),
-    );
-  }
-
-  @override
-  AutoDisposeAsyncNotifierProviderElement<
-    ConfirmSaleController,
-    ConfirmSaleState
-  >
-  createElement() {
-    return _ConfirmSaleControllerProviderElement(this);
-  }
+  ConfirmSaleController create() => ConfirmSaleController();
 
   @override
   bool operator ==(Object other) {
-    return other is ConfirmSaleControllerProvider && other.saleId == saleId;
+    return other is ConfirmSaleControllerProvider && other.argument == argument;
   }
 
   @override
   int get hashCode {
-    var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, saleId.hashCode);
-
-    return _SystemHash.finish(hash);
+    return argument.hashCode;
   }
 }
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-mixin ConfirmSaleControllerRef
-    on AutoDisposeAsyncNotifierProviderRef<ConfirmSaleState> {
-  /// The parameter `saleId` of this provider.
-  int get saleId;
-}
+String _$confirmSaleControllerHash() =>
+    r'6abb54afa70fccec1c2db583245e2fa69f1ff0c0';
 
-class _ConfirmSaleControllerProviderElement
-    extends
-        AutoDisposeAsyncNotifierProviderElement<
+/// Loads a pending sale and collects the serial numbers required to
+/// confirm it — exactly `quantity` distinct serials per item.
+
+final class ConfirmSaleControllerFamily extends $Family
+    with
+        $ClassFamilyOverride<
           ConfirmSaleController,
-          ConfirmSaleState
-        >
-    with ConfirmSaleControllerRef {
-  _ConfirmSaleControllerProviderElement(super.provider);
+          AsyncValue<ConfirmSaleState>,
+          ConfirmSaleState,
+          FutureOr<ConfirmSaleState>,
+          int
+        > {
+  const ConfirmSaleControllerFamily._()
+    : super(
+        retry: null,
+        name: r'confirmSaleControllerProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// Loads a pending sale and collects the serial numbers required to
+  /// confirm it — exactly `quantity` distinct serials per item.
+
+  ConfirmSaleControllerProvider call(int saleId) =>
+      ConfirmSaleControllerProvider._(argument: saleId, from: this);
 
   @override
-  int get saleId => (origin as ConfirmSaleControllerProvider).saleId;
+  String toString() => r'confirmSaleControllerProvider';
 }
 
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+/// Loads a pending sale and collects the serial numbers required to
+/// confirm it — exactly `quantity` distinct serials per item.
+
+abstract class _$ConfirmSaleController
+    extends $AsyncNotifier<ConfirmSaleState> {
+  late final _$args = ref.$arg as int;
+  int get saleId => _$args;
+
+  FutureOr<ConfirmSaleState> build(int saleId);
+  @$mustCallSuper
+  @override
+  void runBuild() {
+    final created = build(_$args);
+    final ref =
+        this.ref as $Ref<AsyncValue<ConfirmSaleState>, ConfirmSaleState>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AsyncValue<ConfirmSaleState>, ConfirmSaleState>,
+              AsyncValue<ConfirmSaleState>,
+              Object?,
+              Object?
+            >;
+    element.handleValue(ref, created);
+  }
+}

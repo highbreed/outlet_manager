@@ -6,9 +6,7 @@ part of 'outlet_visit.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$OutletVisitImpl _$$OutletVisitImplFromJson(
-  Map<String, dynamic> json,
-) => _$OutletVisitImpl(
+_OutletVisit _$OutletVisitFromJson(Map<String, dynamic> json) => _OutletVisit(
   localId: json['localId'] as String,
   serverId: json['serverId'] as String?,
   dailyRouteLocalId: json['dailyRouteLocalId'] as String,
@@ -60,7 +58,7 @@ _$OutletVisitImpl _$$OutletVisitImplFromJson(
       : DateTime.parse(json['lastSyncedAt'] as String),
 );
 
-Map<String, dynamic> _$$OutletVisitImplToJson(_$OutletVisitImpl instance) =>
+Map<String, dynamic> _$OutletVisitToJson(_OutletVisit instance) =>
     <String, dynamic>{
       'localId': instance.localId,
       'serverId': instance.serverId,

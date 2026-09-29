@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// StateProvider moved to this explicit legacy import in Riverpod 3.x.
+import 'package:flutter_riverpod/legacy.dart';
 
 import '../../../../core/network/api_client.dart';
 import '../../data/app_update_repository.dart';

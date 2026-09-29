@@ -4,7 +4,7 @@ part 'brand.freezed.dart';
 
 /// Brand information
 @freezed
-class Brand with _$Brand {
+abstract class Brand with _$Brand {
   const factory Brand({
     required int id,
     required String name,
@@ -14,7 +14,7 @@ class Brand with _$Brand {
 
 /// Agent brand assignment
 @freezed
-class AgentBrand with _$AgentBrand {
+abstract class AgentBrand with _$AgentBrand {
   const factory AgentBrand({
     required int agentId,
     required bool isAllBrands,
@@ -48,7 +48,7 @@ class AgentBrand with _$AgentBrand {
 
 /// Customer brand info for a specific customer
 @freezed
-class CustomerBrandAssignment with _$CustomerBrandAssignment {
+abstract class CustomerBrandAssignment with _$CustomerBrandAssignment {
   const factory CustomerBrandAssignment({
     int? customerId,
     String? customerName,
@@ -70,7 +70,7 @@ class CustomerBrandAssignment with _$CustomerBrandAssignment {
 
 /// Agent's customer-specific brand assignments
 @freezed
-class AgentCustomerBrands with _$AgentCustomerBrands {
+abstract class AgentCustomerBrands with _$AgentCustomerBrands {
   const factory AgentCustomerBrands({
     required int agentId,
     required String agentName,

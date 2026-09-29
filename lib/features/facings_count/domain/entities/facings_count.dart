@@ -11,7 +11,7 @@ enum FacingsSyncState { pending, syncing, synced, failed }
 
 /// Domain entity for a horizontal facings count
 @freezed
-class FacingsCount with _$FacingsCount {
+abstract class FacingsCount with _$FacingsCount {
   const factory FacingsCount({
     /// Local UUID for offline-first
     required String localId,
@@ -91,7 +91,7 @@ class FacingsCount with _$FacingsCount {
 
 /// A single item group's facings count entry
 @freezed
-class FacingsCountItem with _$FacingsCountItem {
+abstract class FacingsCountItem with _$FacingsCountItem {
   const factory FacingsCountItem({
     required int itemGroupId,
     required String itemGroupCode,

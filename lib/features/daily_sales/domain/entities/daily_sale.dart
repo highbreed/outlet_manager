@@ -12,7 +12,7 @@ part 'daily_sale.freezed.dart';
 /// scanned at payment, or to [DailySaleStatus.cancelled] if the customer
 /// backs out. Both `confirmed` and `cancelled` are terminal.
 @freezed
-class DailySale with _$DailySale {
+abstract class DailySale with _$DailySale {
   const factory DailySale({
     required int id,
     required int outletId,

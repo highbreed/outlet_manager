@@ -228,7 +228,7 @@ const FacingsCountModelSchema = CollectionSchema(
   getId: _facingsCountModelGetId,
   getLinks: _facingsCountModelGetLinks,
   attach: _facingsCountModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _facingsCountModelEstimateSize(

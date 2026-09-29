@@ -10,7 +10,7 @@ part 'mapping_ui_state.freezed.dart';
 /// belong on the persisted session (spec §19 — UI state stays thin and
 /// derived, never a parallel source of truth).
 @freezed
-class MappingSessionUiState with _$MappingSessionUiState {
+abstract class MappingSessionUiState with _$MappingSessionUiState {
   const factory MappingSessionUiState({
     MappingSession? session,
 

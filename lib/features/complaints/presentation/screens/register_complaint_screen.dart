@@ -663,8 +663,8 @@ class _RegisterComplaintScreenState
     final sourcesAsync = ref.watch(complaintSourcesProvider);
     final currentUser = ref.watch(currentUserProvider);
 
-    final types = typesAsync.valueOrNull ?? <ComplaintType>[];
-    final sources = sourcesAsync.valueOrNull ?? <ComplaintSource>[];
+    final types = typesAsync.value ?? <ComplaintType>[];
+    final sources = sourcesAsync.value ?? <ComplaintSource>[];
 
     final sourceKey = _complaintSource?.name.toLowerCase() ?? '';
     final isStaff = sourceKey.contains('staff');
@@ -1357,7 +1357,7 @@ class _ZoneDropdown extends ConsumerWidget {
     }
 
     final zonesAsync = ref.watch(locationZonesProvider(regionId!));
-    final zones = zonesAsync.valueOrNull ?? <LocationZone>[];
+    final zones = zonesAsync.value ?? <LocationZone>[];
     final isLoading = zonesAsync.isLoading;
 
     return DropdownSearch<LocationZone>(
@@ -1441,7 +1441,7 @@ class _TownDropdown extends ConsumerWidget {
     }
 
     final townsAsync = ref.watch(locationTownsProvider(zoneId!));
-    final towns = townsAsync.valueOrNull ?? <LocationTown>[];
+    final towns = townsAsync.value ?? <LocationTown>[];
     final isLoading = townsAsync.isLoading;
 
     return DropdownSearch<LocationTown>(
@@ -1549,7 +1549,7 @@ class _RegionDropdown extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final regionsAsync = ref.watch(locationRegionsProvider);
 
-    final regions = regionsAsync.valueOrNull ?? <LocationRegion>[];
+    final regions = regionsAsync.value ?? <LocationRegion>[];
     final isLoading = regionsAsync.isLoading;
 
     return DropdownSearch<LocationRegion>(

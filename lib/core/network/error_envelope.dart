@@ -4,7 +4,7 @@ part 'error_envelope.freezed.dart';
 
 /// Parsed backend error envelope
 @freezed
-class ErrorEnvelope with _$ErrorEnvelope {
+abstract class ErrorEnvelope with _$ErrorEnvelope {
   const factory ErrorEnvelope({
     required String code,
     required String message,

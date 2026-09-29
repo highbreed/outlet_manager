@@ -8,7 +8,7 @@ part 'stock_take_controller.freezed.dart';
 
 /// State for the Stock Take feature
 @freezed
-class StockTakeState with _$StockTakeState {
+abstract class StockTakeState with _$StockTakeState {
   const factory StockTakeState.initial() = _Initial;
   const factory StockTakeState.loading({String? message}) = _Loading;
   const factory StockTakeState.loaded({
@@ -20,8 +20,9 @@ class StockTakeState with _$StockTakeState {
 }
 
 /// Controller for Stock Take operations
-class StockTakeController extends StateNotifier<StockTakeState> {
-  StockTakeController() : super(const StockTakeState.initial());
+class StockTakeController extends Notifier<StockTakeState> {
+  @override
+  StockTakeState build() => const StockTakeState.initial();
 
   /// Load stock take data for a customer
   Future<void> loadForCustomer(int customerId) async {
@@ -129,6 +130,6 @@ class StockTakeController extends StateNotifier<StockTakeState> {
 
 /// Provider for the Stock Take controller
 final stockTakeControllerProvider =
-    StateNotifierProvider<StockTakeController, StockTakeState>((ref) {
-      return StockTakeController();
-    });
+    NotifierProvider<StockTakeController, StockTakeState>(
+      StockTakeController.new,
+    );

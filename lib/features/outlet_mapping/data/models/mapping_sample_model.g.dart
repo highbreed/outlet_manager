@@ -192,7 +192,7 @@ const MappingSampleModelSchema = CollectionSchema(
   getId: _mappingSampleModelGetId,
   getLinks: _mappingSampleModelGetLinks,
   attach: _mappingSampleModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _mappingSampleModelEstimateSize(

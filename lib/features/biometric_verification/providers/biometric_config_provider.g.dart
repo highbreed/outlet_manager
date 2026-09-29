@@ -6,22 +6,47 @@ part of 'biometric_config_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$biometricConfigHash() => r'96c027bee0c0bcc918806d13698e159c8a7a98e2';
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
 
-/// See also [biometricConfig].
 @ProviderFor(biometricConfig)
-final biometricConfigProvider = AutoDisposeProvider<BiometricConfig>.internal(
-  biometricConfig,
-  name: r'biometricConfigProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$biometricConfigHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const biometricConfigProvider = BiometricConfigProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef BiometricConfigRef = AutoDisposeProviderRef<BiometricConfig>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
+final class BiometricConfigProvider
+    extends
+        $FunctionalProvider<BiometricConfig, BiometricConfig, BiometricConfig>
+    with $Provider<BiometricConfig> {
+  const BiometricConfigProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'biometricConfigProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$biometricConfigHash();
+
+  @$internal
+  @override
+  $ProviderElement<BiometricConfig> $createElement($ProviderPointer pointer) =>
+      $ProviderElement(pointer);
+
+  @override
+  BiometricConfig create(Ref ref) {
+    return biometricConfig(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(BiometricConfig value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<BiometricConfig>(value),
+    );
+  }
+}
+
+String _$biometricConfigHash() => r'96c027bee0c0bcc918806d13698e159c8a7a98e2';

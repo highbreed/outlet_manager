@@ -11,7 +11,7 @@ part 'sale_cart_item.freezed.dart';
 /// barcode/search match (VAT-inclusive, same convention as elsewhere in the
 /// app) — the real price is only known once the server confirms the sale.
 @freezed
-class SaleCartItem with _$SaleCartItem {
+abstract class SaleCartItem with _$SaleCartItem {
   const factory SaleCartItem({
     required String barcode,
     required String productCode,

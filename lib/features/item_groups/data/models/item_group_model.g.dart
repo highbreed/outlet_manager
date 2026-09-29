@@ -77,7 +77,7 @@ const ItemGroupModelSchema = CollectionSchema(
   getId: _itemGroupModelGetId,
   getLinks: _itemGroupModelGetLinks,
   attach: _itemGroupModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _itemGroupModelEstimateSize(

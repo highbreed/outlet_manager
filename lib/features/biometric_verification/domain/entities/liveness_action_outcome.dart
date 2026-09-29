@@ -9,7 +9,7 @@ part 'liveness_action_outcome.freezed.dart';
 /// observations have been seen (for the hold-duration requirement; see
 /// `BiometricConfig.minConsecutiveHoldFrames`/`minHoldDuration`).
 @freezed
-class LivenessActionOutcome with _$LivenessActionOutcome {
+abstract class LivenessActionOutcome with _$LivenessActionOutcome {
   const factory LivenessActionOutcome({
     required LivenessAction action,
     @Default(false) bool satisfied,

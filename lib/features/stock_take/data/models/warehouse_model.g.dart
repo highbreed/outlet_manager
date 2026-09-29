@@ -93,7 +93,7 @@ const WarehouseModelSchema = CollectionSchema(
   getId: _warehouseModelGetId,
   getLinks: _warehouseModelGetLinks,
   attach: _warehouseModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _warehouseModelEstimateSize(

@@ -5,7 +5,7 @@ part 'skip_reason.g.dart';
 
 /// Skip reason entity representing a reason for skipping a visit.
 @freezed
-class SkipReason with _$SkipReason {
+abstract class SkipReason with _$SkipReason {
   const factory SkipReason({
     required int id,
     required String code,

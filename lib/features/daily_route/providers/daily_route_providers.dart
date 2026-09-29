@@ -355,7 +355,7 @@ List<OutletVisit> visitList(Ref ref) {
 /// clocked in" on cold start.
 @riverpod
 OutletVisit? activeVisit(Ref ref) {
-  final dayStatus = ref.watch(dayStatusPollProvider).valueOrNull;
+  final dayStatus = ref.watch(dayStatusPollProvider).value;
   if (dayStatus != null) {
     return dayStatus.route?.activeVisit;
   }
@@ -635,7 +635,7 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
     final repo = ref.read(outletVisitRepositoryProvider);
     final result = await repo.getLatestOverrideForVisit(visitLocalId);
     final existing = result.fold((_) => null, (v) => v);
-    if (existing == null || state.valueOrNull != null) return;
+    if (existing == null || state.value != null) return;
 
     state = AsyncData(existing);
 
@@ -646,7 +646,7 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
       // validation is the real backstop if this guess is stale.
       (_) {},
       (updated) {
-        if (state.valueOrNull?.localId == existing.localId) {
+        if (state.value?.localId == existing.localId) {
           state = AsyncData(updated);
         }
       },
@@ -737,7 +737,7 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
 /// with "still loading" by defaulting one into the other.
 @riverpod
 LunchBreak? lunchBreak(Ref ref) {
-  return ref.watch(dayStatusPollProvider).valueOrNull?.lunchBreak;
+  return ref.watch(dayStatusPollProvider).value?.lunchBreak;
 }
 
 /// Notifier for starting/ending today's lunch break.

@@ -6,9 +6,9 @@ part of 'geofence_override_request.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$GeofenceOverrideRequestImpl _$$GeofenceOverrideRequestImplFromJson(
+_GeofenceOverrideRequest _$GeofenceOverrideRequestFromJson(
   Map<String, dynamic> json,
-) => _$GeofenceOverrideRequestImpl(
+) => _GeofenceOverrideRequest(
   localId: json['localId'] as String,
   serverId: json['serverId'] as String?,
   outletVisitLocalId: json['outletVisitLocalId'] as String,
@@ -37,8 +37,8 @@ _$GeofenceOverrideRequestImpl _$$GeofenceOverrideRequestImplFromJson(
   syncError: json['syncError'] as String?,
 );
 
-Map<String, dynamic> _$$GeofenceOverrideRequestImplToJson(
-  _$GeofenceOverrideRequestImpl instance,
+Map<String, dynamic> _$GeofenceOverrideRequestToJson(
+  _GeofenceOverrideRequest instance,
 ) => <String, dynamic>{
   'localId': instance.localId,
   'serverId': instance.serverId,

@@ -76,7 +76,7 @@ const PermissionCacheModelSchema = CollectionSchema(
   getId: _permissionCacheModelGetId,
   getLinks: _permissionCacheModelGetLinks,
   attach: _permissionCacheModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _permissionCacheModelEstimateSize(

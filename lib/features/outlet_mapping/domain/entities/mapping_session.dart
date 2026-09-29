@@ -12,7 +12,7 @@ part 'mapping_session.freezed.dart';
 /// (recovery, ownership, restoration, UI display) without a network round
 /// trip.
 @freezed
-class MappingSession with _$MappingSession {
+abstract class MappingSession with _$MappingSession {
   const MappingSession._();
 
   const factory MappingSession({

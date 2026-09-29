@@ -15,7 +15,7 @@ part 'visit_schedule.g.dart';
 /// **UI Usage:**
 /// Group by `dayOfWeek` to show "Monday's route", "Tuesday's route", etc.
 @freezed
-class VisitSchedule with _$VisitSchedule {
+abstract class VisitSchedule with _$VisitSchedule {
   const VisitSchedule._();
 
   const factory VisitSchedule({

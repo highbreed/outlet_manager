@@ -199,7 +199,7 @@ const GeofenceOverrideModelSchema = CollectionSchema(
   getId: _geofenceOverrideModelGetId,
   getLinks: _geofenceOverrideModelGetLinks,
   attach: _geofenceOverrideModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _geofenceOverrideModelEstimateSize(

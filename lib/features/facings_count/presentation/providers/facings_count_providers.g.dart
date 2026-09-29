@@ -6,65 +6,139 @@ part of 'facings_count_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint, type=warning
+
+@ProviderFor(facingsCountLocalDataSource)
+const facingsCountLocalDataSourceProvider =
+    FacingsCountLocalDataSourceProvider._();
+
+final class FacingsCountLocalDataSourceProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<FacingsCountLocalDataSource>,
+          FacingsCountLocalDataSource,
+          FutureOr<FacingsCountLocalDataSource>
+        >
+    with
+        $FutureModifier<FacingsCountLocalDataSource>,
+        $FutureProvider<FacingsCountLocalDataSource> {
+  const FacingsCountLocalDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'facingsCountLocalDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$facingsCountLocalDataSourceHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<FacingsCountLocalDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<FacingsCountLocalDataSource> create(Ref ref) {
+    return facingsCountLocalDataSource(ref);
+  }
+}
+
 String _$facingsCountLocalDataSourceHash() =>
     r'f6a26e81c8485ce770e825f91c3874ec7c61827f';
 
-/// See also [facingsCountLocalDataSource].
-@ProviderFor(facingsCountLocalDataSource)
-final facingsCountLocalDataSourceProvider =
-    AutoDisposeFutureProvider<FacingsCountLocalDataSource>.internal(
-      facingsCountLocalDataSource,
-      name: r'facingsCountLocalDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$facingsCountLocalDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(facingsCountRemoteDataSource)
+const facingsCountRemoteDataSourceProvider =
+    FacingsCountRemoteDataSourceProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FacingsCountLocalDataSourceRef =
-    AutoDisposeFutureProviderRef<FacingsCountLocalDataSource>;
+final class FacingsCountRemoteDataSourceProvider
+    extends
+        $FunctionalProvider<
+          FacingsCountRemoteDataSource,
+          FacingsCountRemoteDataSource,
+          FacingsCountRemoteDataSource
+        >
+    with $Provider<FacingsCountRemoteDataSource> {
+  const FacingsCountRemoteDataSourceProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'facingsCountRemoteDataSourceProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$facingsCountRemoteDataSourceHash();
+
+  @$internal
+  @override
+  $ProviderElement<FacingsCountRemoteDataSource> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
+
+  @override
+  FacingsCountRemoteDataSource create(Ref ref) {
+    return facingsCountRemoteDataSource(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(FacingsCountRemoteDataSource value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<FacingsCountRemoteDataSource>(value),
+    );
+  }
+}
+
 String _$facingsCountRemoteDataSourceHash() =>
     r'47978a4f2898667b4649de66ac317e22b3c0d34e';
 
-/// See also [facingsCountRemoteDataSource].
-@ProviderFor(facingsCountRemoteDataSource)
-final facingsCountRemoteDataSourceProvider =
-    AutoDisposeProvider<FacingsCountRemoteDataSource>.internal(
-      facingsCountRemoteDataSource,
-      name: r'facingsCountRemoteDataSourceProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$facingsCountRemoteDataSourceHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
+@ProviderFor(facingsCountRepository)
+const facingsCountRepositoryProvider = FacingsCountRepositoryProvider._();
 
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FacingsCountRemoteDataSourceRef =
-    AutoDisposeProviderRef<FacingsCountRemoteDataSource>;
+final class FacingsCountRepositoryProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<FacingsCountRepository>,
+          FacingsCountRepository,
+          FutureOr<FacingsCountRepository>
+        >
+    with
+        $FutureModifier<FacingsCountRepository>,
+        $FutureProvider<FacingsCountRepository> {
+  const FacingsCountRepositoryProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'facingsCountRepositoryProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$facingsCountRepositoryHash();
+
+  @$internal
+  @override
+  $FutureProviderElement<FacingsCountRepository> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<FacingsCountRepository> create(Ref ref) {
+    return facingsCountRepository(ref);
+  }
+}
+
 String _$facingsCountRepositoryHash() =>
     r'07ebc90b62b68e1514cae58a1e9ef79144de87e1';
-
-/// See also [facingsCountRepository].
-@ProviderFor(facingsCountRepository)
-final facingsCountRepositoryProvider =
-    AutoDisposeFutureProvider<FacingsCountRepository>.internal(
-      facingsCountRepository,
-      name: r'facingsCountRepositoryProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$facingsCountRepositoryHash,
-      dependencies: null,
-      allTransitiveDependencies: null,
-    );
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef FacingsCountRepositoryRef =
-    AutoDisposeFutureProviderRef<FacingsCountRepository>;
-// ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

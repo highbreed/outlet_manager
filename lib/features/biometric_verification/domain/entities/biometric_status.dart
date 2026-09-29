@@ -12,7 +12,7 @@ part 'biometric_status.freezed.dart';
 /// gate, immediately before a clock-in decision), not trusted from a
 /// long-lived cache.
 @freezed
-class BiometricStatus with _$BiometricStatus {
+abstract class BiometricStatus with _$BiometricStatus {
   const factory BiometricStatus({
     required BiometricEnrollmentStatus status,
     required bool canEnroll,

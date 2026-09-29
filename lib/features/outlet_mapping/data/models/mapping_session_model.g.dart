@@ -232,7 +232,7 @@ const MappingSessionModelSchema = CollectionSchema(
   getId: _mappingSessionModelGetId,
   getLinks: _mappingSessionModelGetLinks,
   attach: _mappingSessionModelAttach,
-  version: '3.3.0-dev.1',
+  version: '3.3.2',
 );
 
 int _mappingSessionModelEstimateSize(
