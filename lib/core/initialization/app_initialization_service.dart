@@ -54,6 +54,18 @@ class AppInitializationService {
   // since nothing ever actually failed.
   static const _phaseTimeout = Duration(seconds: 15);
 
+  // The database phase gets a longer budget than every other phase (see
+  // its own doc comment below) — confirmed in the field (2026-09-30) that
+  // 15s isn't always enough for legitimate lock contention against
+  // Isar/mdbx to clear on its own (another isolate/engine briefly holding
+  // the same environment open), producing a hard, user-facing
+  // TimeoutException for a wait that would have resolved itself in a few
+  // more seconds. IsarDatabase's own `_openingFuture` cache means this
+  // costs nothing extra on a normal fast open, and makes a manual "Retry"
+  // tap after this timeout safe too — it awaits the same in-flight attempt
+  // rather than racing a second one.
+  static const _databasePhaseTimeout = Duration(seconds: 45);
+
   /// Initialize all core services in dependency order (with Ref from provider)
   /// Returns result with success status and service health info
   Future<InitializationResult> initializeWithRef(Ref ref) async {
@@ -118,21 +130,24 @@ class AppInitializationService {
 
   /// Phase 1: Initialize database
   ///
-  /// Unlike every phase below, this one has no timeout — confirmed the one
-  /// gap left after the FCM hang above was fixed. `IsarDatabase
-  /// .getInstance()` can genuinely hang rather than error on some devices:
+  /// Gets a longer timeout than every other phase below (see
+  /// `_databasePhaseTimeout`'s doc comment) — `IsarDatabase.getInstance()`
+  /// can genuinely hang rather than error on some devices:
   /// `getApplicationDocumentsDirectory()` is a platform-channel call that
   /// can stall on certain OEM Android skins, and `Isar.open()` itself can
-  /// block waiting on a native file lock if a previous process was
-  /// force-stopped/OOM-killed mid-write and never released it cleanly —
-  /// both are device/history-dependent, matching "some phones, not
-  /// others" rather than a universal failure. A timeout turns that
+  /// block waiting on a native file lock if another isolate/engine (or a
+  /// previous process force-stopped/OOM-killed mid-write) hasn't released
+  /// it yet — both are device/history-dependent, matching "some phones,
+  /// not others" rather than a universal failure. A timeout turns that
   /// indefinite hang into the same clear, catchable failure every other
-  /// phase already gets.
+  /// phase already gets, just with more room for a legitimate wait to
+  /// resolve on its own first.
   Future<void> _initializeDatabase() async {
     try {
       developer.log('📦 Initializing database...');
-      final isar = await IsarDatabase.getInstance().timeout(_phaseTimeout);
+      final isar = await IsarDatabase.getInstance().timeout(
+        _databasePhaseTimeout,
+      );
       _serviceStatus['database'] = isar.isOpen;
       developer.log('✓ Database initialized');
     } catch (e) {

@@ -509,9 +509,29 @@ class _DeviceRegistrationListener extends ConsumerStatefulWidget {
 
 class _DeviceRegistrationListenerState
     extends ConsumerState<_DeviceRegistrationListener> {
+  ProviderSubscription<AuthState>? _authSubscription;
+
   @override
-  Widget build(BuildContext context) {
-    ref.listen<AuthState>(authControllerProvider, (previous, next) {
+  void initState() {
+    super.initState();
+    // listenManual + fireImmediately (from initState, not build's ref.listen
+    // — that overload doesn't support fireImmediately) — without it this
+    // only fires on a FUTURE AuthState transition. AuthController.build()
+    // starts at initial() and resolves to authenticated() asynchronously
+    // (session restore from secure storage); this widget only mounts once
+    // appInitialization resolves and the router builds, which can easily
+    // happen AFTER that resolution already completed (fast Keystore read,
+    // cached user) — a race that, when lost, meant this listener attached
+    // to an already-authenticated state with no edge left to observe, so
+    // recoverForCurrentUser() silently never ran that app start. Confirmed
+    // as the cause of mapping sessions stuck in "uploadPending" forever
+    // after finishing a capture while offline: recovery is the only thing
+    // that resumes draining toward /finish on a cold start, and this race
+    // could skip it entirely, intermittently, with nothing else retrying.
+    _authSubscription = ref.listenManual<AuthState>(authControllerProvider, (
+      previous,
+      next,
+    ) {
       if (next is Authenticated) {
         _registerFcmToken();
         ref.read(backgroundGeolocationServiceProvider).ensureDeviceLocationToken();
@@ -520,7 +540,17 @@ class _DeviceRegistrationListenerState
         // effort: never blocks app startup on this.
         ref.read(mappingSessionNotifierProvider.notifier).recoverForCurrentUser();
       }
-    });
+    }, fireImmediately: true);
+  }
+
+  @override
+  void dispose() {
+    _authSubscription?.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return widget.child;
   }
 

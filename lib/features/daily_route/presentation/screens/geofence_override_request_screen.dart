@@ -344,6 +344,26 @@ class _GeofenceOverrideRequestScreenState
                         ref.invalidate(geofenceOverrideNotifierProvider);
                         context.pop();
                       },
+                      // Rejected/expired is a terminal state with nothing
+                      // left to resume — unlike onCancel, this stays on
+                      // screen and clears state back to null so the
+                      // override == null branch above renders _RequestForm
+                      // again. Without this, a rejected request was a dead
+                      // end: loadExistingForVisit's lookup is deliberately
+                      // status-agnostic (so an approved/pending override
+                      // survives a screen revisit, see its own doc
+                      // comment), so it keeps finding and re-loading the
+                      // same rejected record every time this screen opens
+                      // for this visit — the employee could never submit a
+                      // new request, only back out. The use case itself
+                      // only ever blocks on an existing *pending* override
+                      // (RequestGeofenceOverrideUseCase.call), so a fresh
+                      // request after a rejection was always safe — the
+                      // gap was purely this screen having no path back to
+                      // the form.
+                      onRequestAgain: () {
+                        ref.invalidate(geofenceOverrideNotifierProvider);
+                      },
                     );
                   },
                 ),
@@ -573,6 +593,7 @@ class _OverrideStatusBody extends StatelessWidget {
   final VoidCallback onRefresh;
   final VoidCallback onClockIn;
   final VoidCallback onCancel;
+  final VoidCallback onRequestAgain;
 
   const _OverrideStatusBody({
     required this.request,
@@ -580,6 +601,7 @@ class _OverrideStatusBody extends StatelessWidget {
     required this.onRefresh,
     required this.onClockIn,
     required this.onCancel,
+    required this.onRequestAgain,
   });
 
   @override
@@ -614,8 +636,15 @@ class _OverrideStatusBody extends StatelessWidget {
               onPressed: onClockIn,
             ),
 
-          if (request.isRejected || request.isExpired)
+          if (request.isRejected || request.isExpired) ...[
+            PrimaryButton(
+              label: 'Request New Override',
+              trailingIcon: Icons.refresh,
+              onPressed: onRequestAgain,
+            ),
+            const SizedBox(height: 12),
             SecondaryButton(label: 'Back to Visit', onPressed: onCancel),
+          ],
         ],
       ),
     );

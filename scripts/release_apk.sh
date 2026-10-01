@@ -32,8 +32,6 @@ esac
 # arm64-v8a to any 64-bit-capable device instead, sidestepping the crash
 # without that migration - remove this once the isar upgrade lands.
 flutter build apk --release \
-  --target-platform android-arm64,android-x64 \
-  --split-per-abi \
   --dart-define=APP_REGION="$REGION" \
   --dart-define=APP_ENV=prod
 

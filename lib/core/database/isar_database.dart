@@ -70,52 +70,64 @@ class IsarDatabase {
     return _openingFuture ??= _open();
   }
 
+  // Field-reported regression (2026-09-30, the day after the
+  // isar_community 3.3.2 upgrade shipped — see that migration's commit).
+  // Two different devices hit two different symptoms of the same
+  // underlying cause: one got "IsarError: Cannot open Environment:
+  // MdbxError (11). Try again" (mdbx's EAGAIN — "locked by someone else,
+  // try again", not corruption); another just hung until
+  // AppInitializationService's phase timeout killed it ("TimeoutException
+  // ... Future not completed"). Both are consistent with lock contention
+  // on the same on-disk mdbx environment, opened from more than one
+  // isolate/engine independently: `backgroundGeolocationHeadlessTask` (see
+  // background_geolocation_service.dart) runs in "a fresh, minimal engine
+  // that never ran this app's own main()" on every 5-minute heartbeat
+  // while fully terminated, and calls IsarDatabase.getInstance() from THAT
+  // isolate — which has its own separate static `_instance`/
+  // `_openingFuture` (Dart statics aren't shared across isolates), so it
+  // always calls Isar.open() fresh rather than reusing the main engine's
+  // already-open handle. If that headless open ever overlaps with the
+  // main app's own startup open, mdbx serializes the two: the loser either
+  // gets an immediate EAGAIN or blocks until the winner closes.
+  //
+  // Only the fast-throwing EAGAIN case is retried HERE, immediately and
+  // safely — the previous attempt has genuinely completed (thrown) before
+  // the next one starts, so there's no risk of two concurrent native
+  // Isar.open() calls for the same name in this isolate. The hang case is
+  // deliberately NOT handled by abandoning-and-retrying an attempt from
+  // here: per this class's own `_openingFuture` doc comment, a Dart-level
+  // timeout doesn't cancel the underlying native call, so racing a second
+  // attempt on top of a still-running first one risks exactly the
+  // `IsarError('Instance has already been opened.')` collision that cache
+  // exists to prevent. The hang case is instead handled by
+  // AppInitializationService giving the one real, legitimately-slow
+  // attempt more time before its outer phase timeout gives up — see that
+  // file's own comment on the database phase.
+  static const _lockRetryAttempts = 4;
+  static const _lockRetryBaseDelay = Duration(milliseconds: 500);
+
+  static bool _isTransientLockError(Object e) =>
+      e.toString().contains('Cannot open Environment') ||
+      e.toString().contains('MdbxError');
+
   static Future<Isar> _open() async {
     try {
       final dir = await getApplicationDocumentsDirectory();
 
-      final isar = await Isar.open(
-        [
-          ClockInSessionModelSchema,
-          ClockSessionEventModelSchema,
-          EntityIdMapModelSchema,
-          SyncOperationModelSchema,
-          AttachmentModelSchema,
-          PermissionCacheModelSchema,
-          PriceCacheModelSchema,
-          StockTakeEntryModelSchema,
-          RouteModelSchema,
-          RouteActivationModelSchema,
-          // Daily Route Feature Collections
-          DailyRouteModelSchema,
-          OutletVisitModelSchema,
-          GeofenceOverrideModelSchema,
-          // Location Tracking Feature Collections
-          LocationPingModelSchema,
-          // Visit Schedules Feature Collections
-          VisitScheduleModelSchema,
-          // Stock Take Feature Collections
-          AgentBrandModelSchema,
-          CustomerProductModelSchema,
-          WarehouseModelSchema,
-          StockTakeSessionModelSchema,
-          StockTakeItemModelSchema,
-          SerialNumberEntryModelSchema,
-          // Item Groups Feature Collections
-          ItemGroupModelSchema,
-          // Shelf Share Feature Collections
-          ShelfShareSessionModelSchema,
-          // Facings Count Feature Collections
-          FacingsCountModelSchema,
-          // Daily Sales Feature Collections
-          DailySaleModelSchema,
-          // Outlet Mapping Feature Collections
-          MappingSessionModelSchema,
-          MappingSampleModelSchema,
-        ],
-        directory: dir.path,
-        name: 'outlet_manager',
-      );
+      Isar isar;
+      var attempt = 0;
+      while (true) {
+        try {
+          isar = await _openIsar(dir.path);
+          break;
+        } catch (e) {
+          attempt++;
+          if (attempt >= _lockRetryAttempts || !_isTransientLockError(e)) {
+            rethrow;
+          }
+          await Future.delayed(_lockRetryBaseDelay * attempt);
+        }
+      }
 
       _instance = isar;
       return isar;
@@ -125,6 +137,51 @@ class IsarDatabase {
       // start a fresh attempt rather than replaying a failed one forever.
       _openingFuture = null;
     }
+  }
+
+  static Future<Isar> _openIsar(String directoryPath) {
+    return Isar.open(
+      [
+        ClockInSessionModelSchema,
+        ClockSessionEventModelSchema,
+        EntityIdMapModelSchema,
+        SyncOperationModelSchema,
+        AttachmentModelSchema,
+        PermissionCacheModelSchema,
+        PriceCacheModelSchema,
+        StockTakeEntryModelSchema,
+        RouteModelSchema,
+        RouteActivationModelSchema,
+        // Daily Route Feature Collections
+        DailyRouteModelSchema,
+        OutletVisitModelSchema,
+        GeofenceOverrideModelSchema,
+        // Location Tracking Feature Collections
+        LocationPingModelSchema,
+        // Visit Schedules Feature Collections
+        VisitScheduleModelSchema,
+        // Stock Take Feature Collections
+        AgentBrandModelSchema,
+        CustomerProductModelSchema,
+        WarehouseModelSchema,
+        StockTakeSessionModelSchema,
+        StockTakeItemModelSchema,
+        SerialNumberEntryModelSchema,
+        // Item Groups Feature Collections
+        ItemGroupModelSchema,
+        // Shelf Share Feature Collections
+        ShelfShareSessionModelSchema,
+        // Facings Count Feature Collections
+        FacingsCountModelSchema,
+        // Daily Sales Feature Collections
+        DailySaleModelSchema,
+        // Outlet Mapping Feature Collections
+        MappingSessionModelSchema,
+        MappingSampleModelSchema,
+      ],
+      directory: directoryPath,
+      name: 'outlet_manager',
+    );
   }
 
   static Future<void> close() async {
