@@ -709,14 +709,33 @@ class DailyRouteRepositoryImpl implements DailyRouteRepository {
       final statusCode = e.response!.statusCode;
       final data = e.response!.data;
 
-      // Check if error is nested under 'detail' (FastAPI format)
-      final errorData = data is Map && data.containsKey('detail')
-          ? data['detail'] as Map<String, dynamic>?
-          : data as Map<String, dynamic>?;
+      // Normalize to the structured {"error"/"error_code", "message"}
+      // shape the rest of this method expects. FastAPI's `detail` field
+      // is sometimes a plain string (e.g. a bare `HTTPException(detail=
+      // "...")`, not the structured {"error": ..., "message": ...}
+      // envelope the specific error-code branches below assume) — a
+      // blind `as Map<String, dynamic>?` cast on that shape crashed in
+      // production (Sentry 142921585, fatal) instead of falling back to
+      // a plain error message. Same defensive fallback if `data` itself
+      // is a bare string with no `detail` wrapper at all.
+      Map<String, dynamic>? errorData;
+      String? fallbackMessage;
+      if (data is Map) {
+        final detail = data['detail'];
+        if (detail is Map) {
+          errorData = detail.cast<String, dynamic>();
+        } else if (detail is String) {
+          fallbackMessage = detail;
+        } else {
+          errorData = data.cast<String, dynamic>();
+        }
+      } else if (data is String) {
+        fallbackMessage = data;
+      }
 
       final errorCode =
           errorData?['error'] as String? ?? errorData?['error_code'] as String?;
-      final message = errorData?['message'] as String?;
+      final message = errorData?['message'] as String? ?? fallbackMessage;
 
       if (errorCode == 'ROUTE_BLOCKED') {
         final blockedDate = errorData?['blocked_route_date'] as String?;
