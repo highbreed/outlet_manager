@@ -50,6 +50,17 @@ class AuthController extends _$AuthController {
       final hasTokens = await _repository.hasTokens().timeout(
         _restoreSessionTimeout,
       );
+      // Field-confirmed (UnmountedRefException, fatal): this runs fire-
+      // and-forget from build() itself, so if nothing is watching this
+      // autoDispose provider yet at that moment (a real race right at app
+      // startup, before the router/other widgets mount), Riverpod can
+      // dispose this instance before this detached task finishes — any
+      // `state =` write after that throws instead of silently no-opping.
+      // Same Riverpod 3.x disposal-race class as the daily_route
+      // notifiers fixed earlier — checked after every await below,
+      // including inside the catch block, since the disposal can happen
+      // during either await.
+      if (!ref.mounted) return;
 
       if (!hasTokens) {
         state = const AuthState.unauthenticated();
@@ -61,6 +72,7 @@ class AuthController extends _$AuthController {
       final result = await _repository.getCurrentUser().timeout(
         _restoreSessionTimeout,
       );
+      if (!ref.mounted) return;
 
       result.fold(
         (failure) {
@@ -72,6 +84,7 @@ class AuthController extends _$AuthController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return;
       // Fail safe to unauthenticated rather than leave state stuck: worst
       // case a legitimately-logged-in user sees one extra login prompt,
       // instead of the app being dead on the splash screen.
@@ -90,6 +103,9 @@ class AuthController extends _$AuthController {
       email: email,
       password: password,
     );
+    // See _restoreSession's matching comment — same Riverpod 3.x
+    // disposal-race, same fix.
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) {
@@ -114,6 +130,9 @@ class AuthController extends _$AuthController {
     await _repository.logout();
     await IsarDatabase.clearStockTakeCache();
 
+    // See _restoreSession's matching comment — same Riverpod 3.x
+    // disposal-race, same fix.
+    if (!ref.mounted) return;
     state = const AuthState.unauthenticated();
   }
 
@@ -132,6 +151,9 @@ class AuthController extends _$AuthController {
     ref.read(deviceRegistrationRepositoryProvider).deregisterDevice().then((_) {
       _repository.logout().then((_) {
         IsarDatabase.clearStockTakeCache().then((_) {
+          // See _restoreSession's matching comment — same Riverpod 3.x
+          // disposal-race, same fix.
+          if (!ref.mounted) return;
           state = const AuthState.unauthenticated();
         });
       });
