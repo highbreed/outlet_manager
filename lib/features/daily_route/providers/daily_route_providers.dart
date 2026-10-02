@@ -420,6 +420,13 @@ class RouteActivationNotifier extends _$RouteActivationNotifier {
     state = const AsyncLoading();
     final useCase = ref.read(activateRouteUseCaseProvider);
     final result = await useCase.call(routeDate: routeDate);
+    // Field-confirmed (Sentry 150864253, fatal, UnmountedRefException):
+    // Riverpod 3.x throws rather than silently no-opping once this
+    // provider's been disposed — autoDispose + backgrounding/low-memory
+    // during this await is enough to dispose it before the response
+    // lands. Must check before touching `state` or calling `ref.invalidate`
+    // below, not just before the invalidate calls specifically.
+    if (!ref.mounted) return;
     state = result.fold((failure) => AsyncError(failure, StackTrace.current), (
       route,
     ) {
@@ -457,6 +464,9 @@ class ClockInNotifier extends _$ClockInNotifier {
       deviceId: deviceId,
       notes: notes,
     );
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix.
+    if (!ref.mounted) return;
     state = result.fold((failure) => AsyncError(failure, StackTrace.current), (
       visit,
     ) {
@@ -504,6 +514,12 @@ class ClockOutNotifier extends _$ClockOutNotifier {
       notes: notes,
       forceClockOut: forceClockOut,
     );
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix. Callers already separately
+    // check their own widget's mounted state before acting on the
+    // returned AsyncValue, so returning the pre-call state as a no-op
+    // signal here is safe.
+    if (!ref.mounted) return state;
     final newState = result.fold<AsyncValue<OutletVisit?>>(
       (failure) => AsyncError(failure, StackTrace.current),
       (visit) {
@@ -539,6 +555,9 @@ class SkipVisitNotifier extends _$SkipVisitNotifier {
       skipReasonId: skipReasonId,
       skipNotes: skipNotes,
     );
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix.
+    if (!ref.mounted) return;
     state = result.fold((failure) => AsyncError(failure, StackTrace.current), (
       visit,
     ) {
@@ -568,6 +587,9 @@ class RouteCloseNotifier extends _$RouteCloseNotifier {
       closingNotes: closingNotes,
       skippedVisits: skippedVisits,
     );
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix.
+    if (!ref.mounted) return;
     state = result.fold((failure) => AsyncError(failure, StackTrace.current), (
       route,
     ) {
@@ -634,12 +656,17 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
   Future<void> loadExistingForVisit(String visitLocalId) async {
     final repo = ref.read(outletVisitRepositoryProvider);
     final result = await repo.getLatestOverrideForVisit(visitLocalId);
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix — checked after every await
+    // below, not just the first.
+    if (!ref.mounted) return;
     final existing = result.fold((_) => null, (v) => v);
     if (existing == null || state.value != null) return;
 
     state = AsyncData(existing);
 
     final refreshed = await repo.refreshOverrideStatus(existing.localId);
+    if (!ref.mounted) return;
     refreshed.fold(
       // Fail open on the freshness check itself — offline shouldn't wipe
       // out the local value just loaded; the backend's own clock-in-side
@@ -669,6 +696,9 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
       accuracyMeters: accuracyMeters,
       reason: reason,
     );
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix.
+    if (!ref.mounted) return;
     state = result.fold(
       (failure) => AsyncError(failure, StackTrace.current),
       (request) => AsyncData(request),
@@ -679,6 +709,7 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
     state = const AsyncLoading();
     final repo = ref.read(outletVisitRepositoryProvider);
     final result = await repo.refreshOverrideStatus(overrideLocalId);
+    if (!ref.mounted) return;
     state = result.fold(
       (failure) => AsyncError(failure, StackTrace.current),
       (request) => AsyncData(request),
@@ -701,6 +732,9 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
       deviceId: deviceId,
       notes: notes,
     );
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix.
+    if (!ref.mounted) return;
     // This returns OutletVisit, not GeofenceOverrideRequest
     // But we want to clear our state and invalidate route
     result.fold(
@@ -768,6 +802,10 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
       longitude: longitude,
       accuracyMeters: accuracyMeters,
     );
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix — checked again after the
+    // inner reconciliation await below, not just here.
+    if (!ref.mounted) return;
     await result.fold(
       (failure) async {
         ref.invalidate(dayStatusPollProvider);
@@ -781,10 +819,12 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
         // added.
         try {
           final reconciled = await ref.read(dayStatusPollProvider.future);
+          if (!ref.mounted) return;
           state = reconciled.lunchBreak.state == LunchBreakState.onBreak
               ? const AsyncData(null)
               : AsyncError(failure, StackTrace.current);
         } catch (_) {
+          if (!ref.mounted) return;
           state = AsyncError(failure, StackTrace.current);
         }
       },
@@ -799,6 +839,10 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
     state = const AsyncLoading();
     final repo = ref.read(dailyRouteRepositoryProvider);
     final result = await repo.endLunchBreak();
+    // See RouteActivationNotifier.activate's matching comment — same
+    // Riverpod 3.x disposal-race, same fix — checked again after the
+    // inner reconciliation await below, not just here.
+    if (!ref.mounted) return;
     await result.fold(
       (failure) async {
         ref.invalidate(dayStatusPollProvider);
@@ -806,6 +850,7 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
         // fail and must not hang this notifier forever.
         try {
           final reconciled = await ref.read(dayStatusPollProvider.future);
+          if (!ref.mounted) return;
           // Covers a lost-response timeout AND the exact end-vs-expiration
           // race (the contract's own NO_LUNCH_BREAK-on-End case): either
           // way, `used` after reconciling means the break is over, which
@@ -814,6 +859,7 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
               ? const AsyncData(null)
               : AsyncError(failure, StackTrace.current);
         } catch (_) {
+          if (!ref.mounted) return;
           state = AsyncError(failure, StackTrace.current);
         }
       },

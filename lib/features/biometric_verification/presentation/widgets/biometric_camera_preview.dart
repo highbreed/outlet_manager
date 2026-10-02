@@ -47,6 +47,29 @@ class _BiometricCameraPreviewState extends State<BiometricCameraPreview>
   // too many use cases" because the old surfaces are still registered.
   Future<void>? _pauseFuture;
 
+  // Whether THIS widget instance actually paused — i.e. whether the
+  // didChangeAppLifecycleState paused/inactive branch below ran at least
+  // once since the last resume. Without this, every `resumed` event
+  // unconditionally called _start() again, even one with no corresponding
+  // prior pause. Confirmed as the cause of a field-reported bug: the
+  // native camera-permission dialog pauses/resumes the hosting Activity
+  // around its own lifetime, which can resolve its `resumed` event AFTER
+  // this widget has already mounted (for the first time, right after
+  // FaceRegistrationScreen's onGranted callback) and already kicked off
+  // its own _start() from initState() — two independent native signal
+  // paths (the permission-result plugin channel vs. Flutter's own
+  // Activity-lifecycle hooks) racing with no guaranteed order. That
+  // produced a second, fully concurrent _start() call with no reentrancy
+  // guard, corrupting camera initialization in a way that only a full app
+  // restart (a fresh mount, with no pending permission dialog to race
+  // against) cleared.
+  bool _pausedSinceLastStart = false;
+
+  // Reentrancy guard for _start() itself — defense in depth so even a
+  // spurious extra call (from anywhere, not just the resume path above)
+  // can never run concurrently with an attempt already in flight.
+  Future<void>? _startFuture;
+
   @override
   void initState() {
     super.initState();
@@ -54,7 +77,17 @@ class _BiometricCameraPreviewState extends State<BiometricCameraPreview>
     _start();
   }
 
-  Future<void> _start() async {
+  Future<void> _start() {
+    final inFlight = _startFuture;
+    if (inFlight != null) return inFlight;
+    final future = _doStart();
+    _startFuture = future;
+    return future.whenComplete(() {
+      if (identical(_startFuture, future)) _startFuture = null;
+    });
+  }
+
+  Future<void> _doStart() async {
     try {
       if (!widget.cameraService.isInitialized) {
         await widget.cameraService.initialize();
@@ -68,10 +101,11 @@ class _BiometricCameraPreviewState extends State<BiometricCameraPreview>
       // any error from an earlier failed attempt — otherwise a
       // subsequently-successful open still shows "Camera unavailable"
       // forever, since build() checks _initError before _ready.
-      if (mounted) setState(() {
-        _ready = true;
-        _initError = null;
-      });
+      if (mounted)
+        setState(() {
+          _ready = true;
+          _initError = null;
+        });
     } catch (e) {
       if (mounted) setState(() => _initError = e);
     }
@@ -84,17 +118,19 @@ class _BiometricCameraPreviewState extends State<BiometricCameraPreview>
       case AppLifecycleState.inactive:
       case AppLifecycleState.detached:
       case AppLifecycleState.hidden:
+        _pausedSinceLastStart = true;
         _pauseFuture = widget.cameraService.pause();
         widget.onLifecyclePause?.call();
         if (mounted) setState(() => _ready = false);
         break;
       case AppLifecycleState.resumed:
-        _resumeAfterPause();
+        if (_pausedSinceLastStart) _resumeAfterPause();
         break;
     }
   }
 
   Future<void> _resumeAfterPause() async {
+    _pausedSinceLastStart = false;
     final pauseFuture = _pauseFuture;
     _pauseFuture = null;
     if (pauseFuture != null) await pauseFuture;

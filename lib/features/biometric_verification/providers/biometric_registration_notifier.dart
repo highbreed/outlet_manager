@@ -51,12 +51,26 @@ class BiometricRegistrationNotifier extends _$BiometricRegistrationNotifier {
   RegistrationPose get currentPose => _currentPose;
 
   Future<void> start() async {
+    // Field-confirmed (logcat, 2026-10-01): a spurious extra
+    // AppLifecycleState.resumed event — the same race fixed in
+    // BiometricCameraPreview's _resumeAfterPause — called
+    // FaceRegistrationScreen's onLifecycleResume, which calls straight
+    // into this method, WHILE a real /biometrics/enroll upload from the
+    // first call was still in flight. Resetting _uploadInFlight = false
+    // below mid-upload let onFrame start a second capture session
+    // concurrently: a duplicate /enroll POST, a brand-new /challenge
+    // request, and liveness restarting from scratch, all racing the
+    // original upload's still-pending response. The camera-preview fix
+    // closes the specific trigger; this guard makes the notifier itself
+    // refuse to restart while a real upload is genuinely in progress, so
+    // no other caller can reproduce the same corruption.
+    if (_uploadInFlight) return;
+
     _currentPose = RegistrationPose.frontal;
     _frontalImage = null;
     _leftImage = null;
     _rightImage = null;
     _consecutiveQualifyingFrames = 0;
-    _uploadInFlight = false;
     ref.read(activeLivenessServiceProvider).resetAction();
 
     state = BiometricCaptureState(
