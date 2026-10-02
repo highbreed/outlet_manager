@@ -72,6 +72,20 @@ android {
                 } else {
                     signingConfigs.getByName("debug")
                 }
+            // Explicit, not just relying on Flutter's own implicit release
+            // default (confirmed in production that R8 shrinking IS
+            // already active on release builds despite nothing in this
+            // file declaring it) — without an explicit proguardFiles()
+            // call here, proguard-rules.pro's fix for a real field crash
+            // (flutter_local_notifications' Gson TypeToken usage getting
+            // its generic signature stripped, see that file's own
+            // comment) would never actually be applied.
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
         }
     }
 }
