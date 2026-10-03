@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -105,6 +107,7 @@ class IsarDatabase {
   // file's own comment on the database phase.
   static const _lockRetryAttempts = 4;
   static const _lockRetryBaseDelay = Duration(milliseconds: 500);
+  static const _dbName = 'outlet_manager';
 
   static bool _isTransientLockError(Object e) =>
       e.toString().contains('Cannot open Environment') ||
@@ -122,10 +125,45 @@ class IsarDatabase {
           break;
         } catch (e) {
           attempt++;
-          if (attempt >= _lockRetryAttempts || !_isTransientLockError(e)) {
-            rethrow;
+          if (!_isTransientLockError(e)) rethrow;
+          if (attempt < _lockRetryAttempts) {
+            await Future.delayed(_lockRetryBaseDelay * attempt);
+            continue;
           }
-          await Future.delayed(_lockRetryBaseDelay * attempt);
+          // Still-reported field crashes (2026-10-03) confirm the normal
+          // retry window above (~3s total) isn't always enough — this
+          // isn't just a brief overlap with another isolate's quick
+          // open/close, it's a genuinely STALE lock: mdbx's native
+          // Env::create (isar_core's packages/isar_core/src/mdbx/env.rs,
+          // confirmed from the isar-community source directly) has zero
+          // built-in wait-on-contention — a losing open fails instantly,
+          // every single time, with nothing on the native side ever
+          // clearing it. With MDBX_NOSUBDIR set (same source), the lock
+          // file is a SEPARATE file at "<name>.isar-lck" next to the real
+          // "<name>.isar" data file — confirmed directly against a real
+          // device's app data directory, NOT the installed package's own
+          // (stale/wrong) doc comment, which claims "<name>.isar.lock".
+          // That lock file holds only mdbx's reader table/lock
+          // bookkeeping, zero B-tree pages or user records — deleting it
+          // is mdbx's own standard, documented recovery path for a
+          // database an app can't otherwise reopen, and it is NEVER the
+          // actual data file. Last resort only, one attempt, after the
+          // normal retry window already gave any genuinely-still-active
+          // concurrent isolate (the headless heartbeat task's own
+          // open-write-close, normally well under a second) a generous
+          // chance to finish on its own first.
+          final lockFile = File('${dir.path}/$_dbName.isar-lck');
+          try {
+            if (await lockFile.exists()) await lockFile.delete();
+          } catch (_) {
+            // Best-effort — if this fails, the final open attempt below
+            // just fails the same way it would have without this step.
+          }
+          // If this also throws, it propagates out of this catch block
+          // (and the loop/try above) on its own — the final attempt's own
+          // error, the more useful one to surface post-recovery-attempt.
+          isar = await _openIsar(dir.path);
+          break;
         }
       }
 
@@ -180,7 +218,7 @@ class IsarDatabase {
         MappingSampleModelSchema,
       ],
       directory: directoryPath,
-      name: 'outlet_manager',
+      name: _dbName,
     );
   }
 
