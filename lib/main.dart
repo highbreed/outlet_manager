@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer' as developer;
 
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,33 @@ void main() async {
     // The sampling rate for profiling is relative to tracesSampleRate
     // Setting to 1.0 will profile 100% of sampled transactions:
     options.profilesSampleRate = 1.0;
+
+    // Session Replay — lets us actually see what a field agent was doing
+    // when a crash like the Isar/biometric/geofence-override bugs this
+    // week happened, instead of reconstructing it purely from a stack
+    // trace and breadcrumbs. onErrorSampleRate stays at 1.0 even in
+    // production (Sentry's own recommendation) — every session that ends
+    // in an error gets a replay, which is exactly the data we need.
+    // sessionSampleRate (replays of ORDINARY, error-free sessions) is kept
+    // low in prod purely to bound data volume/quota, not for privacy
+    // reasons — masking (below) is what actually protects sensitive data.
+    options.replay.sessionSampleRate = env == Environment.prod ? 0.1 : 1.0;
+    options.replay.onErrorSampleRate = 1.0;
+    // Masking lives on `options.privacy`, not `options.replay` — left at
+    // Sentry's own default (true/true) explicitly, since this app shows
+    // customer financial/contact data throughout and replays must stay
+    // fully masked by default.
+    options.privacy.maskAllText = true;
+    options.privacy.maskAllImages = true;
+    // maskAllImages only covers the `Image` widget class — it does NOT
+    // cover CameraPreview (a texture-backed widget, not an Image), which
+    // biometric_camera_preview.dart uses to show a LIVE FEED OF THE
+    // EMPLOYEE'S FACE during enrollment/clock-in verification. Sentry's
+    // own SDK only warns about this gap in debug mode (it can't reliably
+    // pattern-match third-party widget types in an obfuscated release
+    // build) — explicit, unconditional, not relying on that heuristic:
+    // biometric face video must never leave the device via a replay.
+    options.privacy.mask<CameraPreview>();
   }, appRunner: () => _bootstrap(env));
 }
 
