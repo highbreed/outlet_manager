@@ -114,6 +114,7 @@ class AllSchedulesNotifier extends _$AllSchedulesNotifier {
   /// 5. Manual: User can pull-to-refresh or tap sync button
   Future<void> _syncIfStale(VisitScheduleRepository repository) async {
     final lastSync = await repository.getLastSyncTime();
+    if (!ref.mounted) return;
     const staleThreshold = Duration(minutes: 15);
 
     if (lastSync == null ||
@@ -122,7 +123,9 @@ class AllSchedulesNotifier extends _$AllSchedulesNotifier {
       repository.syncSchedules().then((result) {
         result.fold(
           (_) {}, // Ignore errors on background sync
-          (_) => ref.invalidateSelf(), // Refresh on success
+          (_) {
+            if (ref.mounted) ref.invalidateSelf();
+          }, // Refresh on success
         );
       });
     }

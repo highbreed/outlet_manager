@@ -63,6 +63,7 @@ class _LocationPermissionScreenState
       // Check if location service is enabled
       final service = ref.read(locationServiceProvider);
       final serviceEnabled = await service.isLocationServiceEnabled();
+      if (!mounted) return;
 
       if (!serviceEnabled) {
         setState(() {
@@ -74,6 +75,7 @@ class _LocationPermissionScreenState
 
       // Check permission
       final permission = await controller.checkPermission();
+      if (!mounted) return;
 
       if (permission == LocationPermissionStatus.granted) {
         await _completePostPermissionSetup();
@@ -96,6 +98,7 @@ class _LocationPermissionScreenState
 
     try {
       final status = await controller.requestPermission();
+      if (!mounted) return;
 
       if (status == LocationPermissionStatus.granted) {
         await _completePostPermissionSetup();

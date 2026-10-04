@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/network/failures.dart';
+import '../../../../core/location/location_data.dart';
 import '../../../../core/providers/location_providers.dart';
 import '../../../../core/theme/colors.dart';
 import '../../../outlet_mapping/domain/entities/mapping_enums.dart';
@@ -339,7 +340,25 @@ class _ActiveVisitScreenState extends ConsumerState<ActiveVisitScreen> {
 
   Future<void> _clockOut(OutletVisit visit, {bool force = false}) async {
     final locationService = ref.read(locationServiceProvider);
-    final location = await locationService.getCurrentLocation();
+    final LocationData location;
+    try {
+      location = await locationService.getCurrentLocation();
+    } catch (_) {
+      // Surface the GPS failure to the employee instead of an unhandled
+      // "Timed out acquiring GPS fix" crash (FLUTTER-1S) — clock-out needs
+      // a real fix to record where the agent left the outlet.
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Could not get your location. Move somewhere with GPS signal and try again.',
+            ),
+          ),
+        );
+      }
+      return;
+    }
+    if (!mounted) return;
 
     final result = await ref
         .read(clockOutNotifierProvider.notifier)
