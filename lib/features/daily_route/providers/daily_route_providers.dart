@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../core/network/api_client.dart';
+import '../../../core/network/failures.dart';
 import '../../../core/providers/location_providers.dart';
 import '../../auth/auth.dart';
 import '../data/datasources/daily_route_local_datasource.dart';
@@ -582,11 +584,28 @@ class RouteCloseNotifier extends _$RouteCloseNotifier {
   }) async {
     state = const AsyncLoading();
     final useCase = ref.read(closeRouteUseCaseProvider);
-    final result = await useCase.call(
-      routeLocalId: routeLocalId,
-      closingNotes: closingNotes,
-      skippedVisits: skippedVisits,
-    );
+    // Bounded: the close button is disabled while this is loading, so any
+    // stall here (a local read or the network call that never resolves)
+    // used to leave the screen spinning forever with no request ever
+    // completing. Every path now resolves to data or an error.
+    final Either<Failure, DailyRoute> result;
+    try {
+      result = await useCase
+          .call(
+            routeLocalId: routeLocalId,
+            closingNotes: closingNotes,
+            skippedVisits: skippedVisits,
+          )
+          .timeout(const Duration(seconds: 30));
+    } on TimeoutException {
+      if (!ref.mounted) return;
+      state = AsyncError(const NetworkFailure.timeout(), StackTrace.current);
+      return;
+    } catch (e, st) {
+      if (!ref.mounted) return;
+      state = AsyncError(UnknownFailure(message: e.toString()), st);
+      return;
+    }
     // See RouteActivationNotifier.activate's matching comment — same
     // Riverpod 3.x disposal-race, same fix.
     if (!ref.mounted) return;

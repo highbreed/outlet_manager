@@ -232,6 +232,10 @@ class ScheduleSyncController extends _$ScheduleSyncController {
   Future<void> _loadLastSyncTime() async {
     final repository = ref.read(visitScheduleRepositoryProvider);
     final lastSync = await repository.getLastSyncTime();
+    // Same Riverpod 3.x disposal race as the daily_route notifiers: this
+    // runs fire-and-forget from build(), so the instance can be disposed
+    // before the await resolves.
+    if (!ref.mounted) return;
     state = AsyncValue.data(lastSync);
   }
 
@@ -241,6 +245,7 @@ class ScheduleSyncController extends _$ScheduleSyncController {
 
     final syncUseCase = ref.read(syncSchedulesUseCaseProvider);
     final result = await syncUseCase.call();
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {

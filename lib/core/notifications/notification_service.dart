@@ -355,15 +355,32 @@ class NotificationService {
   /// Clear persistent notification
   Future<void> clearPersistentNotification() async {
     _stopCountdownTimer();
-    await _plugin.cancel(NotificationIds.persistentSession);
+    await _cancel(NotificationIds.persistentSession);
   }
 
   /// Clear all geofence notifications
   Future<void> clearGeofenceNotifications() async {
-    await _plugin.cancel(NotificationIds.geofenceExit);
-    await _plugin.cancel(NotificationIds.geofence5MinWarning);
-    await _plugin.cancel(NotificationIds.geofence9MinWarning);
-    await _plugin.cancel(NotificationIds.geofenceAutoClockout);
+    await _cancel(NotificationIds.geofenceExit);
+    await _cancel(NotificationIds.geofence5MinWarning);
+    await _cancel(NotificationIds.geofence9MinWarning);
+    await _cancel(NotificationIds.geofenceAutoClockout);
+  }
+
+  /// Every cancel goes through here. The plugin's native cancel path can
+  /// throw (the R8/Gson TypeToken crash this week — see proguard-rules.pro),
+  /// and these are all purely cosmetic cleanups fired from location and
+  /// sync listeners: a failed dismissal must never take down the app.
+  Future<void> _cancel(int id) async {
+    try {
+      await _plugin.cancel(id);
+    } catch (e, st) {
+      developer.log(
+        '[NotificationService] cancel($id) failed: $e',
+        name: 'NotificationService',
+        error: e,
+        stackTrace: st,
+      );
+    }
   }
 
   // ==================== SYNC NOTIFICATIONS ====================
@@ -414,8 +431,8 @@ class NotificationService {
 
   /// Clear sync notifications
   Future<void> clearSyncNotifications() async {
-    await _plugin.cancel(NotificationIds.syncFailure);
-    await _plugin.cancel(NotificationIds.syncSuccess);
+    await _cancel(NotificationIds.syncFailure);
+    await _cancel(NotificationIds.syncSuccess);
   }
 
   // ==================== LOCATION NOTIFICATIONS ====================
@@ -470,10 +487,10 @@ class NotificationService {
 
   /// Clear location notifications
   Future<void> clearLocationNotifications() async {
-    await _plugin.cancel(NotificationIds.locationWarning);
-    await _plugin.cancel(NotificationIds.locationDisabled);
-    await _plugin.cancel(NotificationIds.locationPermission);
-    await _plugin.cancel(NotificationIds.locationAccuracy);
+    await _cancel(NotificationIds.locationWarning);
+    await _cancel(NotificationIds.locationDisabled);
+    await _cancel(NotificationIds.locationPermission);
+    await _cancel(NotificationIds.locationAccuracy);
   }
 
   // ==================== GENERAL NOTIFICATIONS ====================
@@ -808,12 +825,21 @@ class NotificationService {
 
   /// Cancel specific notification by ID
   Future<void> cancelNotification(int id) async {
-    await _plugin.cancel(id);
+    await _cancel(id);
   }
 
   /// Cancel all notifications
   Future<void> cancelAllNotifications() async {
-    await _plugin.cancelAll();
+    try {
+      await _plugin.cancelAll();
+    } catch (e, st) {
+      developer.log(
+        '[NotificationService] cancelAll failed: $e',
+        name: 'NotificationService',
+        error: e,
+        stackTrace: st,
+      );
+    }
   }
 
   /// Dispose resources
