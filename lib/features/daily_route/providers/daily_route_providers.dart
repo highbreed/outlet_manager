@@ -433,8 +433,8 @@ class RouteActivationNotifier extends _$RouteActivationNotifier {
       route,
     ) {
       // Invalidate today's route to refresh
-      ref.invalidate(todaysRouteProvider);
-      ref.invalidate(dayStatusPollProvider);
+      if (ref.mounted) ref.invalidate(todaysRouteProvider);
+      if (ref.mounted) ref.invalidate(dayStatusPollProvider);
       return AsyncData(route);
     });
   }
@@ -473,8 +473,8 @@ class ClockInNotifier extends _$ClockInNotifier {
       visit,
     ) {
       // Invalidate today's route to refresh visit list
-      ref.invalidate(todaysRouteProvider);
-      ref.invalidate(dayStatusPollProvider);
+      if (ref.mounted) ref.invalidate(todaysRouteProvider);
+      if (ref.mounted) ref.invalidate(dayStatusPollProvider);
       // Fire-and-forget: best-effort by design (see
       // BackgroundGeolocationService), must not block clock-in on tracking
       // startup succeeding.
@@ -526,9 +526,9 @@ class ClockOutNotifier extends _$ClockOutNotifier {
       (failure) => AsyncError(failure, StackTrace.current),
       (visit) {
         // Invalidate today's route to refresh visit list
-        ref.invalidate(todaysRouteProvider);
-        ref.invalidate(dayStatusPollProvider);
-        ref.invalidate(routeToCloseProvider);
+        if (ref.mounted) ref.invalidate(todaysRouteProvider);
+        if (ref.mounted) ref.invalidate(dayStatusPollProvider);
+        if (ref.mounted) ref.invalidate(routeToCloseProvider);
         // Fire-and-forget: see ClockInNotifier.clockIn for why.
         ref.read(backgroundGeolocationServiceProvider).stopTracking();
         return AsyncData(visit);
@@ -564,8 +564,8 @@ class SkipVisitNotifier extends _$SkipVisitNotifier {
       visit,
     ) {
       // Invalidate today's route to refresh visit list
-      ref.invalidate(todaysRouteProvider);
-      ref.invalidate(dayStatusPollProvider);
+      if (ref.mounted) ref.invalidate(todaysRouteProvider);
+      if (ref.mounted) ref.invalidate(dayStatusPollProvider);
       return AsyncData(visit);
     });
   }
@@ -613,10 +613,10 @@ class RouteCloseNotifier extends _$RouteCloseNotifier {
       route,
     ) {
       // Invalidate route providers to refresh
-      ref.invalidate(todaysRouteProvider);
-      ref.invalidate(dayStatusPollProvider);
-      ref.invalidate(routeToCloseProvider);
-      ref.invalidate(pendingRoutesToCloseProvider);
+      if (ref.mounted) ref.invalidate(todaysRouteProvider);
+      if (ref.mounted) ref.invalidate(dayStatusPollProvider);
+      if (ref.mounted) ref.invalidate(routeToCloseProvider);
+      if (ref.mounted) ref.invalidate(pendingRoutesToCloseProvider);
       return AsyncData(route);
     });
   }
@@ -762,8 +762,8 @@ class GeofenceOverrideNotifier extends _$GeofenceOverrideNotifier {
       },
       (visit) {
         state = const AsyncData(null);
-        ref.invalidate(todaysRouteProvider);
-        ref.invalidate(dayStatusPollProvider);
+        if (ref.mounted) ref.invalidate(todaysRouteProvider);
+        if (ref.mounted) ref.invalidate(dayStatusPollProvider);
         // Fire-and-forget: see ClockInNotifier.clockIn for why.
         ref
             .read(backgroundGeolocationServiceProvider)
@@ -827,7 +827,7 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
     if (!ref.mounted) return;
     await result.fold(
       (failure) async {
-        ref.invalidate(dayStatusPollProvider);
+        if (ref.mounted) ref.invalidate(dayStatusPollProvider);
         // The reconciliation fetch itself can fail — e.g. the same
         // network outage that broke the original call — and must not be
         // allowed to escape uncaught: that would leave `state` stuck at
@@ -848,7 +848,7 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
         }
       },
       (_) async {
-        ref.invalidate(dayStatusPollProvider);
+        if (ref.mounted) ref.invalidate(dayStatusPollProvider);
         state = const AsyncData(null);
       },
     );
@@ -864,7 +864,7 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
     if (!ref.mounted) return;
     await result.fold(
       (failure) async {
-        ref.invalidate(dayStatusPollProvider);
+        if (ref.mounted) ref.invalidate(dayStatusPollProvider);
         // See start()'s matching try/catch — reconciliation itself can
         // fail and must not hang this notifier forever.
         try {
@@ -883,7 +883,7 @@ class LunchBreakNotifier extends _$LunchBreakNotifier {
         }
       },
       (_) async {
-        ref.invalidate(dayStatusPollProvider);
+        if (ref.mounted) ref.invalidate(dayStatusPollProvider);
         state = const AsyncData(null);
       },
     );
