@@ -85,6 +85,7 @@ class PaginatedCatalogueController extends _$PaginatedCatalogueController {
         page: 1,
         size: _pageSize,
       );
+      if (!ref.mounted) return;
 
       result.fold(
         (failure) {
@@ -100,6 +101,7 @@ class PaginatedCatalogueController extends _$PaginatedCatalogueController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return;
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
@@ -118,6 +120,7 @@ class PaginatedCatalogueController extends _$PaginatedCatalogueController {
         page: nextPage,
         size: _pageSize,
       );
+      if (!ref.mounted) return;
 
       result.fold(
         (failure) {
@@ -133,6 +136,7 @@ class PaginatedCatalogueController extends _$PaginatedCatalogueController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return;
       state = state.copyWith(isLoadingMore: false, error: e.toString());
     }
   }
@@ -295,6 +299,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     print(
       '[StockTake] allActiveResult: ${allActiveResult.fold((f) => 'FAIL: ${f.message}', (s) => 'Found ${s.length} sessions')}',
     );
+    if (!ref.mounted) return;
 
     activeResult.fold(
       (failure) {
@@ -355,6 +360,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
 
     final repository = await ref.read(stockTakeRepositoryProvider.future);
     final result = await repository.getAllActiveSessions();
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) {
@@ -405,6 +411,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
   Future<bool> validateSessionEntry(String sessionLocalId) async {
     final repository = await ref.read(stockTakeRepositoryProvider.future);
     final result = await repository.validateSession(sessionLocalId);
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {
@@ -464,6 +471,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
         notes: notes,
       ),
     );
+    if (!ref.mounted) return null;
 
     return result.fold(
       (failure) {
@@ -487,6 +495,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     final result = await getSessionItems(
       GetSessionItemsParams(sessionLocalId: sessionLocalId),
     );
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) {
@@ -515,6 +524,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     final result = await addProductToSession(
       AddProductParams(sessionLocalId: sessionLocalId, product: product),
     );
+    if (!ref.mounted) return null;
 
     return result.fold(
       (failure) {
@@ -524,6 +534,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
       (item) async {
         // Refresh the active session to get updated counts
         final refreshedSession = await _refreshSession(sessionLocalId);
+        if (!ref.mounted) return null;
         state = state.copyWith(
           isLoading: false,
           sessionItems: [...state.sessionItems, item],
@@ -571,6 +582,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
 
     final repository = await ref.read(stockTakeRepositoryProvider.future);
     final result = await repository.deleteItem(itemLocalId);
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {
@@ -583,6 +595,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
         if (sessionLocalId != null) {
           refreshedSession = await _refreshSession(sessionLocalId);
         }
+        if (!ref.mounted) return false;
         state = state.copyWith(
           isLoading: false,
           sessionItems: state.sessionItems
@@ -607,6 +620,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     final result = await pauseSession(
       PauseSessionParams(sessionLocalId: sessionLocalId),
     );
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {
@@ -632,6 +646,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     final result = await resumeSession(
       ResumeSessionParams(sessionLocalId: sessionLocalId),
     );
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {
@@ -657,6 +672,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     final result = await cancelSession(
       CancelSessionParams(sessionLocalId: sessionLocalId, reason: reason),
     );
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {
@@ -699,6 +715,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     try {
       final repository = await ref.read(stockTakeRepositoryProvider.future);
       final result = await repository.syncSessionItems(sessionLocalId);
+      if (!ref.mounted) return null;
 
       return result.fold(
         (failure) {
@@ -719,6 +736,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
       );
     } catch (e) {
       print('[SessionController] Exception during sync: $e');
+      if (!ref.mounted) return null;
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return null;
     }
@@ -741,6 +759,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
       final result = await completeSession(
         CompleteSessionParams(sessionLocalId: sessionLocalId),
       );
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -764,6 +783,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
       );
     } catch (e) {
       print('[SessionController] Exception during completion: $e');
+      if (!ref.mounted) return false;
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return false;
     }
@@ -784,6 +804,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
       strategy: strategy,
       customerEmail: customerEmail,
     );
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {
@@ -812,6 +833,10 @@ class StockTakeSessionController extends _$StockTakeSessionController {
     print('[SessionProvider] Starting background polling for job $jobId');
 
     while (true) {
+      // Same unbounded-loop-outliving-disposal bug fixed in
+      // connectivity_provider.dart's Stream.periodic generators — this
+      // while(true) has no tie to the notifier's own lifecycle either.
+      if (!ref.mounted) break;
       final job = state.proposedOrderJob;
       // Stop if job was cleared, completed, or timed out
       if (job == null || job.jobId != jobId || job.isComplete) break;
@@ -831,6 +856,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
           visitId: visitId,
           jobId: jobId,
         );
+        if (!ref.mounted) break;
 
         // Re-check state in case it was cleared while awaiting
         final currentJob = state.proposedOrderJob;
@@ -856,6 +882,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
         );
       } catch (e) {
         print('[SessionProvider] Polling error: $e');
+        if (!ref.mounted) break;
         final currentJob = state.proposedOrderJob;
         if (currentJob != null && currentJob.jobId == jobId) {
           state = state.copyWith(
@@ -912,6 +939,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
   }) async {
     final repository = await ref.read(stockTakeRepositoryProvider.future);
     final result = await repository.getProposedOrderDetail(visitId: visitId);
+    if (!ref.mounted) return null;
 
     return result.fold((failure) {
       state = state.copyWith(errorMessage: failure.message);
@@ -930,6 +958,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
   Future<bool> hasProposedOrder({required int visitId}) async {
     final repository = await ref.read(stockTakeRepositoryProvider.future);
     final result = await repository.getProposedOrderDetail(visitId: visitId);
+    if (!ref.mounted) return false;
 
     return result.fold((failure) {
       if (failure is! NotFoundFailure) {
@@ -946,6 +975,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
   }) async {
     final repository = await ref.read(stockTakeRepositoryProvider.future);
     final result = await repository.generateProposedOrderPdf(visitId: visitId);
+    if (!ref.mounted) return null;
 
     return result.fold((failure) {
       state = state.copyWith(errorMessage: failure.message);
@@ -957,6 +987,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
   Future<List<int>?> downloadProposedOrderPdf({required int visitId}) async {
     final repository = await ref.read(stockTakeRepositoryProvider.future);
     final result = await repository.downloadProposedOrderPdf(visitId: visitId);
+    if (!ref.mounted) return null;
 
     return result.fold((failure) {
       state = state.copyWith(errorMessage: failure.message);
@@ -989,6 +1020,7 @@ class StockTakeSessionController extends _$StockTakeSessionController {
       orderId: orderId,
       notes: notes,
     );
+    if (!ref.mounted) return null;
 
     return result.fold((failure) {
       state = state.copyWith(errorMessage: failure.message);
@@ -1056,6 +1088,7 @@ class SerialScanController extends _$SerialScanController {
     final result = await getItemSerials(
       GetItemSerialsParams(itemLocalId: itemLocalId),
     );
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) {
@@ -1078,6 +1111,7 @@ class SerialScanController extends _$SerialScanController {
         sessionLocalId: sessionLocalId,
       ),
     );
+    if (!ref.mounted) return null;
 
     return result.fold(
       (failure) {
@@ -1100,6 +1134,7 @@ class SerialScanController extends _$SerialScanController {
 
     // First validate
     final validation = await validateSerial(serialNumber);
+    if (!ref.mounted) return null;
     if (validation == null || !validation.isValid) {
       state = state.copyWith(
         isLoading: false,
@@ -1124,6 +1159,7 @@ class SerialScanController extends _$SerialScanController {
         scanSequence: state.scannedSerials.length + 1,
       ),
     );
+    if (!ref.mounted) return null;
 
     return result.fold(
       (failure) {
@@ -1149,6 +1185,7 @@ class SerialScanController extends _$SerialScanController {
     final result = await deleteSerial(
       DeleteSerialParams(serialLocalId: serialLocalId, reason: reason),
     );
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {
