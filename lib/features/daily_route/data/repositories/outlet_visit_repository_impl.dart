@@ -737,14 +737,18 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
         return <String, dynamic>{};
       }();
 
-      // Accept both new ("error") and legacy ("error_code") keys.
-      final errorCode =
-          (data['error'] as String?) ?? (data['error_code'] as String?);
+      // Accept both new ("error") and legacy ("error_code") keys. Every
+      // `as String?`/`as bool?` cast in this method goes through _asString/
+      // _asBool rather than a blind cast — confirmed in production that a
+      // field can arrive as a different JSON type than expected (Sentry:
+      // "type '_Map<String, dynamic>' is not a subtype of type 'String?'"
+      // on exactly this `error` field, from a clock-out failure response)
+      // and a blind cast crashes the whole app instead of just falling
+      // back to a generic failure message.
+      final errorCode = _asString(data['error']) ?? _asString(data['error_code']);
       final message =
-          data['message'] as String? ??
-          (raw is Map && raw['detail'] is String
-              ? raw['detail'] as String
-              : null);
+          _asString(data['message']) ??
+          (raw is Map ? _asString(raw['detail']) : null);
 
       double? numAt(List<String> keys) {
         for (final k in keys) {
@@ -774,7 +778,7 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
             numAt(['outlet_longitude']);
         final distance = numAt(['distance_meters', 'distance']);
         final required = numAt(['required_radius_meters', 'required_radius']);
-        final canOverride = data['can_request_override'] as bool? ?? true;
+        final canOverride = _asBool(data['can_request_override']) ?? true;
 
         return GeofenceViolationFailure(
           userLatitude: userLat ?? 0,
@@ -793,8 +797,8 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
       }
 
       if (errorCode == 'VISIT_IN_PROGRESS') {
-        final visitId = data['active_visit_id'] as String?;
-        final outletName = data['active_outlet_name'] as String?;
+        final visitId = _asString(data['active_visit_id']);
+        final outletName = _asString(data['active_outlet_name']);
         return VisitInProgressFailure(
           activeVisitLocalId: visitId ?? '',
           activeOutletName: outletName ?? 'another outlet',
@@ -802,7 +806,7 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
       }
 
       if (errorCode == 'INVALID_VISIT_STATE') {
-        final currentState = data['current_state'] as String?;
+        final currentState = _asString(data['current_state']);
         return InvalidVisitStateFailure(
           currentStatus: currentState ?? 'unknown',
           operation: 'perform this action',
@@ -886,3 +890,13 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
     return UnknownFailure(message: e.message ?? 'Unknown error');
   }
 }
+
+/// Type-safe extraction for backend JSON values that are supposed to be a
+/// [String] but, per a confirmed production crash, can arrive as some other
+/// JSON type (e.g. a nested Map) for certain error responses. Returns null
+/// instead of throwing so a field-type mismatch degrades to a generic
+/// failure message rather than crashing the app.
+String? _asString(dynamic v) => v is String ? v : null;
+
+/// Same as [_asString], but for values that are supposed to be a [bool].
+bool? _asBool(dynamic v) => v is bool ? v : null;
