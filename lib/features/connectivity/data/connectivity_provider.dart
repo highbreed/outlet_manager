@@ -79,7 +79,15 @@ bool isOnline(Ref ref) {
 Stream<bool> offlineEvents(Ref ref) async* {
   bool? previousOnline;
 
+  // Stream.periodic isn't tied to this (autoDispose) provider's lifecycle
+  // at all — Riverpod stops delivering values to listeners once disposed,
+  // but this generator's own loop keeps ticking in the background forever
+  // unless it's told to stop, and the next ref.read after disposal throws
+  // (UnmountedRefException, fatal, field-reported). Same Riverpod 3.x
+  // disposal-race class as every other fix this session, just surfacing
+  // in a stream generator instead of a notifier method.
   await for (final _ in Stream.periodic(const Duration(milliseconds: 100))) {
+    if (!ref.mounted) break;
     final isCurrentlyOnline = ref.read(isOnlineProvider);
 
     if (previousOnline != null && previousOnline && !isCurrentlyOnline) {
@@ -96,7 +104,10 @@ Stream<bool> offlineEvents(Ref ref) async* {
 Stream<bool> onlineRestoredEvents(Ref ref) async* {
   bool? previousOnline;
 
+  // See offlineEvents' matching comment — same fix, same reason
+  // (field-reported, UnmountedRefException, fatal).
   await for (final _ in Stream.periodic(const Duration(milliseconds: 500))) {
+    if (!ref.mounted) break;
     final isCurrentlyOnline = ref.read(isOnlineProvider);
 
     // Emit when transitioning from offline to online
