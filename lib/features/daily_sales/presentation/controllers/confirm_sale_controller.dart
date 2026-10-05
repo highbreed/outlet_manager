@@ -158,6 +158,7 @@ class ConfirmSaleController extends _$ConfirmSaleController {
 
     final usecase = await ref.read(requestDailySaleOtpProvider.future);
     final result = await usecase(saleId);
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) {
@@ -197,6 +198,7 @@ class ConfirmSaleController extends _$ConfirmSaleController {
     final result = await usecase(
       VerifyDailySaleOtpParams(saleId: saleId, otpCode: trimmed),
     );
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) {
@@ -246,6 +248,7 @@ class ConfirmSaleController extends _$ConfirmSaleController {
         proofOfPurchase: current.proofOfPurchase!,
       ),
     );
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {

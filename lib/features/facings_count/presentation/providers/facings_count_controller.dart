@@ -85,8 +85,10 @@ class FacingsCountController extends _$FacingsCountController {
         (counts) => today = counts,
       );
 
+      if (!ref.mounted) return;
       state = FacingsCountState(activeDraft: active, todaySubmitted: today);
     } catch (e) {
+      if (!ref.mounted) return;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -120,6 +122,7 @@ class FacingsCountController extends _$FacingsCountController {
         customerName: customerName,
         salesAgentId: salesAgentId,
       );
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -140,6 +143,7 @@ class FacingsCountController extends _$FacingsCountController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -203,6 +207,7 @@ class FacingsCountController extends _$FacingsCountController {
         localId: draft.localId,
         items: items,
       );
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -218,6 +223,7 @@ class FacingsCountController extends _$FacingsCountController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(
         isLoading: false,
         errorMessage: 'Failed to update count: $e',
@@ -240,6 +246,7 @@ class FacingsCountController extends _$FacingsCountController {
     try {
       final repo = await ref.read(facingsCountRepositoryProvider.future);
       final result = await repo.submitCount(draft.localId);
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -259,6 +266,7 @@ class FacingsCountController extends _$FacingsCountController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -276,6 +284,7 @@ class FacingsCountController extends _$FacingsCountController {
     try {
       final repo = await ref.read(facingsCountRepositoryProvider.future);
       final result = await repo.discardDraft(draft.localId);
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -288,6 +297,7 @@ class FacingsCountController extends _$FacingsCountController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(errorMessage: 'Failed to discard draft: $e');
       return false;
     }
@@ -301,6 +311,7 @@ class FacingsCountController extends _$FacingsCountController {
     try {
       final repo = await ref.read(facingsCountRepositoryProvider.future);
       final result = await repo.getByLocalId(draft.localId);
+      if (!ref.mounted) return;
       result.fold((failure) => null, (updated) {
         state = state.copyWith(activeDraft: updated);
       });
@@ -318,6 +329,7 @@ class FacingsCountController extends _$FacingsCountController {
     try {
       final repo = await ref.read(facingsCountRepositoryProvider.future);
       final result = await repo.getByLocalId(localId);
+      if (!ref.mounted) return;
       result.fold(
         (failure) {
           state = state.copyWith(
@@ -335,6 +347,7 @@ class FacingsCountController extends _$FacingsCountController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,

@@ -99,6 +99,7 @@ class SaleCartController extends _$SaleCartController {
       customerId,
       search: barcode,
     );
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) => state = state.copyWith(
@@ -187,6 +188,7 @@ class SaleCartController extends _$SaleCartController {
     try {
       final datasource = ref.read(productsRemoteDataSourceProvider);
       final page = await datasource.fetchProducts(search: itemCode, size: 5);
+      if (!ref.mounted) return;
 
       Product? match;
       for (final p in page.items) {
@@ -249,6 +251,7 @@ class SaleCartController extends _$SaleCartController {
         ],
       ),
     );
+    if (!ref.mounted) return false;
 
     return result.fold(
       (failure) {

@@ -20,6 +20,7 @@ class ForgotPasswordController extends _$ForgotPasswordController {
 
     final repository = ref.read(authRepositoryProvider);
     final result = await repository.requestPasswordReset(email: email);
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) => state = ForgotPasswordState.error(failure.message),
@@ -36,6 +37,7 @@ class ForgotPasswordController extends _$ForgotPasswordController {
       email: email,
       otp: otp,
     );
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) => state = ForgotPasswordState.error(failure.message),
@@ -60,6 +62,7 @@ class ForgotPasswordController extends _$ForgotPasswordController {
       resetToken: resetToken,
       newPassword: newPassword,
     );
+    if (!ref.mounted) return;
 
     result.fold(
       (failure) => state = ForgotPasswordState.error(failure.message),

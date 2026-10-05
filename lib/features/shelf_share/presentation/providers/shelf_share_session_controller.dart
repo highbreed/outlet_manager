@@ -98,11 +98,13 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         (sessions) => completed = sessions,
       );
 
+      if (!ref.mounted) return;
       state = ShelfShareSessionState(
         activeSession: active,
         completedSessions: completed,
       );
     } catch (e) {
+      if (!ref.mounted) return;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -136,6 +138,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         salesAgentId: salesAgentId,
         visitLocalId: visitLocalId,
       );
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -156,6 +159,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -186,6 +190,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         itemGroups: itemGroups,
         notes: notes,
       );
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -206,6 +211,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -229,6 +235,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
     try {
       final repo = await ref.read(shelfShareRepositoryProvider.future);
       final result = await repo.submitSession(session.localId);
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -248,6 +255,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -265,6 +273,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
     try {
       final repo = await ref.read(shelfShareRepositoryProvider.future);
       final result = await repo.deleteSession(session.localId);
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -277,6 +286,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(errorMessage: 'Failed to delete session: $e');
       return false;
     }
@@ -309,6 +319,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         itemGroups: updatedGroups,
         notes: session.notes,
       );
+      if (!ref.mounted) return false;
 
       return result.fold(
         (failure) {
@@ -329,6 +340,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return false;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,
@@ -346,6 +358,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
     try {
       final repo = await ref.read(shelfShareRepositoryProvider.future);
       final result = await repo.getSessionByLocalId(session.localId);
+      if (!ref.mounted) return;
       result.fold((failure) => null, (updated) {
         state = state.copyWith(activeSession: updated);
       });
@@ -363,6 +376,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
     try {
       final repo = await ref.read(shelfShareRepositoryProvider.future);
       final result = await repo.getSessionByLocalId(localId);
+      if (!ref.mounted) return;
       result.fold(
         (failure) {
           state = state.copyWith(
@@ -380,6 +394,7 @@ class ShelfShareSessionController extends _$ShelfShareSessionController {
         },
       );
     } catch (e) {
+      if (!ref.mounted) return;
       state = state.copyWith(
         isLoading: false,
         clearLoadingMessage: true,

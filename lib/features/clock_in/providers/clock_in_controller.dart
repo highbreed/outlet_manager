@@ -125,6 +125,7 @@ class ClockInController extends _$ClockInController {
       }
 
       // Check for existing active session
+      if (!ref.mounted) return ClockInValidation.failure('Cancelled');
       final repository = await ref.read(clockInRepositoryProvider.future);
       final activeSessionResult = await repository.getActiveSession();
       final hasActiveSession = activeSessionResult.fold(
@@ -174,6 +175,7 @@ class ClockInController extends _$ClockInController {
       // Get current location
       final locationService = ref.read(locationServiceProvider);
       final currentLocation = await locationService.getCurrentLocation();
+      if (!ref.mounted) return;
 
       // Call repository
       final repository = await ref.read(clockInRepositoryProvider.future);
@@ -188,6 +190,7 @@ class ClockInController extends _$ClockInController {
         accuracy: currentLocation.accuracy,
         allocatedMinutes: allocatedMinutes,
       );
+      if (!ref.mounted) return;
 
       result.fold((failure) => state = ClockInError(failure), (session) {
         state = ClockInSuccess(session);
@@ -203,6 +206,7 @@ class ClockInController extends _$ClockInController {
         error: e,
         stackTrace: stack,
       );
+      if (!ref.mounted) return;
       state = ClockInError(
         UnknownFailure(
           message: 'Clock in failed: ${e.toString()}',
@@ -225,6 +229,7 @@ class ClockInController extends _$ClockInController {
       // Get current location
       final locationService = ref.read(locationServiceProvider);
       final currentLocation = await locationService.getCurrentLocation();
+      if (!ref.mounted) return;
 
       // Call repository
       final repository = await ref.read(clockInRepositoryProvider.future);
@@ -237,6 +242,7 @@ class ClockInController extends _$ClockInController {
         longitude: currentLocation.longitude,
         accuracy: currentLocation.accuracy,
       );
+      if (!ref.mounted) return;
 
       result.fold((failure) => state = ClockInError(failure), (_) {
         state = const ClockOutSuccess();
@@ -249,6 +255,7 @@ class ClockInController extends _$ClockInController {
         error: e,
         stackTrace: stack,
       );
+      if (!ref.mounted) return;
       state = ClockInError(
         UnknownFailure(
           message: 'Clock out failed: ${e.toString()}',

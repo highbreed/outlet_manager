@@ -58,10 +58,17 @@ class BiometricCaptureNotifier extends _$BiometricCaptureNotifier {
     );
 
     _deviceId = await DeviceFingerprint.getOrCreate();
+    // keepAlive doesn't mean disposal-proof — FaceVerificationScreen.dispose()
+    // explicitly invalidates this provider for "fresh session per visit",
+    // which can race this in-flight start() exactly like the registration
+    // notifier's documented camera-permission-dialog race. Checked after
+    // every await in this file that's followed by a state/ref touch.
+    if (!ref.mounted) return;
 
     final result = await ref
         .read(livenessChallengeGeneratorProvider)
         .generate(purpose: purpose, deviceId: _deviceId);
+    if (!ref.mounted) return;
     result.fold(
       (failure) {
         state = state.copyWith(
@@ -106,6 +113,7 @@ class BiometricCaptureNotifier extends _$BiometricCaptureNotifier {
       lensDirection: lensDirection,
     );
     if (faces == null) return; // frame discarded by the service's own throttle guard
+    if (!ref.mounted) return;
 
     if (faces.isEmpty) {
       state = state.copyWith(
@@ -200,9 +208,11 @@ class BiometricCaptureNotifier extends _$BiometricCaptureNotifier {
 
     try {
       final frame = await ref.read(biometricCameraServiceProvider).captureStillFrame(pose: pose);
+      if (!ref.mounted) return;
 
       state = state.copyWith(phase: BiometricPhase.processing);
       final processedBytes = await ref.read(faceImageProcessorProvider).process(frame);
+      if (!ref.mounted) return;
 
       state = state.copyWith(phase: BiometricPhase.uploading);
       // Minted once per attempt and held for the lifetime of this attempt
@@ -219,6 +229,7 @@ class BiometricCaptureNotifier extends _$BiometricCaptureNotifier {
         error: e,
         stackTrace: st,
       );
+      if (!ref.mounted) return;
       state = state.copyWith(phase: BiometricPhase.error, errorReason: BiometricErrorReason.unknown);
     } finally {
       _uploadInFlight = false;
@@ -245,6 +256,7 @@ class BiometricCaptureNotifier extends _$BiometricCaptureNotifier {
       deviceId: _deviceId,
       image: image,
     );
+    if (!ref.mounted) return;
 
     await result.fold(
       (failure) async {
@@ -252,14 +264,16 @@ class BiometricCaptureNotifier extends _$BiometricCaptureNotifier {
           final delay = _retryDelay(failure);
           if (delay > Duration.zero) {
             await Future<void>.delayed(delay);
+            if (!ref.mounted) return;
           }
           await _verifyWithRetry(challenge: challenge, image: image, allowRetry: false);
           return;
         }
 
         if (_requiresStatusRefresh(failure)) {
-          ref.invalidate(biometricStatusProvider);
+          if (ref.mounted) ref.invalidate(biometricStatusProvider);
         }
+        if (!ref.mounted) return;
 
         state = state.copyWith(
           phase: BiometricPhase.rejected,
