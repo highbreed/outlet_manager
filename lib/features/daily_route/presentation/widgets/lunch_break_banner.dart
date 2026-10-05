@@ -74,9 +74,20 @@ class _LunchIconTile extends StatelessWidget {
   }
 }
 
+/// [time] is always the correct absolute instant (parseBackendTimestamp
+/// converts to UTC internally) — that's required for the countdown/
+/// duration math elsewhere in this file (`endsAt.difference(DateTime.now())`
+/// etc.), which must stay instant-correct. Display is a separate concern:
+/// reading `.hour`/`.minute` straight off that UTC instant showed the UTC
+/// wall clock (e.g. 09:13 for a 12:13 EAT lunch), 3 hours off — confirmed
+/// field report. `.toLocal()` isn't the fix either, since it depends on the
+/// device's own timezone setting, not Kenya's. This app only ever operates
+/// in Africa/Nairobi, which has no DST, so the fixed +3 offset is applied
+/// explicitly here, independent of device locale, for display only.
 String _formatTime(DateTime time) {
-  final hour = time.hour;
-  final minute = time.minute.toString().padLeft(2, '0');
+  final nairobiTime = time.toUtc().add(const Duration(hours: 3));
+  final hour = nairobiTime.hour;
+  final minute = nairobiTime.minute.toString().padLeft(2, '0');
   final period = hour >= 12 ? 'PM' : 'AM';
   final hour12 = hour > 12 ? hour - 12 : (hour == 0 ? 12 : hour);
   return '$hour12:$minute $period';
