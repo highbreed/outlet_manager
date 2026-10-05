@@ -63,6 +63,7 @@ class _SalesPerformanceScreenState
       builder: (_) =>
           MonthYearPickerSheet(initialYear: _year, initialMonth: _month),
     );
+    if (!mounted) return;
     if (result != null) {
       setState(() {
         _year = result.$1;
@@ -83,6 +84,7 @@ class _SalesPerformanceScreenState
       ),
       builder: (_) => OutletFilterSheet(selected: _outlet),
     );
+    if (!mounted) return;
     if (result == null) return; // dismissed without a choice
     setState(() {
       _outlet = result.outlet;
@@ -111,6 +113,7 @@ class _SalesPerformanceScreenState
         selected: _categoryFilter,
       ),
     );
+    if (!mounted) return;
     if (result == null) return; // dismissed without a choice
     setState(() => _categoryFilter = result.isEmpty ? null : result);
   }
@@ -138,6 +141,7 @@ class _SalesPerformanceScreenState
         selected: _selloutCategoryFilter,
       ),
     );
+    if (!mounted) return;
     if (result == null) return; // dismissed without a choice
     setState(() => _selloutCategoryFilter = result.isEmpty ? null : result);
   }

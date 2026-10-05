@@ -40,15 +40,17 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
         startDate: _startDate,
         endDate: _endDate.add(const Duration(days: 1)),
       );
+      if (!mounted) return;
 
       result.fold(
         (failure) => setState(() => _error = failure.displayMessage),
         (sessions) => setState(() => _sessions = sessions),
       );
     } catch (e) {
+      if (!mounted) return;
       setState(() => _error = e.toString());
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) setState(() => _isLoading = false);
     }
   }
 
@@ -70,6 +72,7 @@ class _SessionHistoryScreenState extends ConsumerState<SessionHistoryScreen> {
       },
     );
 
+    if (!mounted) return;
     if (picked != null) {
       setState(() {
         _startDate = picked.start;

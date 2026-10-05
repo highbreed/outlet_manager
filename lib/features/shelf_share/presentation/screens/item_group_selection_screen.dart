@@ -55,6 +55,7 @@ class _ItemGroupSelectionScreenState
     try {
       final repo = await ref.read(itemGroupRepositoryProvider.future);
       final result = await repo.getItemGroups(size: 200);
+      if (!mounted) return;
 
       result.fold(
         (failure) {
@@ -72,6 +73,7 @@ class _ItemGroupSelectionScreenState
         },
       );
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _error = 'Failed to load item groups: $e';
@@ -126,6 +128,7 @@ class _ItemGroupSelectionScreenState
     final success = await ref
         .read(shelfShareSessionControllerProvider.notifier)
         .addItemGroups([newGroup]);
+    if (!mounted) return;
 
     setState(() => _addingGroupId = null);
 

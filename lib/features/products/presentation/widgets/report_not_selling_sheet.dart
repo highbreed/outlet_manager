@@ -100,11 +100,13 @@ class _ReportNotSellingSheetState extends ConsumerState<ReportNotSellingSheet> {
       if (!mounted) return;
       Navigator.of(context).pop(report);
     } on NetworkException catch (e) {
+      if (!mounted) return;
       setState(() {
         _error = e.toFailure().displayMessage;
         _submitting = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _error = 'Something went wrong. Please try again.';
         _submitting = false;

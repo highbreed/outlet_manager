@@ -55,6 +55,7 @@ class _FacingsItemGroupSelectionScreenState
     try {
       final repo = await ref.read(itemGroupRepositoryProvider.future);
       final result = await repo.getItemGroups(size: 200);
+      if (!mounted) return;
 
       result.fold(
         (failure) {
@@ -72,6 +73,7 @@ class _FacingsItemGroupSelectionScreenState
         },
       );
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isLoading = false;
         _error = 'Failed to load item groups: $e';

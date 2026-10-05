@@ -150,6 +150,7 @@ class _OrderGenerationScreenState extends ConsumerState<OrderGenerationScreen> {
 
   Future<void> _generateProposedOrder() async {
     final email = await _showEmailInputDialog();
+    if (!mounted) return;
     if (email == null) return;
 
     setState(() {

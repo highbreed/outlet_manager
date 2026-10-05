@@ -81,6 +81,7 @@ class _LocationPermissionScreenState
         await _completePostPermissionSetup();
       }
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _errorMessage = e.toString();
       });
@@ -113,11 +114,13 @@ class _LocationPermissionScreenState
         });
       }
     } on LocationServiceDisabledException catch (e) {
+      if (!mounted) return;
       setState(() {
         _isServiceDisabled = true;
         _errorMessage = e.toString();
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _errorMessage = e.toString();
       });

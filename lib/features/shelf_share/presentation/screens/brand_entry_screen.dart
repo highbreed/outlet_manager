@@ -138,6 +138,7 @@ class _BrandEntryScreenState extends ConsumerState<BrandEntryScreen>
       final brands = items
           .map((e) => _ApiBrand.fromJson(e as Map<String, dynamic>))
           .toList();
+      if (!mounted) return;
 
       setState(() {
         _allBrands = brands;
@@ -145,6 +146,7 @@ class _BrandEntryScreenState extends ConsumerState<BrandEntryScreen>
         _isBrandsLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _isBrandsLoading = false;
         _brandsError = 'Failed to load brands: $e';

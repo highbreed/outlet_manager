@@ -888,6 +888,7 @@ class _RegisterComplaintScreenState
       firstDate: DateTime(now.year - 10),
       lastDate: now,
     );
+    if (!mounted) return;
     if (picked != null) setState(() => _dateOfPurchase = picked);
   }
 
@@ -1013,6 +1014,7 @@ class _RegisterComplaintScreenState
         queryParameters: {'search': result.barcode},
       );
       final items = (response.data as List<dynamic>?) ?? [];
+      if (!mounted) return;
       if (items.isNotEmpty) {
         final product = ComplaintProduct.fromJson(
           items.first as Map<String, dynamic>,

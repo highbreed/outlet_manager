@@ -138,6 +138,7 @@ class _AddCompetitorMappingSheetState
       firstDate: DateTime.now().subtract(const Duration(days: 365)),
       lastDate: DateTime.now().add(const Duration(days: 365)),
     );
+    if (!mounted) return;
     if (picked != null) setState(() => _offerStartDate = picked);
   }
 
@@ -177,11 +178,13 @@ class _AddCompetitorMappingSheetState
       if (!mounted) return;
       Navigator.of(context).pop(mapping);
     } on NetworkException catch (e) {
+      if (!mounted) return;
       setState(() {
         _error = e.toFailure().displayMessage;
         _submitting = false;
       });
     } catch (e) {
+      if (!mounted) return;
       setState(() {
         _error = 'Something went wrong. Please try again.';
         _submitting = false;

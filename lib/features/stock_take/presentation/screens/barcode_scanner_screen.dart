@@ -120,6 +120,7 @@ class _BarcodeScannerScreenState extends State<BarcodeScannerScreen> {
 
   void _toggleTorch() async {
     await _controller?.toggleTorch();
+    if (!mounted) return;
     setState(() => _torchEnabled = !_torchEnabled);
   }
 
