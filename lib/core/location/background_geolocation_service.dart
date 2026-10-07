@@ -10,11 +10,11 @@ import 'package:geolocator/geolocator.dart' show Geolocator;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 
-import '../database/isar_database.dart';
 import '../device/device_fingerprint.dart';
 import '../network/isolate_auth_context.dart';
 import '../storage/device_location_token_storage.dart';
 import 'location_data.dart';
+import '../../features/location_tracking/data/datasources/headless_ping_staging_store.dart';
 import '../../features/location_tracking/data/datasources/location_ping_local_datasource.dart';
 import '../../features/location_tracking/data/datasources/location_ping_remote_datasource.dart';
 import '../../features/location_tracking/data/repositories/location_ping_repository_impl.dart';
@@ -725,11 +725,21 @@ class BackgroundGeolocationService {
   /// agnostic: it drains the shared Isar-backed queue regardless of which
   /// capture produced each row (a ping that failed to send when it was
   /// first captured, from any pipeline that used this same local
-  /// datasource). Called on app resume and connectivity restore (see
-  /// main.dart) — this is what used to be `LocationPingController.syncPending()`
-  /// before that class (and the Dart-timer engine it drove) was deleted.
+  /// datasource). Called on app resume, connectivity restore, and cold
+  /// start (see main.dart) — this is what used to be
+  /// `LocationPingController.syncPending()` before that class (and the
+  /// Dart-timer engine it drove) was deleted.
+  ///
+  /// First drains anything `backgroundGeolocationHeadlessTask` staged into
+  /// its own, separately-opened Isar instance (see
+  /// `HeadlessPingStagingStore`'s doc comment) into this main pending pool,
+  /// before processing that pool normally — staged pings get no send
+  /// attempt of their own, they just join the loop below like any other
+  /// pending/failed ping.
   Future<void> syncPendingPings() async {
     try {
+      await _drainHeadlessStaging();
+
       final pending = await _localDataSource.getPendingPings();
       if (pending.isEmpty) return;
 
@@ -739,10 +749,10 @@ class BackgroundGeolocationService {
           !connectivityResult.contains(ConnectivityResult.none);
       if (!isOnline) return;
 
-      // Isolate-safe resolution, not AppConfig.apiBaseUrl — this method is
-      // also called from the headless task below, a fresh engine that
-      // never ran main(), where AppConfig's static fields were never
-      // initialized. See isolate_auth_context.dart's doc comment.
+      // Isolate-safe resolution, not AppConfig.apiBaseUrl — this method can
+      // run very early after a cold start, before AppConfig's static
+      // fields are guaranteed initialized. See isolate_auth_context.dart's
+      // doc comment.
       final apiBaseUrl = resolveIsolateApiBaseUrl(resolveIsolateRegion());
       final accessToken = await resolveIsolateAccessToken(apiBaseUrl);
       if (accessToken == null) return;
@@ -773,6 +783,38 @@ class BackgroundGeolocationService {
         error: e,
         stackTrace: st,
       );
+    }
+  }
+
+  /// Isolated in its own try/catch so a staging-drain failure (e.g. the
+  /// staging file still being held by a heartbeat write at the exact
+  /// moment this runs) can never suppress the unrelated, already-working
+  /// pending-ping send loop in [syncPendingPings] above it. The 10s bound
+  /// is defense in depth on top of [HeadlessPingStagingStore] already
+  /// closing both sides' handles promptly after each small operation —
+  /// see that class's own doc comment for why genuine contention here is
+  /// bounded, not indefinite. Either way this call is always reached from
+  /// a fire-and-forget `syncPendingPings()` call site, never awaited on
+  /// anything that gates the UI, so a stall here is invisible to the user
+  /// regardless.
+  Future<void> _drainHeadlessStaging() async {
+    try {
+      await HeadlessPingStagingStore.drainInto(
+        _localDataSource.savePing,
+      ).timeout(const Duration(seconds: 10));
+      developer.log(
+        'headless_drain_success',
+        name: 'BackgroundGeolocationService',
+      );
+    } catch (e, st) {
+      developer.log(
+        'headless_drain_failure: $e',
+        name: 'BackgroundGeolocationService',
+        error: e,
+        stackTrace: st,
+      );
+    } finally {
+      await HeadlessPingStagingStore.close();
     }
   }
 
@@ -1204,6 +1246,23 @@ Future<void> registerBackgroundGeolocationHeadlessTask() =>
 /// position is explicitly requested rather than using the stale
 /// `event.location`.
 ///
+/// Stages the resulting ping into [HeadlessPingStagingStore] — a SEPARATE
+/// Isar file from the one the foreground app's `IsarDatabase` opens —
+/// rather than writing through the normal `_handleLocation`/`IsarDatabase`
+/// pipeline the foreground app uses. That avoided a confirmed field bug:
+/// two isolates independently opening the SAME mdbx-backed file could make
+/// the foreground app's own startup `Isar.open()` block on this isolate's
+/// held lock long enough to blow `AppInitializationService`'s database-
+/// phase timeout. No network send happens here either —
+/// `resolveIsolateAccessToken` goes through `flutter_secure_storage`, a
+/// MethodChannel plugin with no registered handler in this bare headless
+/// engine (confirmed via the plugin's own `HeadlessTask.java`:
+/// `GeneratedPluginRegistrant` is never run against this engine), so that
+/// attempt was already silently failing in practice. The staged ping is
+/// instead picked up by the normal `syncPendingPings()` → `sendPing()`
+/// pipeline the next time the app actually runs (resume, connectivity-
+/// restore, or cold-start — see that method).
+///
 /// Must be a top-level (or static) function, not a closure — the plugin
 /// addresses it via `PluginUtilities.getCallbackHandle`, which only works
 /// for one of those. `@pragma('vm:entry-point')` keeps AOT tree-shaking
@@ -1218,29 +1277,11 @@ void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
       persist: true,
       desiredAccuracy: 200,
     );
-    // _handleLocation's own network calls (the ping POST plus a possible
-    // token refresh) have no combined bound — each uses its own 15-30s
-    // connect/receive timeouts independently, so a slow/stalled connection
-    // here could legitimately run for 60-90s. This isolate's Isar instance
-    // (opened independently of the foreground app's — see IsarDatabase's
-    // own doc comment on cross-isolate mdbx lock contention) stays open
-    // for all of that, which is the confirmed cause of a field-reported
-    // "TimeoutException ... database" app-init failure: the foreground
-    // app's own Isar.open() blocks on this isolate's still-held mdbx lock
-    // for longer than AppInitializationService's 45s database-phase
-    // budget. Bounding this well under that budget means the worst case
-    // is "this one heartbeat's ping sync silently fails and gets picked
-    // up by the next pending-pings sync pass" (the ping is already saved
-    // locally by the time this fires) rather than a foreground app hang.
-    await BackgroundGeolocationService()
-        ._handleLocation(location, pingSource: PingSource.background)
-        .timeout(const Duration(seconds: 20), onTimeout: () {
-          developer.log(
-            '[BackgroundGeolocationService] headless heartbeat _handleLocation '
-            'timed out after 20s; releasing this isolate\'s Isar lock early',
-            name: 'BackgroundGeolocationService',
-          );
-        });
+    final ping = await BackgroundGeolocationService()._toPing(
+      location,
+      PingSource.background,
+    );
+    await HeadlessPingStagingStore.stage(ping);
   } catch (e, st) {
     developer.log(
       '[BackgroundGeolocationService] headless heartbeat failed: $e',
@@ -1249,14 +1290,9 @@ void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
       stackTrace: st,
     );
   } finally {
-    // Always release this isolate's own Isar/mdbx lock as soon as this
-    // headless task's work is done (success, error, or the 20s timeout
-    // above) rather than depending on the native headless engine's own
-    // uncertain teardown timing. A timed-out _handleLocation keeps running
-    // in the background (a Dart timeout doesn't cancel the underlying
-    // call) and may still throw once this closes the instance out from
-    // under it — that's fine, it hits _handleLocation's own try/catch and
-    // just logs, same as any other failed-to-sync ping.
-    await IsarDatabase.close();
+    // Always release this isolate's own staging-file lock promptly once
+    // this task's work is done, rather than depending on the native
+    // headless engine's own uncertain teardown timing.
+    await HeadlessPingStagingStore.close();
   }
 }

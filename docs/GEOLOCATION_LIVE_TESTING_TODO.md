@@ -103,6 +103,33 @@ fix are both new; only spot-checked so far, not run through the full matrix.
   clock-in validation), `geofence_override_request_screen.dart`
   (`getCurrentLocation()`), and clock-in/out use cases.
 
+## 2026-10-07 — Headless heartbeat staged into its own Isar DB
+
+Fixes a field-reported `TimeoutException ... database` app-init failure:
+the headless heartbeat task now stages pings into a separate
+`outlet_manager_headless_staging.isar` file (`HeadlessPingStagingStore`)
+instead of the main `outlet_manager.isar` the foreground app opens at
+startup, eliminating the cross-isolate mdbx lock contention that caused
+it. See `/Users/stephen/.claude/plans/enchanted-juggling-ocean.md` for
+the full design.
+
+- [ ] **Staging file is physically separate.** After a terminated-app
+  heartbeat fires, confirm via `adb shell run-as <pkg> ls files/` that
+  `outlet_manager_headless_staging.isar`/`.isar-lck` exist alongside (not
+  instead of) `outlet_manager.isar`.
+- [ ] **A staged ping reaches the backend after relaunch.** Clock in,
+  force-close the app, wait past `heartbeatInterval` while terminated so
+  a heartbeat stages a ping, relaunch the app, confirm `POST
+  /visits/location/ping` fires for it (via cold-start, resume, or
+  connectivity-restore — whichever triggers first) with `is_duplicate:
+  false`.
+- [ ] **Cold-start trigger adds no visible startup latency.**
+  `InitializationLoadingScreen`'s timing is unaffected by the new
+  `syncPendingPings()` call in `_AppLifecycleHandlerState.initState()`.
+- [ ] **Original bug no longer reproduces.** Cold-start the app
+  immediately after a headless heartbeat fires (the exact original repro
+  conditions) and confirm no `TimeoutException ... database` failure.
+
 ## Still pending (pre-existing, unrelated to this session)
 
 - [ ] **Lock screen.** Clock in, lock the device, confirm pings keep

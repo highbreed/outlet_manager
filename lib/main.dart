@@ -372,6 +372,17 @@ class _AppLifecycleHandlerState extends ConsumerState<_AppLifecycleHandler>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
 
+    // Cold-start reconciliation: didChangeAppLifecycleState's `resumed`
+    // case below isn't guaranteed to fire for the very first launch in
+    // every Flutter version/registration-timing scenario, so this is a
+    // third, defensive trigger alongside app-resume (below) and
+    // connectivity-restore (_BackgroundSyncListener) — fire-and-forget,
+    // consistent with both of those. This widget only enters the tree
+    // once appInitialization has already resolved successfully, and
+    // initState() fires exactly once per widget lifetime, so this can't
+    // add startup latency or fire repeatedly.
+    ref.read(backgroundGeolocationServiceProvider).syncPendingPings();
+
     // Purely a UX nicety: the plugin has already acted on the transition
     // (native OS-level geofencing, an immediate geofence_event ping) by the
     // time this fires — this just surfaces the same notifications
