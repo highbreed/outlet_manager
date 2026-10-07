@@ -10,6 +10,7 @@ import 'package:geolocator/geolocator.dart' show Geolocator;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:uuid/uuid.dart';
 
+import '../database/isar_database.dart';
 import '../device/device_fingerprint.dart';
 import '../network/isolate_auth_context.dart';
 import '../storage/device_location_token_storage.dart';
@@ -1217,10 +1218,29 @@ void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
       persist: true,
       desiredAccuracy: 200,
     );
-    await BackgroundGeolocationService()._handleLocation(
-      location,
-      pingSource: PingSource.background,
-    );
+    // _handleLocation's own network calls (the ping POST plus a possible
+    // token refresh) have no combined bound — each uses its own 15-30s
+    // connect/receive timeouts independently, so a slow/stalled connection
+    // here could legitimately run for 60-90s. This isolate's Isar instance
+    // (opened independently of the foreground app's — see IsarDatabase's
+    // own doc comment on cross-isolate mdbx lock contention) stays open
+    // for all of that, which is the confirmed cause of a field-reported
+    // "TimeoutException ... database" app-init failure: the foreground
+    // app's own Isar.open() blocks on this isolate's still-held mdbx lock
+    // for longer than AppInitializationService's 45s database-phase
+    // budget. Bounding this well under that budget means the worst case
+    // is "this one heartbeat's ping sync silently fails and gets picked
+    // up by the next pending-pings sync pass" (the ping is already saved
+    // locally by the time this fires) rather than a foreground app hang.
+    await BackgroundGeolocationService()
+        ._handleLocation(location, pingSource: PingSource.background)
+        .timeout(const Duration(seconds: 20), onTimeout: () {
+          developer.log(
+            '[BackgroundGeolocationService] headless heartbeat _handleLocation '
+            'timed out after 20s; releasing this isolate\'s Isar lock early',
+            name: 'BackgroundGeolocationService',
+          );
+        });
   } catch (e, st) {
     developer.log(
       '[BackgroundGeolocationService] headless heartbeat failed: $e',
@@ -1228,5 +1248,15 @@ void backgroundGeolocationHeadlessTask(bg.HeadlessEvent headlessEvent) async {
       error: e,
       stackTrace: st,
     );
+  } finally {
+    // Always release this isolate's own Isar/mdbx lock as soon as this
+    // headless task's work is done (success, error, or the 20s timeout
+    // above) rather than depending on the native headless engine's own
+    // uncertain teardown timing. A timed-out _handleLocation keeps running
+    // in the background (a Dart timeout doesn't cancel the underlying
+    // call) and may still throw once this closes the instance out from
+    // under it — that's fine, it hits _handleLocation's own try/catch and
+    // just logs, same as any other failed-to-sync ping.
+    await IsarDatabase.close();
   }
 }
