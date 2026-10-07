@@ -115,6 +115,18 @@ class _CloseRouteConfirmContentState
 
   @override
   Widget build(BuildContext context) {
+    // Keeps the autoDispose routeCloseNotifierProvider alive for as long as
+    // this sheet is mounted. Without a watch here, _confirmClose only ever
+    // ref.reads the provider, so it has zero listeners while its close()
+    // network call is in flight; Riverpod is then free to dispose it before
+    // the response lands, silently discarding the real success/failure and
+    // leaving a fresh, valueless AsyncData(null) behind — which then shows
+    // as a generic "Failed to close route" even though the server (and the
+    // local DB save right after it) already succeeded. Same disposal-race
+    // class as RouteActivationNotifier/ClockInNotifier elsewhere in this
+    // feature, just surfacing as a dropped result here instead of a crash.
+    ref.watch(routeCloseNotifierProvider);
+
     final hasMissed = widget.willBeMissed > 0;
 
     return Column(
