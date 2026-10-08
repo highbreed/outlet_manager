@@ -1024,6 +1024,22 @@ class StockTakeRepositoryImpl implements StockTakeRepository {
             );
             return _dropStaleSession(session, localId);
           }
+          if (e.statusCode == 400) {
+            // The server received and fully processed this request and
+            // said no (too few of the agent's products scanned, or the
+            // session isn't in progress/paused any more) - fundamentally
+            // different from a network failure. Must return here, before
+            // _queueBackgroundSync and the local-completion mutation
+            // below: queuing a retry would just resend the identical,
+            // still-rejected request forever, and marking the session
+            // completed locally would be a lie - it's still open on the
+            // server, and the agent needs to go on scanning, not
+            // navigate away believing they're done.
+            print('[StockTakeRepo] Complete rejected (400): ${e.message}');
+            return left(
+              ValidationFailure(message: e.message, fieldErrors: const {}),
+            );
+          }
           // Network failed for another reason - queue for background sync
           print('[StockTake] Network failed during complete: ${e.message}');
           print('[StockTake] Queuing background sync for session...');

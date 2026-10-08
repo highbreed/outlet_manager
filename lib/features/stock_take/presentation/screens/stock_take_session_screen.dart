@@ -921,9 +921,12 @@ class _StockTakeSessionScreenState
             context.pop();
           }
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to submit stock take')),
-          );
+          final message =
+              ref.read(stockTakeSessionControllerProvider).errorMessage ??
+              'Failed to submit stock take';
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(message)));
         }
       }
     } catch (e) {
