@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer' as developer;
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 /// Secure storage for the `device_location` JWT — a separate, narrowly-
@@ -26,25 +29,67 @@ class DeviceLocationTokenStorage {
         ),
       );
 
+  /// Field-reported crash (Sentry): `PlatformException` wrapping a
+  /// `BadPaddingException` from `EncryptedSharedPreferences`'s underlying
+  /// Android Keystore AES key — a known, somewhat common real-world
+  /// failure mode (the OS restored app data to a new device, a lock-screen
+  /// credential change invalidated the key, Keystore corruption, etc.)
+  /// where previously-encrypted values become permanently undecryptable
+  /// with that key. [TokenStorage.getTokens] already guards against this
+  /// exact class of failure; this class never had the same treatment.
+  /// Treats any read failure as "no cached token" (the normal cache-miss
+  /// path already mints a fresh one — see [ensureDeviceLocationToken]) and
+  /// proactively clears the unreadable keys so a broken Keystore key
+  /// doesn't keep throwing the same exception on every future read.
   Future<DeviceLocationToken?> read() async {
-    final token = await _storage.read(key: _tokenKey);
-    final expiryStr = await _storage.read(key: _expiryKey);
+    final String? token;
+    final String? expiryStr;
+    try {
+      token = await _storage.read(key: _tokenKey);
+      expiryStr = await _storage.read(key: _expiryKey);
+    } catch (e) {
+      developer.log(
+        '⚠️ Failed to read device-location token from secure storage — '
+        'treating as not cached: $e',
+        name: 'DeviceLocationTokenStorage',
+      );
+      unawaited(clear());
+      return null;
+    }
     if (token == null || expiryStr == null) return null;
     return DeviceLocationToken(token: token, expiresAt: DateTime.parse(expiryStr));
   }
 
-  Future<void> save({required String token, required DateTime expiresAt}) {
-    return Future.wait([
-      _storage.write(key: _tokenKey, value: token),
-      _storage.write(key: _expiryKey, value: expiresAt.toIso8601String()),
-    ]);
+  Future<void> save({required String token, required DateTime expiresAt}) async {
+    try {
+      await Future.wait([
+        _storage.write(key: _tokenKey, value: token),
+        _storage.write(key: _expiryKey, value: expiresAt.toIso8601String()),
+      ]);
+    } catch (e) {
+      // Non-fatal: the freshly-minted token is still returned to the
+      // caller for this call's immediate use (see ensureDeviceLocationToken),
+      // it just won't survive to the next read — same degrade-gracefully
+      // reasoning as TokenStorage.saveTokens.
+      developer.log(
+        '⚠️ Failed to persist device-location token to secure storage: $e',
+        name: 'DeviceLocationTokenStorage',
+      );
+    }
   }
 
-  Future<void> clear() {
-    return Future.wait([
-      _storage.delete(key: _tokenKey),
-      _storage.delete(key: _expiryKey),
-    ]);
+  Future<void> clear() async {
+    try {
+      await Future.wait([
+        _storage.delete(key: _tokenKey),
+        _storage.delete(key: _expiryKey),
+      ]);
+    } catch (e) {
+      developer.log(
+        '⚠️ Failed to clear device-location token from secure storage: $e',
+        name: 'DeviceLocationTokenStorage',
+      );
+    }
   }
 }
 
