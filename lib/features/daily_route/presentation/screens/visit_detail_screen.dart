@@ -491,6 +491,12 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
     required String? deviceId,
     required bool allowRetry,
   }) async {
+    // Guards entry for every call path into this method, including the
+    // recursive stale-token retry below (line ~536) — that retry's own
+    // caller (verifyBiometric's await) has no mounted check of its own,
+    // so without this the recursive call would immediately hit the same
+    // unguarded ref.read this whole fix addresses, just one call deeper.
+    if (!mounted) return;
     debugPrint(
       '[DIAG] _attemptClockIn starting: visitLocalId=${visit.localId} '
       'verificationId=$verificationId deviceId=$deviceId allowRetry=$allowRetry',
@@ -506,6 +512,11 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
           deviceId: deviceId,
         );
 
+    // Sentry: StateError at ConsumerStatefulElement.read — the screen can
+    // be unmounted (e.g. the agent navigated away) while clockIn's await
+    // above is in flight; reading ref again immediately after without
+    // this check is exactly what threw.
+    if (!mounted) return;
     final state = ref.read(clockInNotifierProvider);
     debugPrint(
       '[DIAG] _attemptClockIn result: hasValue=${state.hasValue} '
