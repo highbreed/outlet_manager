@@ -517,11 +517,25 @@ class ClockOutNotifier extends _$ClockOutNotifier {
       forceClockOut: forceClockOut,
     );
     // See RouteActivationNotifier.activate's matching comment — same
-    // Riverpod 3.x disposal-race, same fix. Callers already separately
-    // check their own widget's mounted state before acting on the
-    // returned AsyncValue, so returning the pre-call state as a no-op
-    // signal here is safe.
-    if (!ref.mounted) return state;
+    // Riverpod 3.x disposal-race, same fix - with one addition: the
+    // `state` GETTER also calls ref._throwIfInvalidUsage() internally
+    // (confirmed in riverpod's own notifier_provider.dart source), the
+    // exact same check `ref.mounted` just failed. So `return state;`
+    // here would throw for the identical reason this guard exists -
+    // confirmed via a real Sentry crash (UnmountedRefException at
+    // AnyNotifier.state, this line) once this method shipped with that
+    // exact bug. Compute the return value from `result` (already
+    // resolved locally, no ref/state access needed) instead. Callers
+    // check their own widget's mounted state before usually acting on
+    // this, but context.mounted and ref.mounted are independent - when a
+    // caller IS still around, it deserves the real outcome, not a value
+    // that would have crashed to produce.
+    if (!ref.mounted) {
+      return result.fold<AsyncValue<OutletVisit?>>(
+        (failure) => AsyncError(failure, StackTrace.current),
+        (visit) => AsyncData(visit),
+      );
+    }
     final newState = result.fold<AsyncValue<OutletVisit?>>(
       (failure) => AsyncError(failure, StackTrace.current),
       (visit) {
