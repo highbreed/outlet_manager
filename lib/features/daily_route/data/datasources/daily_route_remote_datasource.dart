@@ -66,6 +66,14 @@ abstract class DailyRouteRemoteDataSource {
   /// [verificationId]/[deviceId] are omitted from the request body when
   /// null — a legacy clock-in for an employee not yet enforced. See the
   /// "Phase 5" plan's section D.
+  ///
+  /// [isMockLocation] carries the OS's own mock-location-provider signal
+  /// (confirmed field-fraud case: fake-GPS clock-ins passing geofence
+  /// checks undetected until a backend pattern-analysis caught them hours
+  /// later) — null when the caller has no location to attach it to (e.g.
+  /// [OutletVisitRepositoryImpl.clockInWithOverride], which reuses the
+  /// override request's already-stored location rather than a fresh
+  /// capture).
   Future<OutletVisitResponse> clockIn(
     String visitId, {
     required double latitude,
@@ -75,6 +83,7 @@ abstract class DailyRouteRemoteDataSource {
     String? deviceId,
     String? notes,
     String? overrideRequestId,
+    bool? isMockLocation,
   });
 
   /// Clock out from a visit
@@ -222,6 +231,7 @@ class DailyRouteRemoteDataSourceImpl implements DailyRouteRemoteDataSource {
     String? deviceId,
     String? notes,
     String? overrideRequestId,
+    bool? isMockLocation,
   }) async {
     final response = await _dio.post(
       '$_basePath/$visitId/clock-in',
@@ -233,6 +243,7 @@ class DailyRouteRemoteDataSourceImpl implements DailyRouteRemoteDataSource {
         if (deviceId != null) 'device_id': deviceId,
         if (notes != null) 'notes': notes,
         if (overrideRequestId != null) 'override_request_id': overrideRequestId,
+        if (isMockLocation != null) 'is_mock': isMockLocation,
       },
     );
     return OutletVisitResponse.fromJson(response.data);

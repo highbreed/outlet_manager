@@ -105,6 +105,7 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
     String? verificationId,
     String? deviceId,
     String? notes,
+    bool? isMocked,
   }) async {
     try {
       final localVisit = await _localDataSource.getVisitByLocalId(visitLocalId);
@@ -126,6 +127,7 @@ class OutletVisitRepositoryImpl implements OutletVisitRepository {
         verificationId: verificationId,
         deviceId: deviceId,
         notes: notes,
+        isMockLocation: isMocked,
       );
 
       final updatedVisit = response.toDomain(

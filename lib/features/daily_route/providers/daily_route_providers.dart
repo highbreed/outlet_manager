@@ -454,6 +454,7 @@ class ClockInNotifier extends _$ClockInNotifier {
     String? verificationId,
     String? deviceId,
     String? notes,
+    bool? isMocked,
   }) async {
     state = const AsyncLoading();
     final useCase = ref.read(clockInVisitUseCaseProvider);
@@ -465,6 +466,7 @@ class ClockInNotifier extends _$ClockInNotifier {
       verificationId: verificationId,
       deviceId: deviceId,
       notes: notes,
+      isMocked: isMocked,
     );
     // See RouteActivationNotifier.activate's matching comment — same
     // Riverpod 3.x disposal-race, same fix.

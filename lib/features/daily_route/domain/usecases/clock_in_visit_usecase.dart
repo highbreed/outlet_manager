@@ -46,6 +46,7 @@ class ClockInVisitUseCase {
     String? verificationId,
     String? deviceId,
     String? notes,
+    bool? isMocked,
   }) async {
     // Validate GPS accuracy (must be ≤ 200m)
     if (accuracyMeters > 200.0) {
@@ -131,6 +132,7 @@ class ClockInVisitUseCase {
         verificationId: verificationId,
         deviceId: deviceId,
         notes: notes,
+        isMocked: isMocked,
       );
     });
   }

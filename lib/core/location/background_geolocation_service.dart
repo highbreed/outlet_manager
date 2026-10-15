@@ -1168,6 +1168,7 @@ class BackgroundGeolocationService {
       speed: location.coords.speed >= 0 ? location.coords.speed : 0,
       heading: location.coords.heading >= 0 ? location.coords.heading : 0,
       timestamp: DateTime.now(),
+      isMocked: location.mock,
     );
   }
 

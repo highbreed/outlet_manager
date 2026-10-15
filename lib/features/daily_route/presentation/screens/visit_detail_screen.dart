@@ -510,6 +510,7 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
           accuracyMeters: location.accuracy,
           verificationId: verificationId,
           deviceId: deviceId,
+          isMocked: location.isMocked,
         );
 
     // Sentry: StateError at ConsumerStatefulElement.read — the screen can

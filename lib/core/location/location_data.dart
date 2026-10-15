@@ -10,6 +10,20 @@ class LocationData {
   final double heading;
   final DateTime timestamp;
 
+  /// Whether the OS reported this fix as coming from a mock location
+  /// provider (Android: `Location.isFromMockProvider()`, surfaced by
+  /// `geolocator` as `Position.isMocked`; the `flutter_background_geolocation`
+  /// plugin surfaces the same signal as `Location.mock`). A field-confirmed
+  /// fraud case (fake-GPS clock-ins passing geofence checks with a
+  /// suspiciously exact 1.0m accuracy, zero altitude, and a nonzero
+  /// "speed" on a perfectly stationary point) showed this flag was being
+  /// read from the OS but silently dropped before ever reaching the
+  /// clock-in request. Only catches the official Android mock-location
+  /// mechanism (Developer Options → "Select mock location app") — a
+  /// spoofer using root/Xposed to hook the location APIs directly can
+  /// still evade this flag.
+  final bool isMocked;
+
   const LocationData({
     required this.latitude,
     required this.longitude,
@@ -18,6 +32,7 @@ class LocationData {
     required this.speed,
     required this.heading,
     required this.timestamp,
+    required this.isMocked,
   });
 
   /// Create LocationData from Geolocator Position
@@ -30,6 +45,7 @@ class LocationData {
       speed: position.speed,
       heading: position.heading,
       timestamp: position.timestamp,
+      isMocked: position.isMocked,
     );
   }
 

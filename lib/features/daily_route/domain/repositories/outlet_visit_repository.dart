@@ -53,7 +53,10 @@ abstract class OutletVisitRepository {
   /// [verificationId] is null for a legacy clock-in — normal when the
   /// backend reports `clock_in_verification_required: false`. [deviceId]
   /// is sent alongside a non-null [verificationId] for the backend's
-  /// device-match check.
+  /// device-match check. [isMocked] carries the OS's mock-location-
+  /// provider signal for this fix, so the backend can flag/reject a
+  /// spoofed clock-in at the moment it happens instead of discovering it
+  /// later through pattern analysis.
   Future<Either<Failure, OutletVisit>> clockIn({
     required String visitLocalId,
     required double latitude,
@@ -62,6 +65,7 @@ abstract class OutletVisitRepository {
     String? verificationId,
     String? deviceId,
     String? notes,
+    bool? isMocked,
   });
 
   /// Clock out from a visit.
