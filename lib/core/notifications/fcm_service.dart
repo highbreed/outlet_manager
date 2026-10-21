@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 
+import '../database/isar_database.dart';
 import '../../features/location_tracking/services/location_ping_request_handler.dart';
 import '../../features/stock_take/services/device_cache_dump_handler.dart';
 import 'notification_channels.dart';
@@ -24,9 +25,30 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
 
   developer.log('[FCM] Background message: ${message.messageId}');
-  await _dispatchDataMessage(message.data);
-  // flutter_local_notifications can show a local notification here if needed.
-  // For most cases the system tray notification shown by FCM itself is enough.
+  try {
+    await _dispatchDataMessage(message.data);
+    // flutter_local_notifications can show a local notification here if
+    // needed. For most cases the system tray notification shown by FCM
+    // itself is enough.
+  } finally {
+    // _dispatchDataMessage can route to handleCacheDumpRequest, which opens
+    // this isolate's OWN IsarDatabase._instance (Dart statics are
+    // per-isolate) to read local stock-take data — the exact same cross-
+    // isolate mdbx lock-contention bug class already fixed for the
+    // headless location heartbeat (see HeadlessPingStagingStore's doc
+    // comment): if this headless isolate still held that lock when the
+    // user opened the app, the foreground app's own Isar.open() could
+    // block past AppInitializationService's 45s database-phase timeout,
+    // reproducing the exact "TimeoutException ... database" failure.
+    // Closing here is safe ONLY because this function is the genuinely
+    // headless entry point — `_setupForegroundHandler`'s own call to
+    // _dispatchDataMessage (fcm_service.dart, foreground listener) runs in
+    // the main app's own isolate, where IsarDatabase._instance IS the live
+    // app's shared database; this close must never be added there. A
+    // no-op if this isolate never opened an instance in the first place
+    // (IsarDatabase.close() is null-safe).
+    await IsarDatabase.close();
+  }
 }
 
 /// Routes a data-only push to its handler based on `data.action`/`data.type`
