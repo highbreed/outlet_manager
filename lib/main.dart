@@ -52,6 +52,17 @@ void main() async {
     // Setting to 1.0 will profile 100% of sampled transactions:
     options.profilesSampleRate = 1.0;
 
+    // Native-crash symbolication (Android 12+/API 30+ only, no-op below
+    // that — no version gating needed here). Uses Android's own
+    // ApplicationExitInfo.REASON_CRASH_NATIVE to capture a proper
+    // tombstone for crashes like the recurring unsymbolicated
+    // "__pthread_start" SIGSEGV seen in the field (every frame stayed
+    // "<unknown>" despite this app's own libapp.so debug symbols being
+    // uploaded on every release — a strong sign the crash is inside a
+    // bundled native plugin library, not our Dart code, which this gives
+    // us a real way to actually identify instead of guessing).
+    options.enableTombstone = true;
+
     // Session Replay — lets us actually see what a field agent was doing
     // when a crash like the Isar/biometric/geofence-override bugs this
     // week happened, instead of reconstructing it purely from a stack
