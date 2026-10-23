@@ -605,9 +605,29 @@ class _DeviceRegistrationListenerState
   }
 
   Future<void> _registerFcmToken() async {
-    final token = await ref.read(fcmServiceProvider).getToken();
-    if (token != null) {
-      ref.read(deviceRegistrationRepositoryProvider).registerDevice(token);
+    // Sentry: FirebaseException [firebase_messaging/unknown]
+    // FIS_AUTH_ERROR — Firebase Installations Service auth failures are a
+    // known, usually-transient Google-side/device-state issue (clock skew,
+    // stale Play Services cache, a momentary FIS backend hiccup), not
+    // something fixable at the root here. This call was fire-and-forget
+    // with no error handling at all, so every occurrence surfaced as an
+    // unhandled fatal crash instead of what it actually is: a best-effort
+    // registration that can just be retried next time this listener fires
+    // (next login/session-restore) — same shape as the
+    // DeviceLocationTokenStorage Keystore-decrypt fix earlier this
+    // session, a platform-channel call that can genuinely fail for
+    // reasons outside the app's control and needs to degrade quietly
+    // instead of crashing.
+    try {
+      final token = await ref.read(fcmServiceProvider).getToken();
+      if (token != null) {
+        ref.read(deviceRegistrationRepositoryProvider).registerDevice(token);
+      }
+    } catch (e) {
+      developer.log(
+        '⚠️ Failed to register FCM token — will retry on next login/session-restore: $e',
+        name: '_DeviceRegistrationListener',
+      );
     }
   }
 }
