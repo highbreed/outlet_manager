@@ -1,6 +1,7 @@
 import 'dart:developer' as developer;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../database/isar_database.dart';
 import '../location/location_service.dart';
@@ -123,6 +124,24 @@ class AppInitializationService {
         '❌ App initialization failed: $e',
         error: e,
         stackTrace: stackTrace,
+      );
+      // Field-reported: this failure screen (InitializationErrorScreen)
+      // had zero Sentry visibility anywhere in this whole path — confirmed
+      // via grep, no Sentry call in this service, the provider, or the
+      // screen that displays it, despite this being a real, recurring,
+      // user-visible failure users have had to work around by clearing
+      // app data or rebooting. Every past occurrence has been invisible
+      // to monitoring; the only evidence of it has ever been user-
+      // submitted screenshots. _serviceStatus is attached as context so a
+      // future occurrence shows exactly which phase failed (e.g.
+      // "database") without needing the screenshot at all.
+      await Sentry.captureException(
+        e,
+        stackTrace: stackTrace,
+        withScope: (scope) async {
+          await scope.setTag('failure_type', 'app_initialization');
+          await scope.setContexts('service_status', _serviceStatus);
+        },
       );
       return InitializationResult.failure(e.toString(), _serviceStatus);
     }
