@@ -446,6 +446,21 @@ class ClockInNotifier extends _$ClockInNotifier {
   @override
   AsyncValue<OutletVisit?> build() => const AsyncData(null);
 
+  /// Clears a stale error left over from a previous failed attempt.
+  /// Field-reported bug: a `GeofenceViolationFailure` from one rejected
+  /// clock-in attempt (e.g. "71m from the outlet, max 50m") stayed
+  /// displayed indefinitely, stacked underneath
+  /// `GeofenceStatusWidget`'s own separate, continuously-updating live
+  /// distance banner — the two could end up showing completely
+  /// contradictory status (one saying "ready to clock in", the other
+  /// still showing the old rejection) since nothing ever cleared this
+  /// provider's error once the live position had since changed. Called
+  /// from `visit_detail_screen.dart`'s location-update callback on every
+  /// fresh fix — a no-op when there's no error to clear.
+  void clearError() {
+    if (state.hasError) state = const AsyncData(null);
+  }
+
   Future<void> clockIn({
     required String visitLocalId,
     required double latitude,

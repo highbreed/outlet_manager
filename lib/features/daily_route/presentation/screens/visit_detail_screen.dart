@@ -84,6 +84,10 @@ class _VisitDetailScreenState extends ConsumerState<VisitDetailScreen> {
                 _isLoadingLocation = false;
                 _locationError = null;
               });
+              // A fresh fix makes any previous attempt's error stale —
+              // see ClockInNotifier.clearError's doc comment for the
+              // two-contradictory-banners bug this prevents.
+              ref.read(clockInNotifierProvider.notifier).clearError();
             },
           );
     } catch (e, st) {
