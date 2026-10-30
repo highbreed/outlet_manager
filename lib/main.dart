@@ -131,6 +131,7 @@ class OutletManagerApp extends ConsumerWidget {
           return InitializationErrorScreen(
             errorMessage: result.errorMessage,
             serviceStatus: result.serviceStatus,
+            isDatabaseStuck: result.isDatabaseStuck,
           );
         }
 
@@ -281,20 +282,23 @@ class InitializationLoadingScreen extends ConsumerWidget {
 
 /// Error screen shown if initialization fails.
 ///
-/// Previously a dead end with no way forward short of force-closing the
-/// app — a device that hit the database-open timeout would be stuck here
-/// permanently. The retry button re-runs [appInitializationProvider];
-/// [IsarDatabase]'s in-flight-open cache (see its own doc comment) makes
-/// this safe even if the previous attempt's native open call is still
-/// running in the background rather than truly dead.
+/// The retry button re-runs [appInitializationProvider]; [IsarDatabase]'s
+/// in-flight-open cache (see its own doc comment) makes this *safe* even
+/// if the previous attempt's native open call is still running, but not
+/// necessarily *useful* — a genuinely stuck open (confirmed in the field,
+/// 2026-10-30) just gets re-awaited and times out again. When
+/// [isDatabaseStuck] is true this shows honest guidance instead of
+/// letting the user tap Retry on repeat for no effect.
 class InitializationErrorScreen extends ConsumerWidget {
   final String? errorMessage;
   final Map<String, bool> serviceStatus;
+  final bool isDatabaseStuck;
 
   const InitializationErrorScreen({
     super.key,
     this.errorMessage,
     required this.serviceStatus,
+    this.isDatabaseStuck = false,
   });
 
   @override
@@ -345,6 +349,25 @@ class InitializationErrorScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 8),
+                ],
+                if (isDatabaseStuck) ...[
+                  const SizedBox(height: 8),
+                  // Honest guidance, not a generic apology: a confirmed-
+                  // stuck database open (see IsarDatabase.hasStuckOpenAttempt)
+                  // can't be fixed by Retry — it re-awaits the same native
+                  // call, which is still running. Only a real process kill
+                  // (force-close from Recent Apps, not just backgrounding)
+                  // or a device restart actually clears it, matching what
+                  // users have independently reported working.
+                  const Text(
+                    'This usually means a background task still has the '
+                    'database locked. Tapping Retry probably won\'t help '
+                    'right away — try fully closing this app from your '
+                    'Recent Apps list and reopening it. If it keeps '
+                    'happening, restart your device.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 13, color: Colors.black54),
+                  ),
                 ],
                 const SizedBox(height: 16),
                 ElevatedButton(

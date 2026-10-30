@@ -72,6 +72,35 @@ class IsarDatabase {
     return _openingFuture ??= _open();
   }
 
+  // Set when _open() starts, cleared in its finally block. Lets callers
+  // tell a genuinely-stuck open attempt apart from a slow-but-progressing
+  // one — see `hasStuckOpenAttempt`.
+  static DateTime? _openStartedAt;
+
+  // Field-confirmed (2026-10-30, Sentry, v3.1.8+52 — i.e. *after* both
+  // known cross-isolate contention sources, the headless heartbeat and
+  // the FCM cache-dump handler, were already fixed): the 45s
+  // TimeoutException in AppInitializationService still recurs. Read
+  // against isar_community's own native binding
+  // (package:isar_community/src/native/open.dart, `openIsar`): the result
+  // pointer from `isar_instance_create_async` is written into a single
+  // module-level static (`_isarPtrPtr`), shared by every call in this
+  // isolate — so a second concurrent `Isar.open()` racing a still-running
+  // first one doesn't just risk wasted work, it risks that shared pointer
+  // being clobbered. That rules out ever safely retrying with a fresh
+  // native open while the original attempt might still be running, which
+  // is exactly what a genuine (not merely slow) hang is. There is no safe
+  // in-process fix for that case — only surfacing it honestly so the UI
+  // stops promising a Retry it can't deliver (see
+  // InitializationErrorScreen).
+  static bool get hasStuckOpenAttempt {
+    final startedAt = _openStartedAt;
+    return _openingFuture != null &&
+        startedAt != null &&
+        DateTime.now().difference(startedAt) >
+            const Duration(seconds: 40);
+  }
+
   // Field-reported regression (2026-09-30, the day after the
   // isar_community 3.3.2 upgrade shipped — see that migration's commit).
   // Two different devices hit two different symptoms of the same
@@ -114,6 +143,7 @@ class IsarDatabase {
       e.toString().contains('MdbxError');
 
   static Future<Isar> _open() async {
+    _openStartedAt = DateTime.now();
     try {
       final dir = await getApplicationDocumentsDirectory();
 
@@ -174,6 +204,7 @@ class IsarDatabase {
       // flight" — a future getInstance() call (e.g. the next retry) should
       // start a fresh attempt rather than replaying a failed one forever.
       _openingFuture = null;
+      _openStartedAt = null;
     }
   }
 
@@ -226,6 +257,7 @@ class IsarDatabase {
     await _instance?.close();
     _instance = null;
     _openingFuture = null;
+    _openStartedAt = null;
   }
 
   /// Clear all data (for testing or logout)

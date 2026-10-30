@@ -16,11 +16,17 @@ class InitializationResult {
   final bool success;
   final String? errorMessage;
   final Map<String, bool> serviceStatus;
+  // True when the database phase failed because its open attempt is
+  // genuinely stuck (IsarDatabase.hasStuckOpenAttempt), not just slow —
+  // see that getter's doc comment. Lets InitializationErrorScreen tell
+  // the user the truth instead of offering a Retry that can't work.
+  final bool isDatabaseStuck;
 
   const InitializationResult({
     required this.success,
     this.errorMessage,
     required this.serviceStatus,
+    this.isDatabaseStuck = false,
   });
 
   factory InitializationResult.success(Map<String, bool> serviceStatus) {
@@ -29,12 +35,14 @@ class InitializationResult {
 
   factory InitializationResult.failure(
     String errorMessage,
-    Map<String, bool> serviceStatus,
-  ) {
+    Map<String, bool> serviceStatus, {
+    bool isDatabaseStuck = false,
+  }) {
     return InitializationResult(
       success: false,
       errorMessage: errorMessage,
       serviceStatus: serviceStatus,
+      isDatabaseStuck: isDatabaseStuck,
     );
   }
 }
@@ -135,15 +143,21 @@ class AppInitializationService {
       // submitted screenshots. _serviceStatus is attached as context so a
       // future occurrence shows exactly which phase failed (e.g.
       // "database") without needing the screenshot at all.
+      final isDatabaseStuck = IsarDatabase.hasStuckOpenAttempt;
       await Sentry.captureException(
         e,
         stackTrace: stackTrace,
         withScope: (scope) async {
           await scope.setTag('failure_type', 'app_initialization');
+          await scope.setTag('database_stuck', isDatabaseStuck.toString());
           await scope.setContexts('service_status', _serviceStatus);
         },
       );
-      return InitializationResult.failure(e.toString(), _serviceStatus);
+      return InitializationResult.failure(
+        e.toString(),
+        _serviceStatus,
+        isDatabaseStuck: isDatabaseStuck,
+      );
     }
   }
 
